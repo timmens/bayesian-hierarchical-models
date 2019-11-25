@@ -1,0 +1,55 @@
+\section{Introduction to Bayesian Statistics}
+\subsection{Probability}
+\subsubsection{Bayes' Theorem}
+\subsection{The Bayesian Paradigm}
+\subsection{Estimation}
+\subsection{Performance Measures}
+\subsection{Analytical Example}
+
+\newpage
+\section{Hierarchical Bayesian Models}
+
+\newpage
+\subsection{Hierarchical Models}
+\subsubsection{Two-level HM with normally distributed components}
+Assume that we observe the dataset
+\begin{align*}
+  \mathcal{D} = \big \{ (y_{ij}, x_{ij}) \mid i = 1,\mydots,n_j \,\, \text{and} \,\, j = 1,\mydots,J \big \} \,,
+\end{align*}
+where $j=1,\mydots,J$ denote the second-level units and for each unit $j$ we observe $i=1, \mydots, n_j$ individuals with $y_{ij} \in \reals$ and $x_{ij} \in \reals^P$.
+
+\subsubsection*{Level 1}
+For each second-level unit $j$ we impose a linear model
+\begin{align} \label{eq:1}
+  \bm{y}_j = \bm{X}_j \bm{\beta}_j + \bm{e}_j \,,
+\end{align}
+with $\bm{y}_j$ the ($n_j \times 1$) outcome vector, $\bm{X}_j$ the ($n_j \times P$) design matrix, $\bm{\beta}_j$ the ($P \times 1$) first-level coefficient vector and $\bm{e}_j$ a ($n_j \times 1$) error term.
+To make equation \ref{eq:1} a meaningful (statistical) model we have to make a distributional assumption for $\bm{e}_j$. 
+
+\begin{assumption}
+  We assume that for all $j=1,\mydots,J \quad \bm{e}_j \sim \normal{\zero, \sigma^2 \IndMat}$ (i.i.d).
+\end{assumption}
+
+\subsubsection*{Level 2}
+In contrast to regular linear models we permit $\bm{\beta}_j$ to vary as a function of second-level characteristics.
+That is, we impose
+\begin{align} \label{eq:2}
+  \bm{\beta}_j = \bm{W}_j \bm{\gamma} + \bm{U}_j \,,
+\end{align}
+where $\bm{\gamma}$ can be considered as a ($K \times 1$) fixed effects vector, $\bm{W}_j$ a ($P \times K$) matrix of second-level characteristics and $\bm{U}_j$ a random effects vector.
+
+\begin{assumption}
+  We assume that in equation \ref{eq:2} for all $j=1,\mydots,J \quad \bm{U}_j \sim \normal{\zero, \bm{T}} \quad \text{(i.i.d)}$.
+\end{assumption}
+
+\begin{remark}
+  Using the normality of $\bm{U}_j$ we see that
+  $$ \bm{\beta}_j \mid \bm{\gamma}, \bm{T} \sim \normal{\bm{W}_j \bm{\gamma}, \bm{T}} \,.$$
+\end{remark}
+
+\newpage
+\subsection{The Frequentist Approach}
+\subsubsection{The Estimator}
+\subsection{The Bayesian Approach}
+\subsubsection{The Estimator}
+\subsection{Comparison}
