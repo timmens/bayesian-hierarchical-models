@@ -1,55 +1,64 @@
-\section{Introduction to Bayesian Statistics}
-\subsection{Probability}
-\subsubsection{Bayes' Theorem}
-\subsection{The Bayesian Paradigm}
-\subsection{Estimation}
-\subsection{Performance Measures}
-\subsection{Analytical Example}
+{
+\section{Bayesian Thinking}
+\subsection{(Probabilistic) Modeling}
+\begin{enumerate}
+  \item What is Statistics? What is a model? Why are models useful? \\
+    	Want to model some \emph{phenomena} which manifests itself in some latent variable system / observational process to learn how it works. What is an observation? What is an environment of the latent system?
+  \item True Data Generating Process (What even is that)? (Define it as a probability distribution on the observational space: $p^1$.
+  \item The Observational Model (Which we assume; Is some subset $\mathbf{S} \subset \mathbf{P}$, where $\mathbf{P}$ is the set of all probability distributions on the observational space $Y$. (Because $\mathbf{P}$ is too big.)
+  \item Each $s \in \mathbf{S}$ defines a data generating process, and in doing so provides a (formal) narrative on how the observed data might have been generated.
+  \item In practice we define the elements of $\mathbf{S}$ via a parameterization. So that we have a one-to-one mapping from $\mathbf{S}$ to some parameter configuration space $\Theta \subset \mathbf{R}^K$. 
+  \item Once we identified $\mathbf{S}$ and the mapping to $\Theta$ we want to identify the configuration which is most consistent with the true underlying data generating process $p^1$. Since we do not know $p^1$ this comes down to finding the narrative that best explains the observed data and adheres to domain knowledge on the given application. (But what does consistency even mean?) 
+\end{enumerate}
 
-\newpage
-\section{Hierarchical Bayesian Models}
+\subsection{Frequentist Inference}
+\begin{enumerate}
+  \item What is a probability anyways? Define it as the limiting frequency of an event happening in infinitely many repetions of the same experiment. Realistic? Formally use Kolmogorov's axioms. So what is allowed to be stochastic in this framework? What is the source of variability in models? Model configuration parameters are constants. (? said where?)
+\end{enumerate}
 
-\newpage
-\subsection{Hierarchical Models}
-\subsubsection{Two-level HM with normally distributed components}
-Assume that we observe the dataset
-\begin{align*}
-  \mathcal{D} = \big \{ (y_{ij}, x_{ij}) \mid i = 1,\mydots,n_j \,\, \text{and} \,\, j = 1,\mydots,J \big \} \,,
-\end{align*}
-where $j=1,\mydots,J$ denote the second-level units and for each unit $j$ we observe $i=1, \mydots, n_j$ individuals with $y_{ij} \in \reals$ and $x_{ij} \in \reals^P$.
+\subsection{Bayesian Inference}
+\begin{enumerate}
+  \item Can we also put weights on different model configurations prior to observing data? Humans (therefore also scientiest) certainly do; although sometimes subconciously. We want to formalize this by allowing probability distributions on the configurations space, \emph{priors}.
+  \item What changes? Before we had some space $\mathbf{S}$ and parameterization $\theta \in \Theta$ which defined our observational model through a probability distribution (density) $p_{\mathbf{S}}(y; \theta)$ for $y \in Y$.
+    Since we now allow $\theta$ to be stochastic we have to work with the conditional density that is, we model the stochastic relationship of the observations given a certain parameterization, i.e. $$p_{\mathbf{S}}(y \mid \theta) = p_{\mathbf{S}}(y; \theta)$$
+  \item Why would we want to do this anyways? Bayes' Theorem!
+    Given a distribution $p_{\mathbf{S}}(\theta)$ on the configuration space we can apply Bayes' Theorem. (State it here or later?)
+  \item The likelihood function.$$\ell_{y} : \Theta \to \mathbf{R}_+, \theta \mapsto p_{\mathbf{S}}(y \mid \theta)$$
+    The likelihood function maps model configurations to a numerical quantification which increases for model configurations which are more consistent with the data and decreases with configurations that are less consistent.
+    Hence the likelihood function quantifies the relative consistency of each model configuration with the observed data.
+  \item The posterior distribution. Applying Bayes' Theorem we get $$p_{\mathbf{S}}(\theta \mid y) = \frac{p_{\mathbf{S}}(y \mid \theta)}{\int p_{\mathbf{S}}(y \mid \theta) p_{\mathbf{S}}(\theta) \mathrm{d}\theta} p_{\mathbf{S}} (\theta) \propto p_{\mathbf{S}}(y \mid \theta) p_{\mathbf{S}}(\theta)$$
+  \item The goal of analysis can be inference or prediction
+    When being concerned with the former we would like to understand how the phenomena of interest interacts with the latent variable system and the observational process we measure, as this might give us insights into the phenomena itself.
+    Having found a parameterization this means that we want to know which parameters are likely to cause the observed data.
+    In the Bayesian setting we answer this question by construction the posterior distribution.
+    That is, a conditional distribution on the configuration space given the observed data.
+    The use of Bayes' Theorem (which makes this possible in the first place) explains the name.
+    But it is not the application of Bayes' Theorem which makes Bayesian statistics different to classical (frequentist) statistics; it is the liberation of the model parameters, which are allowed to vary according to some prior distribution.
+  \item We can interpret this statement as an updating process: we have beliefs on the model calibration parameter in the form of a prior distribution and we update this belief using the likelihood function.
+    During this updating step three commom patterns can occur. (i) contraction (ii) containment (iii) compromise. [add pictures and gaussian example].
+  \item Identification of model parameters.
+    If we observe very informative data in the sense that the likelihood is concentrated around a small area then all vague priors will do fine and in a sense we let the data speak.
+    If, however, the observational process was not sensitive to the phenomena of interest, we might observe data with a very low level of information regarding the model parameters.
+    In this case we speak of weakly-identified parameters.
+    This manifests in the likelihood dispersing over large regions of the configuration space.
+    Choosing a prior careless in these situation can result in weak-identifibility of the likelihood propagating to the posterior.
+  \item Okay now we have $p_{\mathbf{S}}(\theta \mid y)$ so what?
+    Let $g$ be any function on $\Theta$.
+    Compute $$\mathbf{E}\left[g(\theta) \mid y\right] = \int g(\theta) p_{\mathbf{S}}(\theta \mid y) \mathrm{d} \theta$$
+    [Insert analytical gaussian exmaple here:]
+    For very simple models with convenient assumptions we can compute the posterior density in closed-form. Using this we might even be able to compute the above integral for some functions $g$ analytically. For more complicated, i.e. realistic, models this does not work. 
+  \item For more complicated models we utilize the fact that for most questions we do not need the analytical form of the posterior but we are happy with being able to draw from it. If we are able to draw from the posterior correctly we can approximate quantiles and arbitrary expectations. But how do we draw from a density? 
+  \item Some blabla on how to draw from densities and the normalization constant and this is why there is \emph{Gibbs Sampling} and \emph{Metropolis Hasting Algorithm} and \emph{Monte Carlo Markov Chain} in general.
+\end{enumerate}
 
-\subsubsection*{Level 1}
-For each second-level unit $j$ we impose a linear model
-\begin{align} \label{eq:1}
-  \bm{y}_j = \bm{X}_j \bm{\beta}_j + \bm{e}_j \,,
-\end{align}
-with $\bm{y}_j$ the ($n_j \times 1$) outcome vector, $\bm{X}_j$ the ($n_j \times P$) design matrix, $\bm{\beta}_j$ the ($P \times 1$) first-level coefficient vector and $\bm{e}_j$ a ($n_j \times 1$) error term.
-To make equation \ref{eq:1} a meaningful (statistical) model we have to make a distributional assumption for $\bm{e}_j$. 
+\subsection{Asymptotics}
+Let $y = \{y_1,\mydots,y_n\}$.
+\begin{enumerate}
+  \item Assume the likelihood function is smooth and consider the maximum likelihood estimator $$\theta_{ML}(y) = \argmax{\theta \in \Theta} p_{\mathbf{S}}(y; \theta)$$
+    If there is a $\theta^1 \in \Theta$ such that $p^1 = p_{\mathbf{S}}(;\theta^1)$ then under some minor assumption (what are theeez???) we get the well known result that $\theta_{ML}(y)$ converges in (prob, a.s., ...) to $\theta^1$ as $n \to \infty$.
+\end{enumerate}
 
-\begin{assumption}
-  We assume that for all $j=1,\mydots,J \quad \bm{e}_j \sim \normal{\zero, \sigma^2 \IndMat}$ (i.i.d).
-\end{assumption}
 
-\subsubsection*{Level 2}
-In contrast to regular linear models we permit $\bm{\beta}_j$ to vary as a function of second-level characteristics.
-That is, we impose
-\begin{align} \label{eq:2}
-  \bm{\beta}_j = \bm{W}_j \bm{\gamma} + \bm{U}_j \,,
-\end{align}
-where $\bm{\gamma}$ can be considered as a ($K \times 1$) fixed effects vector, $\bm{W}_j$ a ($P \times K$) matrix of second-level characteristics and $\bm{U}_j$ a random effects vector.
 
-\begin{assumption}
-  We assume that in equation \ref{eq:2} for all $j=1,\mydots,J \quad \bm{U}_j \sim \normal{\zero, \bm{T}} \quad \text{(i.i.d)}$.
-\end{assumption}
 
-\begin{remark}
-  Using the normality of $\bm{U}_j$ we see that
-  $$ \bm{\beta}_j \mid \bm{\gamma}, \bm{T} \sim \normal{\bm{W}_j \bm{\gamma}, \bm{T}} \,.$$
-\end{remark}
 
-\newpage
-\subsection{The Frequentist Approach}
-\subsubsection{The Estimator}
-\subsection{The Bayesian Approach}
-\subsubsection{The Estimator}
-\subsection{Comparison}
