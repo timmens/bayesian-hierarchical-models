@@ -1,1 +1,8 @@
 MANUSCRIPT/aux/
+MANUSCRIPT/*.toc
+MANUSCRIPT/*.aux
+MANUSCRIPT/*.out
+MANUSCRIPT/*.log
+MANUSCRIPT/*.fls
+MANUSCRIPT/*.synctex.gz
+MANUSCRIPT/*.fdb_latexmk
