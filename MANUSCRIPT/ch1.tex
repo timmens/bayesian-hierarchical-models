@@ -7,8 +7,8 @@
   \item True Data Generating Process (What even is that)? (Define it as a probability distribution on the observational space: $p^1$.
   \item The Observational Model (Which we assume; Is some subset $\mathbf{S} \subset \mathbf{P}$, where $\mathbf{P}$ is the set of all probability distributions on the observational space $Y$. (Because $\mathbf{P}$ is too big.)
   \item Each $s \in \mathbf{S}$ defines a data generating process, and in doing so provides a (formal) narrative on how the observed data might have been generated.
-  \item In practice we define the elements of $\mathbf{S}$ via a parameterization. So that we have a one-to-one mapping from $\mathbf{S}$ to some parameter configuration space $\Theta \subset \mathbf{R}^K$. 
-  \item Once we identified $\mathbf{S}$ and the mapping to $\Theta$ we want to identify the configuration which is most consistent with the true underlying data generating process $p^1$. Since we do not know $p^1$ this comes down to finding the narrative that best explains the observed data and adheres to domain knowledge on the given application. (But what does consistency even mean?) 
+  \item In practice we define the elements of $\mathbf{S}$ via a parameterization. So that we have a one-to-one mapping from $\mathbf{S}$ to some parameter configuration space $\Theta \subset \mathbf{R}^K$.
+  \item Once we identified $\mathbf{S}$ and the mapping to $\Theta$ we want to identify the configuration which is most consistent with the true underlying data generating process $p^1$. Since we do not know $p^1$ this comes down to finding the narrative that best explains the observed data and adheres to domain knowledge on the given application. (But what does consistency even mean?)
 \end{enumerate}
 
 \subsection{Frequentist Inference}
@@ -46,10 +46,13 @@
     Let $g$ be any function on $\Theta$.
     Compute $$\mathbf{E}\left[g(\theta) \mid y\right] = \int g(\theta) p_{\mathbf{S}}(\theta \mid y) \mathrm{d} \theta$$
     [Insert analytical gaussian exmaple here:]
-    For very simple models with convenient assumptions we can compute the posterior density in closed-form. Using this we might even be able to compute the above integral for some functions $g$ analytically. For more complicated, i.e. realistic, models this does not work. 
-  \item For more complicated models we utilize the fact that for most questions we do not need the analytical form of the posterior but we are happy with being able to draw from it. If we are able to draw from the posterior correctly we can approximate quantiles and arbitrary expectations. But how do we draw from a density? 
+    For very simple models with convenient assumptions we can compute the posterior density in closed-form. Using this we might even be able to compute the above integral for some functions $g$ analytically. For more complicated, i.e. realistic, models this does not work.
+  \item For more complicated models we utilize the fact that for most questions we do not need the analytical form of the posterior but we are happy with being able to draw from it. If we are able to draw from the posterior correctly we can approximate quantiles and arbitrary expectations. But how do we draw from a density?
   \item Some blabla on how to draw from densities and the normalization constant and this is why there is \emph{Gibbs Sampling} and \emph{Metropolis Hasting Algorithm} and \emph{Monte Carlo Markov Chain} in general.
 \end{enumerate}
+
+\subsection{Solving for the posterior analytically}
+In this subsection we will be presenting an example of estimating / solving for the mean and variance parameters when observing data that is assumed to come from a normal distribution.
 
 \subsection{Asymptotics}
 Let $y = \{y_1,\mydots,y_n\}$.
@@ -64,7 +67,3 @@ Let $y = \{y_1,\mydots,y_n\}$.
 \begin{enumerate}
   \item Metropolis-Hastings Algorithm
 \end{enumerate}
-
-
-
-

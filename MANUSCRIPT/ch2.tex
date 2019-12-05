@@ -1,1 +1,76 @@
 \section{Hierarchical Models}
+In the following subsections we will introduce the general idea of Hierarchical
+models; show how to solve for the posterior analytically in a simplified setting
+and then present the main model with which we will be working later on, the \emph{Hierarchical Linear model}.
+
+\subsection{Hierarchical Data}
+
+\subsection{Solving for the posterior analytically}
+As in the previous section, we first will be presenting the analytical
+derivation of the posterior in a simple normal hierarchical model.
+
+\subsection{Hierarchical Linear Models}
+
+\subsubsection{Varying Slopes Model With One Predictor In Each Level}
+We assume that units $i = 1,\mydots,n$ can be divided into $J$ distinct groups.
+We start with a very simple model assuming that intercept is fixed for all
+groups, that is
+\begin{align}
+  y = \alpha + \beta_j x + \epsilon \,,
+\end{align}
+with $\epsilon$ following a mean zero normal distribution with variance
+$\sigma_{\epsilon}^2$.
+To incorporate the idea that the groups follow a common structure we also
+assume
+\begin{align}
+  \beta_j &= \gamma_0 + \gamma_1 u_j + \eta \,,
+\end{align}
+for $j = 1,\mydots,J$, with $\eta$ mean zero normal with variance $\sigma_\eta^2$.
+
+Since $\gamma_0$ and $\gamma_1$ do not vary by group they are sometimes referred
+to as \emph{fixed effects}. Similary as $\eta$ is drawn randomly for each group
+it is sometimes called \emph{random effect}. Put together this shows the close
+resemblance of the hierarchical linear model to classical mixed effects models
+\textcolor{red}{(some reference here would be nice!)}
+
+Following the notation of \textcolor{red}{Gelman and Hill (2007)} we describe the model equation of a single individual $i$ by
+\begin{align}
+  y_i = \alpha + \beta_{j[i]} x_i + \epsilon_i \,,
+\end{align}
+where $j[i]$ denotes the group to which individual $i$ belongs.
+
+\subsubsection{Varying Intercept and Slope Model with One Predictor in Each Level}
+We assume that units $i = 1,\mydots,n$ can be divided into $J$ distinct groups.
+In each group $j$ we model our outcome variable $y$ as a linear function in $x$,
+that is
+\begin{align}
+  y = \alpha_j + \beta_j x + \epsilon \,,
+\end{align}
+with $\epsilon$ following a mean zero normal distribution with variance
+$\sigma_{\epsilon}^2$.
+To incorporate the idea that the groups follow a common structure we also
+assume
+\begin{align}
+  \alpha_j &= \gamma_0^{\alpha} + \gamma_1^{\alpha} u_j + \eta_\alpha \\
+  \beta_j &= \gamma_0^{\beta} + \gamma_1^{\beta} u_j + \eta_\beta \,,
+\end{align}
+for $j = 1,\mydots,J$, with
+\begin{align}
+  \sqmat{\eta_\alpha \\ \eta_\beta} \sim \normal{\sqmat{\sigma_\alpha^2 & \rho \sigma_\alpha \sigma_\beta \\ & \sigma_\beta^2}}
+\end{align}
+
+Following the notation of \textcolor{red}{Gelman and Hill (2007)} we describe the model equation of a single individual $i$ by
+\begin{align}
+  y_i = \alpha_{j[i]} + \beta_{j[i]} x_i + \epsilon_i \,,
+\end{align}
+where $j[i]$ denotes the group to which individual $i$ belongs.
+This particular model is known as the two-level varying intercept / varying slope model with one unit-level predictor (here $x_i$) and one group-level predictor
+(here $u_i$). The model defined by equations \textcolor{red}{(1) - (4)} can of
+course be made arbitrarily complex by adding higher order polynomial terms or
+more predictors, as in a regular linear regression models. Further the normality
+assumption of equation \textcolor{red}{(4)} is not mandotory and can be swapped
+with nearly any other distributional assumption. Also, why stop at two levels?
+We could naturally model the coefficients in equation \textcolor{red}{2 and 3}
+using a third level. All these extensions can in practice be necessary when
+modelling complex structures; however for the sake of simplicity and clarity
+we will stick to our clean model.
