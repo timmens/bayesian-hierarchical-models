@@ -1,4 +1,3 @@
-{
 \section{Bayesian Thinking}
 \subsection{(Probabilistic) Modeling}
 \begin{enumerate}
@@ -52,7 +51,108 @@
 \end{enumerate}
 
 \subsection{Solving for the posterior analytically}
-In this subsection we will be presenting an example of estimating / solving for the mean and variance parameters when observing data that is assumed to come from a normal distribution.
+In this subsection we present the analytical estimation of the mean and variance parameters
+in a univariate normal model using an uninformative and conjugate prior, respectively.
+
+In both cases we assume that we observe an iid data sample $y = (y_1, \mydots, y_n)$
+with $y_i \sim \normal{\theta, \sigma^2}$. Our interest lies in solving for the
+marginal posterior distributions $p(\theta \mid y)$ and $p(\sigma^2 \mid y)$.
+Since it will be use frequently, note that by dropping all irrelevant constants we get
+\begin{align}
+  p(y \mid \theta, \sigma^2) \propto (\sigma^2)^{-n/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \,.
+\end{align}
+
+\textcolor{red}{ADD STUFF TO MAP AND MEDIAN ESTIMATE AND COMPARE TO MAXIMUM LIKELIHOOD!}
+
+\subsubsection*{Uninformative Prior}
+A reasonable choice for an uninformative prior for $(\theta, \sigma^2)$ stems
+from defining a uniform prior on the transformed parameters, i.e. $p(\theta, \log \sigma) \propto 1$.
+The log transformation is necessary since $\sigma$ is constrained to be positive.
+This leads to the improper prior\footnote{\textcolor{red}{See appendix for a derivation.}}
+\begin{align}
+  p(\theta, \sigma^2) \propto (\sigma^2)^{-1} \,,
+\end{align}
+which gives the joint posterior as
+\begin{align}
+  p(\theta, \sigma^2 \mid y) &\propto p(y \mid \theta, \sigma^2) p(\theta, \sigma^2)\\
+  &\propto (\sigma^2)^{-(n+2)/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \,.
+\end{align}
+
+Thus the marginal posterior of $\sigma^2$ can be obtained by integrating the joint posterior
+over $\theta$. Let $s = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denote the sample
+variance and note that it is easy to show to
+$\theta \mid \sigma^2, y \sim \normal{\bar{y}, \sigma^2/n}$ (see appendix for a proof).
+Then,
+\begin{align}
+  p(\sigma^2 \mid y) &\propto \int p(\theta, \sigma^2 \mid y) \mathrm{d} \theta\\
+  &\propto \int \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
+  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
+  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \theta\\
+  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \int \EXP{\frac{1}{2\sigma^2/n}(\bar{y} - \theta)^2} \mathrm{d} \theta\\
+  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \sqrt{2 \pi \sigma^2 / n} \\
+  &\propto (\sigma^2)^{-(n+1)/2} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \,.
+\end{align}
+Hence, $\sigma^2 \mid y \sim \text{scaled-Inv-} \chi^2(n-1, s^2)$.
+
+To finish our analysis we integrate the joint posterior over $\sigma^2$ to get
+the marginal posterior of $\theta$. We evaluate the integral by substitution using
+$z = \frac{a}{2 \sigma^2}$ with $a = (n-1)s + n(\theta - \bar{y})$.\footnote{\textcolor{red}{See appendix for explicit derivation}}
+Then,
+\begin{align}
+  p(\theta \mid y) &= \int_{(0, \infty)} p(\theta, \sigma^2 \mid y) \mathrm{d}\sigma^2\\
+  &\propto \sigma^{-(n+2)} \int_{(0, \infty)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \sigma^2\\
+  &\propto a^{-n/2} \int_{(0, \infty)} z^{(n-2)/2}\EXP{-z} \mathrm{d}z\\
+  &\propto a^{-n/2}\\
+  &= [(n-1)s + n(\theta - \bar{y})]^{-n/2}\\
+  &\propto \left[1 + \frac{(\theta - \bar{y})^2}{(n-1) s^2 / n}\right]^{-n/2} \,
+\end{align}
+which concludes our first analysis implying that $\theta \sim t_{n-1}(\bar{y}, \sigma^2/n)$.
+
+\subsubsection*{Conjugate Prior}
+Consider again the likelihood function
+\begin{align}
+  p(y \mid \theta, \sigma^2) \propto \sigma^{-n} \EXP{-\frac{1}{2\sigma^2}a} \,.
+\end{align}
+A conjugate prior for $(\theta, \sigma^2)$ therefore has to be of the form
+\begin{align}
+  p(\theta, \sigma^2) \propto \sigma^\alpha \EXP{-\frac{1}{2\sigma^2} \beta} \,
+\end{align}
+for some $\alpha, \beta$. Using the factorization $p(\theta, \sigma^2) = p(\sigma^2) p(\theta \mid \sigma^2)$
+we see that for some $\alpha_0, \alpha_1, \beta_0, \beta_1$ we find
+\begin{align}
+  p(\sigma^2) \propto \sigma^{\alpha_0} \EXP{-\frac{1}{2\sigma^2} \beta_0}
+\end{align}
+and
+\begin{align}
+  p(\theta \mid \sigma^2) \propto \sigma^{\alpha_1} \EXP{-\frac{1}{2\sigma^2} \beta_1} \,.
+\end{align}
+This then tells us that $\theta \mid \sigma^2$ is normal with variance proportional
+to $\sigma^2$, while $\sigma^2$ has to be $\text{scaled-Inv-}\chi^2$ distributed.
+We parameterize the distributions as follows
+\begin{align}
+  \theta \mid \sigma^2 &\sim \normal{\theta_0, \sigma^2/\kappa_0}\\
+  \sigma^2 &\sim \text{scaled-Inv-}\chi^2(\nu_0, \sigma_0^2) \,,
+\end{align}
+for some suitable hyperparameters $\theta_0, \kappa_0, \nu_0, \sigma_0$ and follow
+\textcolor{red}{Gelman BDA} in terming the resulting joint density
+$p(\theta, \sigma^2)$ by $\text{Normal-Inv-}\chi^2(\theta_0, \kappa_0; \nu_0, \sigma_0)$.
+This in turn ensures that the joint posterior $p(\theta, \sigma^2 \mid y)$ is again
+$\text{Normal-Inv-}\chi^2$. Using an equivalent approach as applied above we can
+compute the marginal posteriors by intregrating the respective parameters out.
+This results in
+\begin{align}
+  \sigma^2 \mid y &\sim \text{Inv-}\chi^2(\nu_n, \sigma_n^2)\\
+  \theta \mid y &\sim t_{\nu_n}(\theta_n, \sigma_n^2 / \kappa_n) \,,
+\end{align}
+for
+\begin{align}
+  \nu_n &= \nu_0 + n\\
+  \kappa_n &= \kappa_0 + n\\
+  \sigma_n^2 &= \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_n n}{\kappa_0 + n} (\bar{y} - \theta_0)^2\right] /\nu_n\\
+  \theta_n &=\frac{\kappa_n}{\kappa_0 + n}\theta_0 + \frac{n}{\kappa_0 + n}\bar{y} \,.
+\end{align}
+\textcolor{red}{A detailed derivation is given in the appendix.}
+
 
 \subsection{Asymptotics}
 Let $y = \{y_1,\mydots,y_n\}$.
