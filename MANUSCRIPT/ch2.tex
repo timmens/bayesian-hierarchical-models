@@ -1,13 +1,46 @@
 \section{Hierarchical Models}
-In the following subsections we will introduce the general idea of Hierarchical
-models; show how to solve for the posterior analytically in a simplified setting
-and then present the main model with which we will be working later on, the \emph{Hierarchical Linear model}.
+In the following subsections we will introduce the concept of hierarchical data
+and the models designed to work with that data. We present an analytical
+derivation for a simple but general case and then illustrate the most common
+model class, \emph{linear hierarchical models}.
 
 \subsection{Hierarchical Data}
+Hierarchical data is present when there is a natural way to split observations
+into clusters. For example, we might observe data on children for many different
+schools. The data could also include schools for different states. So we would
+observe children in schools in states. This would
+constitute the case of \emph{nested} groups, which gives meaning to the term
+hierarchical. There are however many cases which do not feature nested data
+or an interpretable hierarchical structure but do belong to the type of structured
+data that can be analyzed using hierarchical models. A prominent example are
+meta-analysis studies, which can be modeled hierarchically but are non-nested
+since units might be overlapping. When a clear interpretation of the hierarchy is missing
+one often encounters the description \emph{multi-leveled data} and \emph{multi-level model}.
 
 \subsection{Solving for the posterior analytically}
-As in the previous section, we first will be presenting the analytical
-derivation of the posterior in a simple normal hierarchical model.
+As in the previous section, we will first present the analytical derivation of
+the posterior in a simple normal hierarchical model. We continue using the
+example of modeling observed test scores of children in different schools.
+
+Let us assume that we observe test scores $y_i$ for $i = 1,\mydots,n$ children
+in $j=1,\mydots,J$ different schools. For convenience let us write $j[i]$ for child
+$i$'s school. We assume that for all children in school $j$, the outcome $y_i$
+follows a common data generating process governed by some parameter $\theta_j$.
+To make this model hierarchical we assume that these $\theta_1,\mydots,\theta_J$
+also follow a common data generating process governed by some hyperparameter $\phi$.
+This gives
+\begin{align}
+  p(y_i \mid \theta_{j[i]}, \phi) = p(y_i \mid \theta_{j[i]})
+\end{align}
+for our model of test scores given all parameters. Note that since $\phi$ only
+affects $y_i$ through $\theta_{j[i]}$ we can drop it from the conditioning set.
+Further we model the common structure of the $\theta_j$'s through $p(\theta_j \mid \phi)$.
+To analyze this problem using Bayesian techniques we must at last assign a prior
+to $\phi$, that is, we define $p(\phi)$.
+
+The objects of our interest are given by the joint posterior $p(\theta_j, \phi \mid y)$
+and its two marginal posteriors. In order to derive these analytically we must
+make strong distributional assumptions.
 
 \subsection{Hierarchical Linear Models}
 
@@ -29,48 +62,58 @@ for $j = 1,\mydots,J$, with $\eta$ mean zero normal with variance $\sigma_\eta^2
 
 Since $\gamma_0$ and $\gamma_1$ do not vary by group they are sometimes referred
 to as \emph{fixed effects}. Similary as $\eta$ is drawn randomly for each group
-it is sometimes called \emph{random effect}. Put together this shows the close
+it is sometimes called a \emph{random effect}. Put together this shows the close
 resemblance of the hierarchical linear model to classical mixed effects models
 \textcolor{red}{(some reference here would be nice!)}
 
-Following the notation of \textcolor{red}{Gelman and Hill (2007)} we describe the model equation of a single individual $i$ by
+Following the notation of \textcolor{red}{Gelman and Hill (2007)} we describe the
+model equation of a single individual $i$ by
 \begin{align}
   y_i = \alpha + \beta_{j[i]} x_i + \epsilon_i \,,
 \end{align}
 where $j[i]$ denotes the group to which individual $i$ belongs.
 
-\subsubsection{Varying Intercept and Slope Model with One Predictor in Each Level}
-We assume that units $i = 1,\mydots,n$ can be divided into $J$ distinct groups.
-In each group $j$ we model our outcome variable $y$ as a linear function in $x$,
-that is
-\begin{align}
-  y = \alpha_j + \beta_j x + \epsilon \,,
-\end{align}
-with $\epsilon$ following a mean zero normal distribution with variance
-$\sigma_{\epsilon}^2$.
-To incorporate the idea that the groups follow a common structure we also
-assume
-\begin{align}
-  \alpha_j &= \gamma_0^{\alpha} + \gamma_1^{\alpha} u_j + \eta_\alpha \\
-  \beta_j &= \gamma_0^{\beta} + \gamma_1^{\beta} u_j + \eta_\beta \,,
-\end{align}
-for $j = 1,\mydots,J$, with
-\begin{align}
-  \sqmat{\eta_\alpha \\ \eta_\beta} \sim \normal{\sqmat{\sigma_\alpha^2 & \rho \sigma_\alpha \sigma_\beta \\ & \sigma_\beta^2}}
-\end{align}
+The model defined by the assumptions and equations above \textcolor{red}{(where and what)} can of course be made
+arbitrarily complex. For example we could add higher order polynomial terms or
+more predictors, as in regular linear regression modeling. Further, the
+normality assumption of the errors could be relaxed and most importantly, why
+stop at two levels? Naturally we could model the group-level coefficients using
+a third level. For the sake of a simpler explaination however, we will stick to
+the presented model.
 
-Following the notation of \textcolor{red}{Gelman and Hill (2007)} we describe the model equation of a single individual $i$ by
-\begin{align}
-  y_i = \alpha_{j[i]} + \beta_{j[i]} x_i + \epsilon_i \,,
-\end{align}
-where $j[i]$ denotes the group to which individual $i$ belongs.
-This particular model is known as the two-level varying intercept / varying slope model with one unit-level predictor (here $x_i$) and one group-level predictor
-(here $u_i$). The model defined by equations \textcolor{red}{(1) - (4)} can of
-course be made arbitrarily complex by adding higher order polynomial terms or
-more predictors, as in a regular linear regression models. Further the normality
-assumption of equation \textcolor{red}{(4)} is not mandotory and can be swapped
-with nearly any other distributional assumption. Also, why stop at two levels?
-We could naturally model the coefficients in equation \textcolor{red}{2 and 3}
-using a third level. All these extensions can in practice be necessary when
-modelling complex structures; however for the sake of simplicity and clarity
-we will stick to our clean model.
+%\subsubsection{Varying Intercept and Slope Model with One Predictor in Each Level}
+%We assume that units $i = 1,\mydots,n$ can be divided into $J$ distinct groups.
+%In each group $j$ we model our outcome variable $y$ as a linear function in $x$,
+%that is
+%\begin{align}
+  %y = \alpha_j + \beta_j x + \epsilon \,,
+%\end{align}
+%with $\epsilon$ following a mean zero normal distribution with variance
+%$\sigma_{\epsilon}^2$.
+%To incorporate the idea that the groups follow a common structure we also
+%assume
+%\begin{align}
+  %\alpha_j &= \gamma_0^{\alpha} + \gamma_1^{\alpha} u_j + \eta_\alpha \\
+  %\beta_j &= \gamma_0^{\beta} + \gamma_1^{\beta} u_j + \eta_\beta \,,
+%\end{align}
+%for $j = 1,\mydots,J$, with
+%\begin{align}
+  %\sqmat{\eta_\alpha \\ \eta_\beta} \sim \normal{\sqmat{\sigma_\alpha^2 & \rho \sigma_\alpha \sigma_\beta \\ & \sigma_\beta^2}}
+%\end{align}
+%
+%Following the notation of \textcolor{red}{Gelman and Hill (2007)} we describe the model equation of a single individual $i$ by
+%\begin{align}
+  %y_i = \alpha_{j[i]} + \beta_{j[i]} x_i + \epsilon_i \,,
+%\end{align}
+%where $j[i]$ denotes the group to which individual $i$ belongs.
+%This particular model is known as the two-level varying intercept / varying slope model with one unit-level predictor (here $x_i$) and one group-level predictor
+%(here $u_i$).
+%The model defined by equations \textcolor{red}{(1) - (4)} can of
+%course be made arbitrarily complex by adding higher order polynomial terms or
+%more predictors, as in a regular linear regression models. Further the normality
+%assumption of equation \textcolor{red}{(4)} is not mandotory and can be swapped
+%with nearly any other distributional assumption. Also, why stop at two levels?
+%We could naturally model the coefficients in equation \textcolor{red}{2 and 3}
+%using a third level. All these extensions can in practice be necessary when
+%modelling complex structures; however for the sake of simplicity and clarity
+%we will stick to our clean model.
