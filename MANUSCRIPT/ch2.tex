@@ -8,7 +8,7 @@ model class, \emph{linear hierarchical models}.
 Hierarchical data is present when there is a natural way to split observations
 into clusters. For example, we might observe data on children for many different
 schools. The data could also include schools for different states. So we would
-observe children in schools in states. This would
+observe children in schools and schools in states. This would
 constitute the case of \emph{nested} groups, which gives meaning to the term
 hierarchical. There are however many cases which do not feature nested data
 or an interpretable hierarchical structure but do belong to the type of structured
@@ -17,11 +17,7 @@ meta-analysis studies, which can be modeled hierarchically but are non-nested
 since units might be overlapping. When a clear interpretation of the hierarchy is missing
 one often encounters the description \emph{multi-leveled data} and \emph{multi-level model}.
 
-\subsection{Solving for the posterior analytically}
-As in the previous section, we will first present the analytical derivation of
-the posterior in a simple normal hierarchical model. We continue using the
-example of modeling observed test scores of children in different schools.
-
+\subsubsection*{Formal Example}
 Let us assume that we observe test scores $y_i$ for $i = 1,\mydots,n$ children
 in $j=1,\mydots,J$ different schools. For convenience let us write $j[i]$ for child
 $i$'s school. We assume that for all children in school $j$, the outcome $y_i$
@@ -38,9 +34,15 @@ Further we model the common structure of the $\theta_j$'s through $p(\theta_j \m
 To analyze this problem using Bayesian techniques we must at last assign a prior
 to $\phi$, that is, we define $p(\phi)$.
 
+\subsection{Solving for the posterior analytically}
+As in the previous section, we will first present the analytical derivation of
+the posterior in a simple normal hierarchical model. We continue using the
+example of modeling observed test scores of children in different schools.
+
 The objects of our interest are given by the joint posterior $p(\theta_j, \phi \mid y)$
 and its two marginal posteriors. In order to derive these analytically we must
-make strong distributional assumptions.
+make convenient distributional assumptions. For the sake of exposition, we choose
+
 
 \subsection{Hierarchical Linear Models}
 
