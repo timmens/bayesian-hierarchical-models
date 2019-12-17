@@ -53,6 +53,7 @@
 \subsection{Solving for the posterior analytically}
 In this subsection we present the analytical estimation of the mean and variance parameters
 in a univariate normal model using an uninformative and conjugate prior, respectively.
+We will compare the derived posteriors to the usual maximum likelihood estimate.
 
 In both cases we assume that we observe an iid data sample $y = (y_1, \mydots, y_n)$
 with $y_i \sim \normal{\theta, \sigma^2}$. Our interest lies in solving for the
@@ -79,7 +80,7 @@ which gives the joint posterior as
 \end{align}
 
 Thus the marginal posterior of $\sigma^2$ can be obtained by integrating the joint posterior
-over $\theta$. Let $s = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denote the sample
+over $\theta$. Let $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denote the sample
 variance and note that it is easy to show to
 $\theta \mid \sigma^2, y \sim \normal{\bar{y}, \sigma^2/n}$ (see appendix for a proof).
 Then,
@@ -106,7 +107,26 @@ Then,
   &= [(n-1)s + n(\theta - \bar{y})]^{-n/2}\\
   &\propto \left[1 + \frac{(\theta - \bar{y})^2}{(n-1) s^2 / n}\right]^{-n/2} \,
 \end{align}
-which concludes our first analysis implying that $\theta \sim t_{n-1}(\bar{y}, \sigma^2/n)$.
+which concludes our first analysis implying that $\theta \mid y \sim t_{n-1}(\bar{y}, \sigma^2/n)$.
+
+We know that for the problem at hand the standard maximum likelihood estimators
+and their variances are given by\footnote{\textcolor{red}{See appendix for proof.}}
+\begin{align}
+  \hat{\theta}_{ML} &= \frac{1}{n} \sum_i y_i = \bar{y}\,\\
+  \hat{\sigma}_{ML}^2 &= \frac{1}{n} \sum_i (y_i - \bar{y})^2 = \frac{n-1}{n} s^2\,\\
+  \mathrm{I}(\theta, \sigma)^{-1} &= \sqmat{\sigma^2 / n & 0\\0&\sigma^2/(2n)} \,.
+\end{align}
+The Bayesian counterpart to the ML-Estimator is the \emph{maximum a posteriori estimate},
+or in short \emph{MAP}. For $\theta \mid y$ we derived a noncentral Student's t-distribution
+with mean $\bar{y}$ and variance $\sigma^2/n$. Since this distribution is unimodal and
+symmetric the MAP estimate is simply the mean. We note that it is equivalent to
+the ML estimate on both the point estimate and included variance. For $\sigma^2$
+the results look slightly different. The mode and the mean of $\sigma^2 \mid y$
+are given by $\frac{n-1}{n+1} s^2$ and $\frac{n-1}{n-3} s^2$, respectively.
+Still we see a very close resemblance of the Bayesian estimator to the ML estimator.
+One could say that this is a property which is desirable for Bayesian estimators
+using uninformative priors. One obvious advantage of the Bayesian approach is the
+ease with which we can compute arbitrary probabilities using the posterior density.
 
 \subsubsection*{Conjugate Prior}
 Consider again the likelihood function
