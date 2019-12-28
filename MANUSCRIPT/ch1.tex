@@ -1,23 +1,44 @@
-\section{Bayesian Thinking}
+\section{Bayesian Thinking and Estimation}
+In this section we will introduce the core topics of Bayesian data analysis, and whenever possible compare proposed methods and results to their frequentist counterpart.
+As we will see, Bayesian statistics differs from mainstream statistics on a fundamental level; Thus, we have to start there.
+
 \subsection{(Probabilistic) Modeling}
-\begin{enumerate}
-  \item What is Statistics? What is a model? Why are models useful? \\
-    	Want to model some \emph{phenomena} which manifests itself in some latent variable system / observational process to learn how it works. What is an observation? What is an environment of the latent system?
-  \item True Data Generating Process (What even is that)? (Define it as a probability distribution on the observational space: $p^1$.
-  \item The Observational Model (Which we assume; Is some subset $\mathbf{S} \subset \mathbf{P}$, where $\mathbf{P}$ is the set of all probability distributions on the observational space $Y$. (Because $\mathbf{P}$ is too big.)
-  \item Each $s \in \mathbf{S}$ defines a data generating process, and in doing so provides a (formal) narrative on how the observed data might have been generated.
-  \item In practice we define the elements of $\mathbf{S}$ via a parameterization. So that we have a one-to-one mapping from $\mathbf{S}$ to some parameter configuration space $\Theta \subset \mathbf{R}^K$.
-  \item Once we identified $\mathbf{S}$ and the mapping to $\Theta$ we want to identify the configuration which is most consistent with the true underlying data generating process $p^1$. Since we do not know $p^1$ this comes down to finding the narrative that best explains the observed data and adheres to domain knowledge on the given application. (But what does consistency even mean?)
-\end{enumerate}
+Before going further, let us first formalize our notion of stochastic modeling.
+Imagine being interested in some \textit{phenomena}, for example the effect of bigger class sizes on school children performance.
+Most phenomena cannot be observed directly and only manifest themself through some latent variable system.
+We can still hope to learn about the phenomena by studying the observational process around it.
+Clearly the way in which a phenomena reveals itself is dependent on its environment;
+The observed effects for school-children in sub-saharan africa might look very different to the ones in central europe.
+To derive sensible results from our analysis we need to postulate the existence of a \textit{true data generating process}, which captures the way in which the observational process adheres to the effects of the phenomena of interest given its environment.
+We define this object as a probability distribution $p_0$ on the observational space $\mathbb{Z}$.
+In this step we move from a model to a probabilistic model, in that we allow our system of interest to be influenced by randomness and not only be characterized by a deterministic process.
+In practice $p_0$ is rarely known, therefore the challenge lies in recovering a distribution using the observed data which is as close as possible to $p_0$.
+This is usually done by assuming that the true data generating process falls in some class of models, for example a linear model with normal errors.
+Formally, we restrict our attention to a subset of potential observational processes $\mathbb{M}$ over the whole space of distributions on $\mathbb{Z}$.
+The beauty of using a model class approach in the construction of $\mathbb{M}$ is that for each distribution $p \in \mathbb{M}$, we can find a parameterization $\theta$ in the configuration space $\Theta$; For example, the class of multivariate normal distributions is parameterized by its mean and covariance $(\mu, \Sigma) = \theta \in \Theta$.
+The goal of all subsequent statistical analysis is then to utilize the observed data to determine the regions in $\Theta$ which are most consistent with $p_0$ and simultaneously to capture our uncertainty about these statements.
+If $p_0 \in \mathbb{M}$ we can find a parameterization $\theta_0$ which corresponds to the true data generating process; naturally we seek estimators that determine regions close to $\theta_0$. If, however, $p_0 \not\in \mathbb{M}$ we enter the world of model misspecification which leads to all sorts of problems.
+For everything that follows let us therefore make the omnipresent assumption that $p_0 \in \mathbb{M}$.
 
-\subsection{Frequentist Inference}
-\begin{enumerate}
-  \item What is a probability anyways? Define it as the limiting frequency of an event happening in infinitely many repetions of the same experiment. Realistic? Formally use Kolmogorov's axioms. So what is allowed to be stochastic in this framework? What is the source of variability in models? Model configuration parameters are constants. (? said where?)
-\end{enumerate}
+\subsection{Schools of Thought}
+Next we discuss how the Bayesian and the classical mindset differ. In particular we focus on the predominant way of thinking for most of statistical history, \textit{frequentist statistics}.
 
-\subsection{Bayesian Inference}
+\textbf{Frequentist.} The frequentist approach assumes that the true data generating process is completely specified by an unkown but fixed quantity $\theta_0 \in \Theta$.
+Either implicitly or explicitly we define the \textit{likelihood} $p(z; \theta)$ by modeling the observational process for $z \in \mathbb{Z}$ using a parameterization $\theta$.
+The main challenges include finding a (point) estimator for $\theta_0$, quantifying the uncertainty of the estimate and testing hypothesis.
+One fundamental idea which stretches over all these topics is the interpretation of probability as the limit of an infinite sequence of relative frequencies ---hence the name.
+Since $\theta_0$ is fixed all probability statements regarding this object are trivial, that is, either one or zero. This propagates to the problem of hypothesis testing.
+All hypothesis are either true or false and therefore have probabilities of one or zero.
+We reject a hypothesis $H_0$ if conditional on $H_0$ being true the probability of observing the data in the given sample is lower than some threshold, i.e. $P(\text{data} \mid H_0) < \alpha$.
+Note that this statement does not tell us anything about $H_0$ directly but only about the data at hand.
+
+\textbf{Bayesian.} In a Bayesian framework we may believe that there exists a true underlying data generating process which might even be specified by a fixed quantity, but we start to model our initial uncertainty by imposing a probability distribution $p(\theta)$ on $\Theta$.
+This higher-level uncertainty can also be interpreted as \textit{prior} knowledge about the parameters ---we call $p(\theta)$ the \textit{prior distribution}.
+As we impose probabilistic structure onto $\Theta$....
+
+
+\subsection*{Bayesian Inference}
 \begin{enumerate}
-  \item Can we also put weights on different model configurations prior to observing data? Humans (therefore also scientiest) certainly do; although sometimes subconciously. We want to formalize this by allowing probability distributions on the configurations space, \emph{priors}.
   \item What changes? Before we had some space $\mathbf{S}$ and parameterization $\theta \in \Theta$ which defined our observational model through a probability distribution (density) $p_{\mathbf{S}}(y; \theta)$ for $y \in Y$.
     Since we now allow $\theta$ to be stochastic we have to work with the conditional density that is, we model the stochastic relationship of the observations given a certain parameterization, i.e. $$p_{\mathbf{S}}(y \mid \theta) = p_{\mathbf{S}}(y; \theta)$$
   \item Why would we want to do this anyways? Bayes' Theorem!
@@ -183,7 +204,173 @@ Let $y = \{y_1,\mydots,y_n\}$.
 
 
 \subsection{Sampling from the posterior}
-\subsubsection*{Markov Chain Monte Carlo Methods}
-\begin{enumerate}
-  \item Metropolis-Hastings Algorithm
-\end{enumerate}
+In this section we will consider how to estimate quantities of interest using
+an unnormalized posterior density (target distribution).
+These quantities can be very different objects.
+For instance, we might be interested in visualizing the marginal posterior distribution
+of some specific parameter, or we want to propagate the posterior distribution
+through some not necessarily linear transformation function.
+In Bayesian and frequentist statistics alike, a common approach of summarizing
+results of this kind is to compute expectations.
+
+In the following we will review methods to draw samples from the posterior
+distribution which, as we will see, goes hand in hand with approximating expectations.
+To illustrate potential problems of approximating expectations in higher dimensions,
+we will first consider the case in which we are equipped with an unimodal normalized posterior density.
+
+Let $p$ be the target density on some smooth space $\mathrm{Q}$.
+Let $f$ be some function.
+The quantity of interest is given by the corresponding expectation
+\begin{align}
+    \mathbb{E}_p \left[f\right] = \int_{\mathrm{Q}} f(q) p(q) \mathrm{d}q \,.
+\end{align}
+For complex models we are usually not able to evaluate these integrals analytically,
+therefore we have to approximate the integral numerically.
+It is clear that for higher dimensions we run into problems when using naive
+quadrature methods which is known as the \emph{curse of dimensionality}.
+In particular when considering high-dimensional spaces most regions will not
+contribute to the expectation. This can have three causes. One, the region has a
+negligible density $p(q)$; two, the function has a negligible value $f(q)$;
+and three, the volume $\mathrm{d}q$ is negligible. Since we care about general
+methods that can be applied to various functions $f$ we will assume from here on
+that $f$ has non-negligible values on the whole space.\footnote{Still, for specific applications
+in which only one expectation is relevant we can make use of the functional form of
+$f$.}
+Using the intuition from above we are interested in examining the regions of the
+space in more detail for which the density has a significant impact and the
+volume is non-negligible. We will call this set the typical set.\footnote{\textcolor{red}{REEFFEEERENCE.}}
+To gain more intuition on how this set looks we will consider the normal density
+for various dimensions. Divide the space into boxes with
+side length 4 in such a way that we have one box centered at the mode of the
+density and one more adjacent box at each side. I.e., in one dimensions we
+find 3 boxed, in two dimensions we find 9 boxes and so on. Now for each dimension
+we compute the probability mass falling into the box containing the mode and the
+boxes surrounding the mode. For the normal case we can compute these values exactly.
+
+\begin{lstlisting}
+from scipy.stats import norm
+rv = norm(loc=0, scale=1)
+def inner_volume(dim):
+  return (rv.cdf(2)-rv.cdf(-2))**dim
+def outer_volume(dim):
+  return (rv.cdf(6)-rv.cdf(-6))**dim-(rv.cdf(2)-rv.cdf(-2))**dim
+\end{lstlisting}
+
+
+\begin{table}
+\centering
+ \begin{tabular}{|l l l|}
+ \hline
+ Dimension & Inner Volume & Outer Volume \\ [0.5ex]
+ \hline\hline
+ 1 & 0.9544997361036416 & 0.045500261923183016 \\
+ 2 & 0.9110697462219214 & 0.08893024983172781 \\
+ 5 & 0.7922806756813302 & 0.2077193144527928 \\
+ 10 & 0.6277086690580651 & 0.3722913112101811 \\
+ 50 & 0.0974519722529203 & 0.9025479290883144 \\
+ 100 & 0.009496886895983958 & 0.9905029157864953 \\ [1ex]
+ \hline
+ \end{tabular}
+ \caption{Comparison of volume close to mode and in the regions around the mode for different dimensions.}
+\label{tab:volume}
+\end{table}
+
+Table \ref{tab:volume} shows the probability mass contained in the inner box centered
+at the mode in comparison to the aggregated probability mass of the boxes surrounding
+the inner box. As the dimensionality of our problem increases we observe that more
+and more mass is concentrated not in the regions where the density is highest, around the mode,
+but in the its adjacent neighborhoods. When constructing estimation techniques we
+have to account for this counter-intuitive behavior. In particular, we are intersted in
+exploring some sub-manifold of the relevant space which contains the non-negligible
+information on the expectation which can be defined to be invariant to the dimensionality of the problem, i.e. the typical set.
+
+\subsubsection{Markov Chain Monte Carlo}
+Next we present a simple class of estimators which produce samples from the posterior
+distribution by constructing a \emph{Markov Chain} that has the posterior distribution
+as its stationary distribution.
+
+Let $T(q', q)$ denote the markov transition kernel. If we can find a $T$ s.t.
+\begin{align}
+  p(q) = \int_{\mathrm{Q}} T(q', q) p(q') \mathrm{d}q' \,,
+  \label{eq:markov_int}
+\end{align}
+then the markov chain will have $p$ as its limiting distribution.\textcolor{red}{PROOOOOF}.
+The intuition behind equation \ref{eq:markov_int} is that if we sample from the
+target distribution and apply the transition kernel, we also want the new ensemble of
+samples to be distributed accoding the target distribution. But how do we generate
+actual samples?
+
+
+Let us assume we can draw samples $\{q_0, \mydots, q_N\}$ from the posterior distribution through following
+the markov chain. Then a straightforward estimator is $\hat{f}_N := \frac{1}{N} \sum_i f(q_i)$.
+Under some conditions \textcolor{red}{WHAT ARE THEEESE??}, we get
+\begin{align}
+  \hat{f}_N \overset{\mathrm{p}}{\longrightarrow} \mathbb{E}_p(f) \,.
+\end{align}
+Unfortunately this only tells us something about the limit. To learn more about the
+finite sample behavior we can make use of a central limit theorem for MCMC estimators.
+Under ideal circumstances we get
+\begin{align}
+  \hat{f}_N^{MCMC} \overset{a}{\sim} \normal{\mathbb{E}_p(f), \text{MCMC-SE}} \,,
+  \label{eq:mcmc_clt}
+\end{align}
+
+where $\text{MCMC-SE} = \sqrt{\text{Var}_p(f) / \text{ESS}}$ with ESS denoting the effective sample size.
+ESS can be estimated via $\hat{\text{ESS}} = N / (1 + 2 \sum_{l=1}^\infty \rho_l)$, where $\rho_l$ represents
+the autocorrelation of lag $l$ of the simulated markov chain.
+
+Since we start the markov chain with arbitrary starting values it can take some
+steps until the chain meanders through the relevant regions. Therefore in practice
+we throw away the first few hundred samples. This is known as \emph{warm up} or
+\emph{burn-in} in the literature.
+
+What are the \emph{ideal} circumstances so that equation \ref{eq:mcmc_clt} holds?
+A sufficient condition is given by the assumption of \emph{geometric ergodicity}.
+\textcolor{red}{WHERE WHERE WHERE??}.
+
+\subsubsection*{Metropolis-Hastings Algorithm}
+The Metropolis-Hastings algorithm provides us with a way to jump from on point
+in a space to another using the established stochastic structure of the density
+from which we are drawing samples and the transition kernel. The transition kernel
+can be thought of as a proposal density. Given $q$ we propose a draw $q'$ from $T(q' \mid q)$.
+The idea of the algorithm is that we accept this new point only with some probability $a$,
+where
+\begin{align}
+  a(q' \mid q) = \min \left (1, \frac{T(q\mid q') p(q')}{T(q' \mid q) p(q)} \right) \,.
+\end{align}
+Hence with some starting value $q_0$, the target density $p$ and some transition kernel $T$
+we can simulate a markov chain which will at some point produce points that resemble draws
+from $p$. However, in higher dimensions this is still not enough, as the estimator does
+not scale and becomes highly inefficient \textcolor{red}{REFERERERECNCE}.
+
+
+
+\subsubsection{Foundations of Hamiltonian Monte Carlo}
+Using random walk metropolis or similar guess and verify algorithms is too costly
+from a computational perspective in higher dimensions.
+
+Question: How can we use the geometry of the typical set to get information
+on how to move through it?
+Answer: For continuous spaces we could have a vector field which is aligned with the typical set?
+Starting at some point in the typical set we would only have to move in the direction with
+the given momentum as given by the vector at this point and would again land in the typical set with a new vector.
+
+But this defers the question only to another question: How do we get a vector field
+which is aligned with the typical set?
+
+A usual starting point for question of this nature is looking at the implied differential structure of the target.
+This we get via the gradient. In particular, the gradient defines a vector field in the given space which is
+sensitive to the structure of the target in a way s.t. it points us to the extrema.
+But as we have seen above, the extrema (modes) are not necessarily where we expect
+a lot of probability mass. In fact, we've seen that the higher the dimension the more
+mass is concentrated exactly around some region centered at the mode.
+A clever analogy from physics can help us out here. Think of the modes as centers of gravity, for example a planet.
+The typical set floats around the planet. With higher dimensions we've observed that
+the orbit tends to be farther away from the planet. That is, we want to place an object
+in the space, such that it does not come to close to the planet but also does not drift away.
+In particular we need to give the object a certain velocity so that the gravitational (gradient)
+vector field keeps the object at a steady distance to the center (on the typical set).
+In our probabilistic setting this means that we have to expand the original probabilistc system with
+an auxiliary momentum (velocity) parameter.
+
+\subsubsection*{Phase space and Hamilton's Equations}

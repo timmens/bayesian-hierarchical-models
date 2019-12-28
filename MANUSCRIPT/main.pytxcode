@@ -1,0 +1,32 @@
+=>PYTHONTEX#py#default#defaultverb#0#verbatim####ch1.tex#229#
+from scipy.stats import norm
+rv = norm(loc=0, scale=1)
+def inner_volume(dim):
+  return (rv.cdf(2)-rv.cdf(-2))**dim
+def outer_volume(dim):
+  return (rv.cdf(6)-rv.cdf(-6))**dim-(rv.cdf(2)-rv.cdf(-2))**dim
+=>PYTHONTEX:SETTINGS#
+version=0.16
+outputdir=pythontex-files-main
+workingdir=.
+workingdirset=false
+gobble=none
+rerun=default
+hashdependencies=default
+makestderr=false
+stderrfilename=full
+keeptemps=none
+pyfuture=default
+pyconfuture=none
+pygments=true
+pygglobal=:GLOBAL||
+fvextfile=-1
+pyconbanner=none
+pyconfilename=stdin
+depythontex=false
+pygfamily=py|python|
+pygfamily=pycon|pycon|
+pygfamily=sympy|python|
+pygfamily=sympycon|pycon|
+pygfamily=pylab|python|
+pygfamily=pylabcon|pycon|
