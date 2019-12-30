@@ -2,6 +2,11 @@
 In this section we will introduce the core topics of Bayesian data analysis, and whenever possible compare proposed methods and results to their frequentist counterpart.
 As we will see, Bayesian statistics differs from mainstream statistics on a fundamental level; Thus, we have to start there.
 
+\textcolor{red}{What remains to be introduced:}
+\begin{enumerate}
+  \item Notation: $p(...)$
+\end{enumerate}
+
 \subsection{(Probabilistic) Modeling}
 Before going further, let us first formalize our notion of stochastic modeling.
 Imagine being interested in some \textit{phenomena}, for example the effect of bigger class sizes on school children performance.
@@ -21,187 +26,216 @@ If $p_0 \in \mathbb{M}$ we can find a parameterization $\theta_0$ which correspo
 For everything that follows let us therefore make the omnipresent assumption that $p_0 \in \mathbb{M}$.
 
 \subsection{Schools of Thought}
-Next we discuss how the Bayesian and the classical mindset differ. In particular we focus on the predominant way of thinking for most of statistical history, \textit{frequentist statistics}.
+Next we discuss how the Bayesian and the classical mindset differ. In particular we focus on the predominant way of thinking for most of statistical history, \textit{frequentist statistics}. We do not aim at an exhaustive overview here nor do we presume that the individual statistician belongs to one and only one of the following categories.
 
 \textbf{Frequentist.} The frequentist approach assumes that the true data generating process is completely specified by an unkown but fixed quantity $\theta_0 \in \Theta$.
+\textcolor{red}{FOLLOWING IS NOT TRUE, MAKE IT CLEAR WHAT YOU MEAN.}
 Either implicitly or explicitly we define the \textit{likelihood} $p(z; \theta)$ by modeling the observational process for $z \in \mathbb{Z}$ using a parameterization $\theta$.
 The main challenges include finding a (point) estimator for $\theta_0$, quantifying the uncertainty of the estimate and testing hypothesis.
 One fundamental idea which stretches over all these topics is the interpretation of probability as the limit of an infinite sequence of relative frequencies ---hence the name.
+That is, the probability of an event happening is just the limit of the frequency of that event happening over infinitely many independent experiments.
+What are the implications of this understanding of probability?
+Many interesting questions do not provide us with a thought experiment in which we can consider an ever increasing sequence of experiments.
+In these cases using probability is either trivial or lacking an indisputable interpretation.
+As we use the mathematical rigor of probability theory in our formal derivations, we will obtain (mathematically) correct results; however, the interpretation of these results might be highly unintuitive ---for example consider confidence intervals.
 Since $\theta_0$ is fixed all probability statements regarding this object are trivial, that is, either one or zero. This propagates to the problem of hypothesis testing.
 All hypothesis are either true or false and therefore have probabilities of one or zero.
-We reject a hypothesis $H_0$ if conditional on $H_0$ being true the probability of observing the data in the given sample is lower than some threshold, i.e. $P(\text{data} \mid H_0) < \alpha$.
-Note that this statement does not tell us anything about $H_0$ directly but only about the data at hand.
+A hypothesis $H_0$ is rejected if conditional on $H_0$ being true the probability of observing the data in the given sample is lower than some threshold, i.e. $P(\text{data} \mid H_0) < \alpha$.
+Note that this statement does not tell us anything about $H_0$ directly, but only about the data at hand.
 
-\textbf{Bayesian.} In a Bayesian framework we may believe that there exists a true underlying data generating process which might even be specified by a fixed quantity, but we start to model our initial uncertainty by imposing a probability distribution $p(\theta)$ on $\Theta$.
-This higher-level uncertainty can also be interpreted as \textit{prior} knowledge about the parameters ---we call $p(\theta)$ the \textit{prior distribution}.
-As we impose probabilistic structure onto $\Theta$....
-
-
-\subsection*{Bayesian Inference}
-\begin{enumerate}
-  \item What changes? Before we had some space $\mathbf{S}$ and parameterization $\theta \in \Theta$ which defined our observational model through a probability distribution (density) $p_{\mathbf{S}}(y; \theta)$ for $y \in Y$.
-    Since we now allow $\theta$ to be stochastic we have to work with the conditional density that is, we model the stochastic relationship of the observations given a certain parameterization, i.e. $$p_{\mathbf{S}}(y \mid \theta) = p_{\mathbf{S}}(y; \theta)$$
-  \item Why would we want to do this anyways? Bayes' Theorem!
-    Given a distribution $p_{\mathbf{S}}(\theta)$ on the configuration space we can apply Bayes' Theorem. (State it here or later?)
-  \item The likelihood function.$$\ell_{y} : \Theta \to \mathbf{R}_+, \theta \mapsto p_{\mathbf{S}}(y \mid \theta)$$
-    The likelihood function maps model configurations to a numerical quantification which increases for model configurations which are more consistent with the data and decreases with configurations that are less consistent.
-    Hence the likelihood function quantifies the relative consistency of each model configuration with the observed data.
-  \item The posterior distribution. Applying Bayes' Theorem we get $$p_{\mathbf{S}}(\theta \mid y) = \frac{p_{\mathbf{S}}(y \mid \theta)}{\int p_{\mathbf{S}}(y \mid \theta) p_{\mathbf{S}}(\theta) \mathrm{d}\theta} p_{\mathbf{S}} (\theta) \propto p_{\mathbf{S}}(y \mid \theta) p_{\mathbf{S}}(\theta)$$
-  \item The goal of analysis can be inference or prediction
-    When being concerned with the former we would like to understand how the phenomena of interest interacts with the latent variable system and the observational process we measure, as this might give us insights into the phenomena itself.
-    Having found a parameterization this means that we want to know which parameters are likely to cause the observed data.
-    In the Bayesian setting we answer this question by construction the posterior distribution.
-    That is, a conditional distribution on the configuration space given the observed data.
-    The use of Bayes' Theorem (which makes this possible in the first place) explains the name.
-    But it is not the application of Bayes' Theorem which makes Bayesian statistics different to classical (frequentist) statistics; it is the liberation of the model parameters, which are allowed to vary according to some prior distribution.
-  \item We can interpret this statement as an updating process: we have beliefs on the model calibration parameter in the form of a prior distribution and we update this belief using the likelihood function.
-    During this updating step three commom patterns can occur. (i) contraction (ii) containment (iii) compromise. [add pictures and gaussian example].
-  \item Identification of model parameters.
-    If we observe very informative data in the sense that the likelihood is concentrated around a small area then all vague priors will do fine and in a sense we let the data speak.
-    If, however, the observational process was not sensitive to the phenomena of interest, we might observe data with a very low level of information regarding the model parameters.
-    In this case we speak of weakly-identified parameters.
-    This manifests in the likelihood dispersing over large regions of the configuration space.
-    Choosing a prior careless in these situation can result in weak-identifibility of the likelihood propagating to the posterior.
-  \item Okay now we have $p_{\mathbf{S}}(\theta \mid y)$ so what?
-    Let $g$ be any function on $\Theta$.
-    Compute $$\mathbf{E}\left[g(\theta) \mid y\right] = \int g(\theta) p_{\mathbf{S}}(\theta \mid y) \mathrm{d} \theta$$
-    [Insert analytical gaussian exmaple here:]
-    For very simple models with convenient assumptions we can compute the posterior density in closed-form. Using this we might even be able to compute the above integral for some functions $g$ analytically. For more complicated, i.e. realistic, models this does not work.
-  \item For more complicated models we utilize the fact that for most questions we do not need the analytical form of the posterior but we are happy with being able to draw from it. If we are able to draw from the posterior correctly we can approximate quantiles and arbitrary expectations. But how do we draw from a density?
-  \item Some blabla on how to draw from densities and the normalization constant and this is why there is \emph{Gibbs Sampling} and \emph{Metropolis Hasting Algorithm} and \emph{Monte Carlo Markov Chain} in general.
-\end{enumerate}
+\textbf{Bayesian.} The Bayesian approach also assumes that there may be a true data generating process specified by some (maybe fixed) quantity $\theta_0 \in \Theta$.
+The main difference is their understanding of probability as a subjective quantification of uncertainty.
+In this view one is not limited to assigning non trivial probability statements only to objects that appear random in sequential experiments.
+We can see the direct utility of this liberation by considering a special case of Bayes theorem
+\begin{align}
+  p(\theta \mid \text{data}) = \frac{p(\text{data} \mid \theta) p(\theta)}{p(\text{data})} \propto p(\text{data} \mid \theta) p(\theta) \,,
+\end{align}
+which reads
+\begin{align}
+  posterior = \frac{likelihood \times prior}{evidence} \propto likelihood \times prior \,.
+\end{align}
+In the frequentist setting this is of no use, since the statement $p(\theta)$ is nonsensical ---remember that probabilistic statements about fixed quantities are meaningless from a frequentist perspective.
+This already outlines the main criticism of Bayesian analysis: Where does the prior $p(\theta)$ come from?
+With the scientific goal of objectivity in mind, many feel uneasy with results being dependent on a subjective choice of a prior.
+In what follows we will embark on the Bayesian idea without providing much more fundamental criticism; nonetheless, when adequate we will consider the influence of different priors on the posterior.
+To end this comparison, what then are the main tasks associated with a Bayesian analysis?
+These can be categorized by (i) obtaining the posterior distribution (or something equivalent) and (ii) communicating the information held in the posterior.
+The first consists of defining the likelihood and (additionally to the frequentist approach) constructing a prior distribution and afterwards combining those to compute the posterior.
+This computation can sometimes be achieved analytically, but in most cases one has to rely on algorithms to obtain samples of the posterior.
+The second part consists of plotting the marginal posterior distributions, computing expectations of the form $\Exp{h(\theta) \mid \text{data}}$ and testing hypothesis.
+All of the above can be done independent of the posterior being available analytically or through samples.
+A clear difference can be seen when considering hypothesis testing.
+Sacrificing \textit{objectivity} allows us to answer the questions we usually want to ask:
+\begin{align}
+  P(H_0: \theta \in S \mid \text{data}) = \int_{\theta \in S} p(\theta \mid \text{data}) \mathrm{d}\theta \,.
+\end{align}
+In the subsequent paragraphs we will be mostly occupied with the first category, computing the posterior, with occasional remarks on the second; in particular, the approximation of expectations.
 
 \subsection{Solving for the posterior analytically}
-In this subsection we present the analytical estimation of the mean and variance parameters
-in a univariate normal model using an uninformative and conjugate prior, respectively.
-We will compare the derived posteriors to the usual maximum likelihood estimate.
+In this subsection we present the analytical derivation of the posterior distribution of mean and variance parameters in a univariate normal model for two priors.
+We will compare the results to the appropriate classical method, namely maximum likelihood.
 
-In both cases we assume that we observe an iid data sample $y = (y_1, \mydots, y_n)$
-with $y_i \sim \normal{\theta, \sigma^2}$. Our interest lies in solving for the
-marginal posterior distributions $p(\theta \mid y)$ and $p(\sigma^2 \mid y)$.
-Since it will be use frequently, note that by dropping all irrelevant constants we get
-\begin{align}
-  p(y \mid \theta, \sigma^2) \propto (\sigma^2)^{-n/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \,.
-\end{align}
+In both cases, let us assume that we observe an iid sample $y = (y_1, \mydots, y_n)$
+with $y_i \sim \normal{\mu, \sigma^2}$.
+Our interest lies in solving for the marginal posteriors $p(\mu \mid y)$ and $p(\sigma^2 \mid y)$.
 
-\textcolor{red}{ADD STUFF TO MAP AND MEDIAN ESTIMATE AND COMPARE TO MAXIMUM LIKELIHOOD!}
+To be precise, in a full bayesian analysis we assume $\theta = (\mu, \sigma^2)$ to be a random quantity, thus the correct statement should be $y_i \mid \theta \sim \normal{\mu, \sigma^2}$.
+In situations where this conditional dependence is clear many writers will use the first notation.
+Here we try to be as pedantic as possible to avoid any confusion and will therefore stick to the second notation.
+
+As it will be of major importance in the subsequent sections we remind the reader of some probability distributions uncommon in the non-Bayesian world.
+
+\begin{definition}{(Scaled inverse $\chi^2$ distribution).}
+  Let $\nu > 0$ and $\tau^2 > 0$ be parameters representing degrees of freedom and scale, respectively. The family of \emph{scaled inverse $\chi^2$ distributions} is characterized by its probability density function, namely
+  \begin{align}
+    p(x) \propto x^{-(1 + \nu / 2)} \EXP{\frac{-\nu \tau^2}{2 x}} \quad \text{for} \, x \in (0, \infty) \,,
+  \end{align}
+  where the constant of integration is ignored for clarity.
+  We write $X \sim \scaledInvChi{\nu, \tau^2}$ to denote that the random variable $X$ follows a scaled inverse $\chi^2$ distribution with parameters $\nu$ and $\tau^2$.
+\end{definition}
+
+\begin{definition}{(Normal scaled inverse $\chi^2$ distribution).}
+\end{definition}
 
 \subsubsection*{Uninformative Prior}
-A reasonable choice for an uninformative prior for $(\theta, \sigma^2)$ stems
-from defining a uniform prior on the transformed parameters, i.e. $p(\theta, \log \sigma) \propto 1$.
-The log transformation is necessary since $\sigma$ is constrained to be positive.
+We start our first Bayesian analysis by considering a prior which contains virtually no information.
+This results in an analysis being mainly, if not completely, driven by the likelihood.
+A common assumption is independence of the individual priors, that is $p(\theta) = p(\mu, \sigma^2) = p(\mu) p(\sigma^2)$.
+A natural choice of declaring full ignorance of prior information is to assign a prior over the complete domain of the random parameter. For our case this mean $p(\mu) \propto 1$.
+We note that this does not define proper proability distribution, which will not matter in this case but can lead to problems.\footnote{LINK TO PAPER}
+Since the variance is restricted to be positive we impose a uniform prior on the log-transform thereof: $p(\log \sigma) \propto 1$.
 This leads to the improper prior\footnote{\textcolor{red}{See appendix for a derivation.}}
 \begin{align}
-  p(\theta, \sigma^2) \propto (\sigma^2)^{-1} \,,
+  p(\mu, \sigma^2) \propto (\sigma^2)^{-1} \,.
 \end{align}
-which gives the joint posterior as
+As usual the likelihood is given by
 \begin{align}
-  p(\theta, \sigma^2 \mid y) &\propto p(y \mid \theta, \sigma^2) p(\theta, \sigma^2)\\
-  &\propto (\sigma^2)^{-(n+2)/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \,.
+  p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{-n/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2} \,,
 \end{align}
+where we dropped all proportionality constants.
+Using the above we can apply Bayes theorem to yield
+\begin{align}
+  p(\mu, \sigma^2 \mid y) &\propto p(y \mid \mu, \sigma^2) p(\mu, \sigma^2)\\
+  &\propto (\sigma^2)^{-(n+2)/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2} \,.
+\end{align}
+From here we can derive the marginals by integrating out the respective other parameter. This is formalized in the following two proposition.
 
-Thus the marginal posterior of $\sigma^2$ can be obtained by integrating the joint posterior
-over $\theta$. Let $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denote the sample
-variance and note that it is easy to show to
-$\theta \mid \sigma^2, y \sim \normal{\bar{y}, \sigma^2/n}$ (see appendix for a proof).
-Then,
-\begin{align}
-  p(\sigma^2 \mid y) &\propto \int p(\theta, \sigma^2 \mid y) \mathrm{d} \theta\\
-  &\propto \int \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \int \EXP{\frac{1}{2\sigma^2/n}(\bar{y} - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \sqrt{2 \pi \sigma^2 / n} \\
-  &\propto (\sigma^2)^{-(n+1)/2} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \,.
-\end{align}
-Hence, $\sigma^2 \mid y \sim \text{scaled-Inv-} \chi^2(n-1, s^2)$.
+\begin{proposition}
+  Under the uniform prior from above we find
+  \begin{align}
+    \mu \mid y &\sim t_{n-1}(\bar{y}, s^2/n) \,,\\
+    \sigma^2 \mid y &\sim \scaledInvChi{n-1, s^2} \,,
+  \end{align}
+  where $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denotes the sample variance and $\bar{y} = \frac{1}{n} \sum_i y_i$ the sample mean.
+\end{proposition}
+\begin{proof}
+See appendix.
+\end{proof}
 
-To finish our analysis we integrate the joint posterior over $\sigma^2$ to get
-the marginal posterior of $\theta$. We evaluate the integral by substitution using
-$z = \frac{a}{2 \sigma^2}$ with $a = (n-1)s + n(\theta - \bar{y})$.\footnote{\textcolor{red}{See appendix for explicit derivation}}
-Then,
-\begin{align}
-  p(\theta \mid y) &= \int_{(0, \infty)} p(\theta, \sigma^2 \mid y) \mathrm{d}\sigma^2\\
-  &\propto \sigma^{-(n+2)} \int_{(0, \infty)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \sigma^2\\
-  &\propto a^{-n/2} \int_{(0, \infty)} z^{(n-2)/2}\EXP{-z} \mathrm{d}z\\
-  &\propto a^{-n/2}\\
-  &= [(n-1)s + n(\theta - \bar{y})]^{-n/2}\\
-  &\propto \left[1 + \frac{(\theta - \bar{y})^2}{(n-1) s^2 / n}\right]^{-n/2} \,
-\end{align}
-which concludes our first analysis implying that $\theta \mid y \sim t_{n-1}(\bar{y}, \sigma^2/n)$.
+Having derived the marginal posterior distributions, we can compare the results to their maximum likelihood (ML) counterpart.
+Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$ are point estimates, we consider the similar \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$, as well as the posterior mean and variance. All results are summarized in table \ref{table:comp_uniform_bay_ml}.
 
-We know that for the problem at hand the standard maximum likelihood estimators
-and their variances are given by\footnote{\textcolor{red}{See appendix for proof.}}
-\begin{align}
-  \hat{\theta}_{ML} &= \frac{1}{n} \sum_i y_i = \bar{y}\,\\
-  \hat{\sigma}_{ML}^2 &= \frac{1}{n} \sum_i (y_i - \bar{y})^2 = \frac{n-1}{n} s^2\,\\
-  \mathrm{I}(\theta, \sigma)^{-1} &= \sqmat{\sigma^2 / n & 0\\0&\sigma^2/(2n)} \,.
-\end{align}
-The Bayesian counterpart to the ML-Estimator is the \emph{maximum a posteriori estimate},
-or in short \emph{MAP}. For $\theta \mid y$ we derived a noncentral Student's t-distribution
-with mean $\bar{y}$ and variance $\sigma^2/n$. Since this distribution is unimodal and
-symmetric the MAP estimate is simply the mean. We note that it is equivalent to
-the ML estimate on both the point estimate and included variance. For $\sigma^2$
-the results look slightly different. The mode and the mean of $\sigma^2 \mid y$
-are given by $\frac{n-1}{n+1} s^2$ and $\frac{n-1}{n-3} s^2$, respectively.
-Still we see a very close resemblance of the Bayesian estimator to the ML estimator.
-One could say that this is a property which is desirable for Bayesian estimators
-using uninformative priors. One obvious advantage of the Bayesian approach is the
-ease with which we can compute arbitrary probabilities using the posterior density.
+\begin{table}[ht!]
+\centering
+{\small
+ \begin{tabular}{l l l l l l}
+ Parameter & ML Estimate & ML Variance & MAP & Posterior Mean & Posterior Variance\\[0.5ex]
+ \hline
+ $\mu$ & $\bar{y}$ & ? & $\bar{y}$ & $\bar{y}$ & $s^2 / n$\\
+ $\sigma^2$ & $\frac{n-1}{n} s^2$ & ? & ? & $\frac{n-1}{n-3} s^2$ & $\frac{2 (n-1)^2}{(n-3)^2 (n-5)} s^4$\\
+ \end{tabular}
+ }
+\caption{\small {Comparison of Bayesian estimates using an uninformative prior and ML estimates. See appendix for a detailed derivation.}}
+\label{table:comp_uniform_bay_ml}
+\end{table}
+
 
 \subsubsection*{Conjugate Prior}
-Consider again the likelihood function
-\begin{align}
-  p(y \mid \theta, \sigma^2) \propto \sigma^{-n} \EXP{-\frac{1}{2\sigma^2}a} \,.
-\end{align}
-A conjugate prior for $(\theta, \sigma^2)$ therefore has to be of the form
-\begin{align}
-  p(\theta, \sigma^2) \propto \sigma^\alpha \EXP{-\frac{1}{2\sigma^2} \beta} \,
-\end{align}
-for some $\alpha, \beta$. Using the factorization $p(\theta, \sigma^2) = p(\sigma^2) p(\theta \mid \sigma^2)$
-we see that for some $\alpha_0, \alpha_1, \beta_0, \beta_1$ we find
-\begin{align}
-  p(\sigma^2) \propto \sigma^{\alpha_0} \EXP{-\frac{1}{2\sigma^2} \beta_0}
-\end{align}
-and
-\begin{align}
-  p(\theta \mid \sigma^2) \propto \sigma^{\alpha_1} \EXP{-\frac{1}{2\sigma^2} \beta_1} \,.
-\end{align}
-This then tells us that $\theta \mid \sigma^2$ is normal with variance proportional
-to $\sigma^2$, while $\sigma^2$ has to be $\text{scaled-Inv-}\chi^2$ distributed.
-We parameterize the distributions as follows
-\begin{align}
-  \theta \mid \sigma^2 &\sim \normal{\theta_0, \sigma^2/\kappa_0}\\
-  \sigma^2 &\sim \text{scaled-Inv-}\chi^2(\nu_0, \sigma_0^2) \,,
-\end{align}
-for some suitable hyperparameters $\theta_0, \kappa_0, \nu_0, \sigma_0$ and follow
-\textcolor{red}{Gelman BDA} in terming the resulting joint density
-$p(\theta, \sigma^2)$ by $\text{Normal-Inv-}\chi^2(\theta_0, \kappa_0; \nu_0, \sigma_0)$.
-This in turn ensures that the joint posterior $p(\theta, \sigma^2 \mid y)$ is again
-$\text{Normal-Inv-}\chi^2$. Using an equivalent approach as applied above we can
-compute the marginal posteriors by intregrating the respective parameters out.
-This results in
-\begin{align}
-  \sigma^2 \mid y &\sim \text{Inv-}\chi^2(\nu_n, \sigma_n^2)\\
-  \theta \mid y &\sim t_{\nu_n}(\theta_n, \sigma_n^2 / \kappa_n) \,,
-\end{align}
-for
-\begin{align}
-  \nu_n &= \nu_0 + n\\
-  \kappa_n &= \kappa_0 + n\\
-  \sigma_n^2 &= \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_n n}{\kappa_0 + n} (\bar{y} - \theta_0)^2\right] /\nu_n\\
-  \theta_n &=\frac{\kappa_n}{\kappa_0 + n}\theta_0 + \frac{n}{\kappa_0 + n}\bar{y} \,.
-\end{align}
-\textcolor{red}{A detailed derivation is given in the appendix.}
+We have seen that using an uninformative prior leads to results that are very similar to the ones obtained by a ML approach.
+In case information on the parameters is available prior to observing the data we can utilize this fact by properly modeling the prior distribution.
+Since we are interested in analytical results in this section,b we cannot mix any prior with any likelihood, as the product might not be of known form.
+This leads us to the class of \emph{conjugate priors}.
 
+\begin{definition}{(Conjugate prior).}
+Let the likelihood $p(y \mid \theta)$ be given and assume that the prior distribution $p(\theta)$ is a member of some family $\mathcal{F}$ of probability distributions. We say that $p(\theta)$ is a \emph{conjugate prior} if $p(\theta \mid y)$ is also a member of $\mathcal{F}$.
+\end{definition}
 
-\subsection{Asymptotics}
-Let $y = \{y_1,\mydots,y_n\}$.
+Conjugate priors were of particular importance in the early stages of Bayesian statistics since these give the practitioner certainty that the posterior follows a distribution which is known and computable. Moreover, nowadays we still see conjugate priors in use as they allow for a full or partial analytical derivation, which increases the accuracy of results or shortens the runtime of programs. For more complex models however conjugate priors can become too restrictive. We discuss solutions to this problem in the next section.
+
+Consider again the likelihood but written to demonstrate its dependence on $\mu$ and $\sigma^2$
+\begin{align}
+  p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{n/2} \EXP{-\frac{1}{2\sigma^2} n\left[ (\mu - \bar{y})^2 + (\bar{y^2} - \bar{y})^2 \right]} \,.
+  \label{eq:likelihood2}
+\end{align}
+We want to construct a two dimensional prior for $(\mu, \sigma^2)$.
+A theme to which we will be coming back is that modeling higher dimensional parameters by modeling many lower dimensional (sub)parameters using conditioning is often easier than modeling the complete distribution.
+Here we utilize the equality $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2)$.
+By looking at the likelihood (equation \ref{eq:likelihood2}) we note that in order to \emph{not} change the inherent structual dependence on the parameters, $\mu \mid \sigma^2$ has to be distributed according to $\normal{\mu_0, \sigma^2 / \kappa_0}$ with so called \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
+Similary, we note that an informative prior for $\sigma^2$ has to respect the structure in which $\sigma^2$ appears in the likelihood.
+We achieve this when $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$ with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
+Following \textcolor{red}{GELMAN ET AL} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$ with corresponding density function
+\begin{align}
+  p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]} \,.
+\end{align}
+
+Multiplying the likelihood with our constructed prior we get the joint posterior (up to an integration constant)
+\begin{align}
+  p(\mu, \sigma^2 \mid y) \propto& (\sigma^2)^{-\frac{3 + n + \nu_0}{2}} \times\\
+  & \times \EXP{-\frac{1}{2 \sigma^2} \left[ (\mu - \bar{y})^2 + (\bar{y^2} - \bar{y})^2 + \nu_0\sigma_0^2 + \kappa_0(\mu - \mu_0)^2 \right]} \,.
+  \label{eq:conjugate_posterior}
+\end{align}
+
+\begin{proposition}
+  \textcolor{red}{Something is wrong with the "constants"}
+  The posterior distribution of $(\mu, \sigma^2) \mid y$, as given by the conditional density in equation \ref{eq:conjugate_posterior}, is $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$ distributed, where
+  \begin{align*}
+    \nu_n &= \nu_0 + n \,; \quad \kappa_n = \kappa_0 + n \,; \quad \mu_n =\frac{\kappa_n}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y} \,,\\
+    \sigma_n^2 &= \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_n n}{\kappa_0 + n} (\bar{y} - \mu_0)^2\right] /\nu_n \,.
+  \end{align*}
+  \label{prop:posterior_conjugate}
+\end{proposition}
+
+\begin{proof}
+  See appendix.
+\end{proof}
+
+Since the prior and the posterior are both normal scaled inverse $\chi^2$ distributed, we can speak of a conjugate prior.
+Using the intermediate finding from proposition \ref{prop:posterior_conjugate} we can derive the main result of this section.
+
+\begin{proposition}
+  The marginal posterior distributions are given by
+  \begin{align*}
+    \sigma^2 \mid y &\sim \scaledInvChi{\nu_n, \sigma_n^2}\\
+    \mu \mid y &\sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n) \,,
+  \end{align*}
+  where $\nu_n, \sigma_n^2, \mu_n$ and $\kappa_n$ are as in proposition \ref{prop:posterior_conjugate}.
+\end{proposition}
+
+\begin{proof}
+  See appendix.
+\end{proof}
+
+\begin{table}[ht!]
+\centering
+{\small
+ \begin{tabular}{l l l}
+ & $\mu$ & $\sigma^2$\\
+ \hline
+ ML Estimate & $\bar{y}$ & $\frac{n-1}{n}s^2$\\
+ ML Variance & ? & ?\\
+ MAP & $\mu_n$ & ?\\
+ Posterior Mean & $\mu_n$ &?\\
+ Posterior Variance & $\sigma_n^2 / \kappa_n$ &?
+ \end{tabular}
+ }
+\caption{{\small Comparison of Bayesian estimates using a conjugate prios and ML estimates. See appendix for a detailed derivation.}}
+\label{table:comp_conjugate_bay_ml}
+\end{table}
+
 \begin{enumerate}
-  \item Assume the likelihood function is smooth and consider the maximum likelihood estimator $$\theta_{ML}(y) = \argmax{\theta \in \Theta} p_{\mathbf{S}}(y; \theta)$$
-    If there is a $\theta^1 \in \Theta$ such that $p^1 = p_{\mathbf{S}}(;\theta^1)$ then under some minor assumption (what are theeez???) we get the well known result that $\theta_{ML}(y)$ converges in (prob, a.s., ...) to $\theta^1$ as $n \to \infty$.
+  \item Do example where posterior mean / map converges to ml estimate
+  \item show how the bayesian estimates are basically weighted averages over
 \end{enumerate}
-
 
 \subsection{Sampling from the posterior}
 In this section we will consider how to estimate quantities of interest using
@@ -374,3 +408,64 @@ In our probabilistic setting this means that we have to expand the original prob
 an auxiliary momentum (velocity) parameter.
 
 \subsubsection*{Phase space and Hamilton's Equations}
+
+
+
+
+\subsection{APPENDIX}
+
+\textbf{Uninformative prior}
+Thus the marginal posterior of $\sigma^2$ can be obtained by integrating the joint posterior
+over $\theta$. Let $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denote the sample
+variance and note that it is easy to show to
+$\theta \mid \sigma^2, y \sim \normal{\bar{y}, \sigma^2/n}$ (see appendix for a proof).
+Then,
+\begin{align}
+  p(\sigma^2 \mid y) &\propto \int p(\theta, \sigma^2 \mid y) \mathrm{d} \theta\\
+  &\propto \int \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
+  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
+  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \theta\\
+  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \int \EXP{\frac{1}{2\sigma^2/n}(\bar{y} - \theta)^2} \mathrm{d} \theta\\
+  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \sqrt{2 \pi \sigma^2 / n} \\
+  &\propto (\sigma^2)^{-(n+1)/2} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \,.
+\end{align}
+Hence, $\sigma^2 \mid y \sim \text{scaled-Inv-} \chi^2(n-1, s^2)$.
+
+To finish our analysis we integrate the joint posterior over $\sigma^2$ to get
+the marginal posterior of $\theta$. We evaluate the integral by substitution using
+$z = \frac{a}{2 \sigma^2}$ with $a = (n-1)s + n(\theta - \bar{y})$.\footnote{\textcolor{red}{See appendix for explicit derivation}}
+Then,
+\begin{align}
+  p(\theta \mid y) &= \int_{(0, \infty)} p(\theta, \sigma^2 \mid y) \mathrm{d}\sigma^2\\
+  &\propto \sigma^{-(n+2)} \int_{(0, \infty)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \sigma^2\\
+  &\propto a^{-n/2} \int_{(0, \infty)} z^{(n-2)/2}\EXP{-z} \mathrm{d}z\\
+  &\propto a^{-n/2}\\
+  &= [(n-1)s + n(\theta - \bar{y})]^{-n/2}\\
+  &\propto \left[1 + \frac{(\theta - \bar{y})^2}{(n-1) s^2 / n}\right]^{-n/2} \,
+\end{align}
+which concludes our first analysis implying that $\theta \mid y \sim t_{n-1}(\bar{y}, \sigma^2/n)$.
+
+
+
+
+We know that for the problem at hand the standard maximum likelihood estimators
+and their variances are given by\footnote{\textcolor{red}{See appendix for proof.}}
+\begin{align}
+  \hat{\theta}_{ML} &= \frac{1}{n} \sum_i y_i = \bar{y}\,\\
+  \hat{\sigma}_{ML}^2 &= \frac{1}{n} \sum_i (y_i - \bar{y})^2 = \frac{n-1}{n} s^2\,\\
+  \mathrm{I}(\theta, \sigma)^{-1} &= \sqmat{\sigma^2 / n & 0\\0&\sigma^2/(2n)} \,.
+\end{align}
+The Bayesian counterpart to the ML-Estimator is the \emph{maximum a posteriori estimate},
+or in short \emph{MAP}. For $\theta \mid y$ we derived a noncentral Student's t-distribution
+with mean $\bar{y}$ and variance $\sigma^2/n$. Since this distribution is unimodal and
+symmetric the MAP estimate is simply the mean. We note that it is equivalent to
+the ML estimate on both the point estimate and included variance. For $\sigma^2$
+the results look slightly different. The mode and the mean of $\sigma^2 \mid y$
+are given by $\frac{n-1}{n+1} s^2$ and $\frac{n-1}{n-3} s^2$, respectively.
+Still we see a very close resemblance of the Bayesian estimator to the ML estimator.
+One could say that this is a property which is desirable for Bayesian estimators
+using uninformative priors. One obvious advantage of the Bayesian approach is the
+ease with which we can compute arbitrary probabilities using the posterior density.
+
+
+\textbf{Conjugate prior}
