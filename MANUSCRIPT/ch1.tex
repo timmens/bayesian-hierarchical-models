@@ -94,15 +94,17 @@ As it will be of major importance in the subsequent sections we remind the reade
   We write $X \sim \scaledInvChi{\nu, \tau^2}$ to denote that the random variable $X$ follows a scaled inverse $\chi^2$ distribution with parameters $\nu$ and $\tau^2$.
 \end{definition}
 
+\textcolor{red}{
 \begin{definition}{(Normal scaled inverse $\chi^2$ distribution).}
 \end{definition}
+}
 
 \subsubsection*{Uninformative Prior}
 We start our first Bayesian analysis by considering a prior which contains virtually no information.
 This results in an analysis being mainly, if not completely, driven by the likelihood.
 A common assumption is independence of the individual priors, that is $p(\theta) = p(\mu, \sigma^2) = p(\mu) p(\sigma^2)$.
 A natural choice of declaring full ignorance of prior information is to assign a prior over the complete domain of the random parameter. For our case this mean $p(\mu) \propto 1$.
-We note that this does not define proper proability distribution, which will not matter in this case but can lead to problems.\footnote{LINK TO PAPER}
+We note that this does not define proper proability distribution, which will not matter in this case but can lead to problems in others.\footnote{LINK TO PAPER}
 Since the variance is restricted to be positive we impose a uniform prior on the log-transform thereof: $p(\log \sigma) \propto 1$.
 This leads to the improper prior\footnote{\textcolor{red}{See appendix for a derivation.}}
 \begin{align}
@@ -135,14 +137,15 @@ See appendix.
 Having derived the marginal posterior distributions, we can compare the results to their maximum likelihood (ML) counterpart.
 Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$ are point estimates, we consider the similar \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$, as well as the posterior mean and variance. All results are summarized in table \ref{table:comp_uniform_bay_ml}.
 
-\begin{table}[ht!]
+\begin{table}[ht]
 \centering
+\def\arraystretch{1.3}
 {\small
- \begin{tabular}{l l l l l l}
+ \begin{tabular}{c c c c c c}
  Parameter & ML Estimate & ML Variance & MAP & Posterior Mean & Posterior Variance\\[0.5ex]
  \hline
- $\mu$ & $\bar{y}$ & ? & $\bar{y}$ & $\bar{y}$ & $s^2 / n$\\
- $\sigma^2$ & $\frac{n-1}{n} s^2$ & ? & ? & $\frac{n-1}{n-3} s^2$ & $\frac{2 (n-1)^2}{(n-3)^2 (n-5)} s^4$\\
+ $\mu$ & $\bar{y}$ & $\sigma^2/n$ & $\bar{y}$ & $\bar{y}$ & $s^2 / n$\\
+ $\sigma^2$ & $\frac{n-1}{n} s^2$ & $2 \sigma^4 /n$ & ? & $\frac{n-1}{n-3} s^2$ & $\frac{2 (n-1)^2}{(n-3)^2 (n-5)} s^4$\\
  \end{tabular}
  }
 \caption{\small {Comparison of Bayesian estimates using an uninformative prior and ML estimates. See appendix for a detailed derivation.}}
@@ -186,15 +189,13 @@ Multiplying the likelihood with our constructed prior we get the joint posterior
 \end{align}
 
 \begin{proposition}
-  \textcolor{red}{Something is wrong with the "constants"}
   The posterior distribution of $(\mu, \sigma^2) \mid y$, as given by the conditional density in equation \ref{eq:conjugate_posterior}, is $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$ distributed, where
   \begin{align*}
-    \nu_n &= \nu_0 + n \,; \quad \kappa_n = \kappa_0 + n \,; \quad \mu_n =\frac{\kappa_n}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y} \,,\\
-    \sigma_n^2 &= \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_n n}{\kappa_0 + n} (\bar{y} - \mu_0)^2\right] /\nu_n \,.
+    \nu_n &= \nu_0 + n \,; \quad \kappa_n = \kappa_0 + n \,; \quad \mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y} \,,\\
+    \sigma_n^2 &= \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_0 n}{\kappa_0 + n} (\bar{y} - \mu_0)^2\right] /\nu_n \,.
   \end{align*}
   \label{prop:posterior_conjugate}
 \end{proposition}
-
 \begin{proof}
   See appendix.
 \end{proof}
@@ -205,41 +206,120 @@ Using the intermediate finding from proposition \ref{prop:posterior_conjugate} w
 \begin{proposition}
   The marginal posterior distributions are given by
   \begin{align*}
-    \sigma^2 \mid y &\sim \scaledInvChi{\nu_n, \sigma_n^2}\\
-    \mu \mid y &\sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n) \,,
+    \mu \mid y &\sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)\\
+    \sigma^2 \mid y &\sim \scaledInvChi{\nu_n, \sigma_n^2}\,,
   \end{align*}
   where $\nu_n, \sigma_n^2, \mu_n$ and $\kappa_n$ are as in proposition \ref{prop:posterior_conjugate}.
 \end{proposition}
-
 \begin{proof}
   See appendix.
 \end{proof}
 
-\begin{table}[ht!]
+\begin{table}[ht]
 \centering
+\def\arraystretch{1.3}
 {\small
- \begin{tabular}{l l l}
- & $\mu$ & $\sigma^2$\\
+ \begin{tabular}{c c c c c c}
+ Parameter & ML Estimate & ML Variance & MAP & Posterior Mean & Posterior Variance\\
  \hline
- ML Estimate & $\bar{y}$ & $\frac{n-1}{n}s^2$\\
- ML Variance & ? & ?\\
- MAP & $\mu_n$ & ?\\
- Posterior Mean & $\mu_n$ &?\\
- Posterior Variance & $\sigma_n^2 / \kappa_n$ &?
+ $\mu$ & $\bar{y}$ & $\sigma^2 / n$ & $\mu_n$ & $\mu_n$ & $\sigma_n^2 / \kappa_n$\\
+ $\sigma^2$ & $\frac{n-1}{n}s^2$ & $2 \sigma^4 / n$ & $\frac{\nu_n}{\nu_n + 2} \sigma_n^2$ & $\frac{\nu_n}{\nu_n - 2} \sigma_n^2$ & $\frac{2 \nu_n^2}{(\nu_n - 2)^2(\nu_n - 4)} \sigma_n^4$
  \end{tabular}
  }
-\caption{{\small Comparison of Bayesian estimates using a conjugate prios and ML estimates. See appendix for a detailed derivation.}}
+\caption{{\small Comparison of Bayesian estimates using a conjugate prios and ML estimates.}}
 \label{table:comp_conjugate_bay_ml}
 \end{table}
 
-\begin{enumerate}
-  \item Do example where posterior mean / map converges to ml estimate
-  \item show how the bayesian estimates are basically weighted averages over
-\end{enumerate}
 
+Let us first consider the parameter $\mu$.
+We note that the posterior mean (and MAP) is given by $\mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y}$, which forms a convex combination of the prior $\mu_0$ and the sample average $\bar{y}$, with weights given by the sample size and $\kappa_0$.
+For any fixed $n$ this pulls our estimate of the posterior mean away from $\bar{y}$ and closer to $\mu_0$ (and vice versa).
+Further, we can use the hyperparameter $\kappa_0$ to express our uncertainty in $\mu_0$ (or $\bar{y}$ for that matter).
+Rewritting the posterior variance using the \emph{Laundau notation} we get $\sigma_n^2 / \kappa_n = \frac{n-1}{\nu_n \kappa_n} s^2 + \mathcal{O}(\frac{1}{\nu_n\kappa_n}) = \frac{n}{(\nu_0 + n)(\kappa_0 + n)} s^2 + \mathcal{O}(1/n^2)$.
+As the sample size $n$ grows the information contained in the likelihood should dominate the prior.
+We observe this phenomena as the approximate asymptotic behavior of the posterior resembles that of the maximum likelihood estimator.
+First, as $n$ tends to infinity $\nu_n = \nu_0 + n$ tends to infinity and the t distribution becomes indistinguishable from a normal.
+Second, as $n$ grows the posterior mean is dominated by $\bar{y}$. And at last, for large $n$ the posterior variance is accurately approximated by $\sigma^2 / n$.
+We refrain from an analogous analysis for $\sigma^2$ and only note that similar results also hold, as can be seen in table \ref{table:comp_conjugate_bay_ml}.
+
+What is gained from using an informative prior here?
+Using the conjugate prior from above we have four hyperparameters at hand to model our prior knowledge about the parameters.
+These can be used to represent very detailed to very vague information.
+In any case, we were able to see that as we collect more and more data, the likelihood dominates our results.
+A clear advantage of an analytical derivation is that we know exactly how the prior influences the posterior.
+However, we have also seen that even for this \emph{very} simple model, the derivation is far from obvious.
+As we consider more complex models using more parameters we have to make more restrictive assumptions on the way we model our prior information, if an analytical analysis is even possible.
+For this reason among others, in the next section we present a method which trades off the clarity of an analytical result for the generality of being able to combine near arbitrary priors with complex, possibly high-dimensional likelihoods.
+
+
+\newpage
 \subsection{Sampling from the posterior}
-In this section we will consider how to estimate quantities of interest using
-an unnormalized posterior density (target distribution).
+In this section we consider approaches that allow us to characterize the posterior distribution in complex settings using sampling methods.
+
+For the rest of this section let us assume that we are able to compute the value of the likelihood $p(z \mid \theta)$ for $\theta \in \Theta$ given some observed data $z \in \mathbb{Z}$, and that we have constructed a prior $p(\theta)$ on $\Theta$.
+As before, our goal lies in summarizing the information contained in the posterior $p(\theta \mid z) \propto p(z \mid \theta) p(\theta)$; however, here we consider the case in which we are unable to derive the posterior via an analytical approach.
+
+What happens if we are still able to draw samples from the posterior?
+Can we adequately summarize $p(z \mid \theta)$ using samples alone?
+In one or two dimensions an efficient practice is to plot the posterior.
+In higher dimensions we cannot plot the complete posterior but only the marginal posteriors.
+Of course if we are able to draw arbitrarily many samples from the posterior we can approximate the density using a histogram.
+Are there quantities we cannot approximate?
+It turns out that using independent samples $\theta^{1},\theta^{2},\mydots$ from $p(\theta \mid z)$ the central limit theorem holds, so that
+\begin{align}
+  \frac{1}{B} \sum_b h(\theta^{b}) \overset{a}{\sim} \mathcal{N} \left( \Exp{h(\theta) \mid z}, \var{h(\theta) \mid z} / \sqrt{B} \right) \,,
+\end{align}
+for some arbitrary measurable real-valued function $h$.
+Remembering that probabilities can be represented as expectations this allows us to estimate a wide range of quantities from the posterior, if we are able to draw (independent) samples from it.
+
+In the subsequent paragraphs we will discuss efficient methods to sample from the posterior even if we cannot compute the integration constant $\int p(z \mid \theta) p(\theta) \mathrm{d}\theta$.
+We will see that these methods do \emph{not} produce independent but autocorrelated samples.
+Therefore we end this section by stating the assumptions necessary for a central limit theorem to hold in the case of autocorrelated samples.
+
+\subsubsection*{Markov Chain Monte Carlo}
+
+\subsubsection*{Volume in Higher Dimensions}
+Let $S_d$ and $C_d$ denote the unit sphere and unit cube in $\reals^d$, respectively.
+We consider two questions.
+First, how does the ratio $\frac{\vol{S_d}}{\vol{C_d}}$ changes as $d$ increases.
+And second, how does the ratio of probability mass distributed by a standard gaussian on these regions changes as $d$ increases.  
+
+
+\subsubsection*{Hamiltonian Monte Carlo}
+
+\textbf{Foundations of Hamiltonian Monte Carlo.}
+Using random walk metropolis or similar guess and verify algorithms is too costly
+from a computational perspective in higher dimensions.
+
+Question: How can we use the geometry of the typical set to get information
+on how to move through it?
+Answer: For continuous spaces we could have a vector field which is aligned with the typical set?
+Starting at some point in the typical set we would only have to move in the direction with
+the given momentum as given by the vector at this point and would again land in the typical set with a new vector.
+
+But this defers the question only to another question: How do we get a vector field
+which is aligned with the typical set?
+
+A usual starting point for question of this nature is looking at the implied differential structure of the target.
+This we get via the gradient. In particular, the gradient defines a vector field in the given space which is
+sensitive to the structure of the target in a way s.t. it points us to the extrema.
+But as we have seen above, the extrema (modes) are not necessarily where we expect
+a lot of probability mass. In fact, we've seen that the higher the dimension the more
+mass is concentrated exactly around some region centered at the mode.
+A clever analogy from physics can help us out here. Think of the modes as centers of gravity, for example a planet.
+The typical set floats around the planet. With higher dimensions we've observed that
+the orbit tends to be farther away from the planet. That is, we want to place an object
+in the space, such that it does not come to close to the planet but also does not drift away.
+In particular we need to give the object a certain velocity so that the gravitational (gradient)
+vector field keeps the object at a steady distance to the center (on the typical set).
+In our probabilistic setting this means that we have to expand the original probabilistc system with
+an auxiliary momentum (velocity) parameter.
+
+\textbf{Phase space and Hamilton's Equations.}
+
+\subsubsection*{Central Limit Theorem for Markov Chains}
+
+\newpage
 These quantities can be very different objects.
 For instance, we might be interested in visualizing the marginal posterior distribution
 of some specific parameter, or we want to propagate the posterior distribution
@@ -379,41 +459,11 @@ not scale and becomes highly inefficient \textcolor{red}{REFERERERECNCE}.
 
 
 
-\subsubsection{Foundations of Hamiltonian Monte Carlo}
-Using random walk metropolis or similar guess and verify algorithms is too costly
-from a computational perspective in higher dimensions.
-
-Question: How can we use the geometry of the typical set to get information
-on how to move through it?
-Answer: For continuous spaces we could have a vector field which is aligned with the typical set?
-Starting at some point in the typical set we would only have to move in the direction with
-the given momentum as given by the vector at this point and would again land in the typical set with a new vector.
-
-But this defers the question only to another question: How do we get a vector field
-which is aligned with the typical set?
-
-A usual starting point for question of this nature is looking at the implied differential structure of the target.
-This we get via the gradient. In particular, the gradient defines a vector field in the given space which is
-sensitive to the structure of the target in a way s.t. it points us to the extrema.
-But as we have seen above, the extrema (modes) are not necessarily where we expect
-a lot of probability mass. In fact, we've seen that the higher the dimension the more
-mass is concentrated exactly around some region centered at the mode.
-A clever analogy from physics can help us out here. Think of the modes as centers of gravity, for example a planet.
-The typical set floats around the planet. With higher dimensions we've observed that
-the orbit tends to be farther away from the planet. That is, we want to place an object
-in the space, such that it does not come to close to the planet but also does not drift away.
-In particular we need to give the object a certain velocity so that the gravitational (gradient)
-vector field keeps the object at a steady distance to the center (on the typical set).
-In our probabilistic setting this means that we have to expand the original probabilistc system with
-an auxiliary momentum (velocity) parameter.
-
-\subsubsection*{Phase space and Hamilton's Equations}
 
 
 
 
 \subsection{APPENDIX}
-
 \textbf{Uninformative prior}
 Thus the marginal posterior of $\sigma^2$ can be obtained by integrating the joint posterior
 over $\theta$. Let $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denote the sample
