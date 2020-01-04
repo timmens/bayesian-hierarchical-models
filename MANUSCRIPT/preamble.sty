@@ -19,10 +19,8 @@
 \usepackage{tikz}
 \usepackage{listings}
 \usepackage{nicefrac}
-%\usepackage{fancyhdr}
-%\usepackage{enumitem}
-%\usepackage{multirow}
-%\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 
 %Definitions, Propositions, Lemmata and Theorems
 \theoremstyle{definition}
@@ -74,5 +72,7 @@
 \newcommand{\scaledInvChi}[1]{\normalfont \text{scaled-Inv-}\chi^2\left(#1\right)}
 \newcommand{\NormalscaledInvChi}[1]{\normalfont \text{normal-scaled-Inv-}\chi^2\left(#1\right)}
 \newcommand{\vol}[1]{\text{vol}\left(#1\right)}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
 
 % document settings
