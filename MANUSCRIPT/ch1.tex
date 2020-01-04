@@ -141,7 +141,7 @@ Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$
 \centering
 \def\arraystretch{1.3}
 {\small
- \begin{tabular}{c c c c c c}
+ \begin{tabular}{c | c c c c c}
  Parameter & ML Estimate & ML Variance & MAP & Posterior Mean & Posterior Variance\\[0.5ex]
  \hline
  $\mu$ & $\bar{y}$ & $\sigma^2/n$ & $\bar{y}$ & $\bar{y}$ & $s^2 / n$\\
@@ -160,7 +160,8 @@ Since we are interested in analytical results in this section,b we cannot mix an
 This leads us to the class of \emph{conjugate priors}.
 
 \begin{definition}{(Conjugate prior).}
-Let the likelihood $p(y \mid \theta)$ be given and assume that the prior distribution $p(\theta)$ is a member of some family $\mathcal{F}$ of probability distributions. We say that $p(\theta)$ is a \emph{conjugate prior} if $p(\theta \mid y)$ is also a member of $\mathcal{F}$.
+Let the likelihood $p(y \mid \theta)$ be given and assume that the prior distribution $p(\theta)$ is a member of some family $\mathcal{F}$ of probability distributions.
+We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \mid y)$ is also a member of $\mathcal{F}$.
 \end{definition}
 
 Conjugate priors were of particular importance in the early stages of Bayesian statistics since these give the practitioner certainty that the posterior follows a distribution which is known and computable. Moreover, nowadays we still see conjugate priors in use as they allow for a full or partial analytical derivation, which increases the accuracy of results or shortens the runtime of programs. For more complex models however conjugate priors can become too restrictive. We discuss solutions to this problem in the next section.
@@ -219,7 +220,7 @@ Using the intermediate finding from proposition \ref{prop:posterior_conjugate} w
 \centering
 \def\arraystretch{1.3}
 {\small
- \begin{tabular}{c c c c c c}
+ \begin{tabular}{c | c c c c c}
  Parameter & ML Estimate & ML Variance & MAP & Posterior Mean & Posterior Variance\\
  \hline
  $\mu$ & $\bar{y}$ & $\sigma^2 / n$ & $\mu_n$ & $\mu_n$ & $\sigma_n^2 / \kappa_n$\\
@@ -240,7 +241,7 @@ As the sample size $n$ grows the information contained in the likelihood should 
 We observe this phenomena as the approximate asymptotic behavior of the posterior resembles that of the maximum likelihood estimator.
 First, as $n$ tends to infinity $\nu_n = \nu_0 + n$ tends to infinity and the t distribution becomes indistinguishable from a normal.
 Second, as $n$ grows the posterior mean is dominated by $\bar{y}$. And at last, for large $n$ the posterior variance is accurately approximated by $\sigma^2 / n$.
-We refrain from an analogous analysis for $\sigma^2$ and only note that similar results also hold, as can be seen in table \ref{table:comp_conjugate_bay_ml}.
+We refrain from an analogous analysis for $\sigma^2$ and only note that similar results hold, as can be seen in table \ref{table:comp_conjugate_bay_ml}.
 
 What is gained from using an informative prior here?
 Using the conjugate prior from above we have four hyperparameters at hand to model our prior knowledge about the parameters.
@@ -253,36 +254,106 @@ For this reason among others, in the next section we present a method which trad
 
 
 \newpage
-\subsection{Sampling from the posterior}
+\subsection{Sampling From The Posterior}
 In this section we consider approaches that allow us to characterize the posterior distribution in complex settings using sampling methods.
 
-For the rest of this section let us assume that we are able to compute the value of the likelihood $p(z \mid \theta)$ for $\theta \in \Theta$ given some observed data $z \in \mathbb{Z}$, and that we have constructed a prior $p(\theta)$ on $\Theta$.
-As before, our goal lies in summarizing the information contained in the posterior $p(\theta \mid z) \propto p(z \mid \theta) p(\theta)$; however, here we consider the case in which we are unable to derive the posterior via an analytical approach.
+For the rest of this section let us assume that we observe data $z \in \mathbb{Z}$ and can compute the likelihood $p(z \mid \theta)$ and prior $p(\theta)$ for $\theta \in \Theta$.
+As before, our goal lies in analyzing the posterior distribution given by $p(\theta \mid z) \propto p(z \mid \theta) p(\theta)$.
+Unlike before however, we now consider cases where the posterior is highly complex or even non-existent in analytical form, which happens for example when the likelihood contribution stems from a algorithmic computational model.
 
-What happens if we are still able to draw samples from the posterior?
-Can we adequately summarize $p(z \mid \theta)$ using samples alone?
-In one or two dimensions an efficient practice is to plot the posterior.
-In higher dimensions we cannot plot the complete posterior but only the marginal posteriors.
-Of course if we are able to draw arbitrarily many samples from the posterior we can approximate the density using a histogram.
-Are there quantities we cannot approximate?
-It turns out that using independent samples $\theta^{1},\theta^{2},\mydots$ from $p(\theta \mid z)$ the central limit theorem holds, so that
-\begin{align}
-  \frac{1}{B} \sum_b h(\theta^{b}) \overset{a}{\sim} \mathcal{N} \left( \Exp{h(\theta) \mid z}, \var{h(\theta) \mid z} / \sqrt{B} \right) \,,
-\end{align}
-for some arbitrary measurable real-valued function $h$.
-Remembering that probabilities can be represented as expectations this allows us to estimate a wide range of quantities from the posterior, if we are able to draw (independent) samples from it.
+Say we are somehow able to draw independent samples $\theta_1, \mydots, \theta_n$ from $p(\theta \mid z)$.
+By independence we get the well known result $\frac{1}{n} \sum_i h(\theta_i) \overset{d}{\longrightarrow} \mathcal{N} \left( \Exp{h(\theta) \mid z}, \var{h(\theta) \mid z} / \sqrt{n} \right)$, under mild conditions on $h$ and $p(\theta \mid z)$.
+As we are able to formulate many quantities of interest using expectations ---probability statements can be written as expectations--- and as we can approximate percentiles from a (large) sample, we should be able to adequately summarize the posterior distribution if we are able to draw (independent) samples from it.
 
-In the subsequent paragraphs we will discuss efficient methods to sample from the posterior even if we cannot compute the integration constant $\int p(z \mid \theta) p(\theta) \mathrm{d}\theta$.
+In the subsequent paragraphs we will discuss efficient methods to sample from the posterior, even if we cannot compute the integration constant $\int p(z \mid \theta) p(\theta) \mathrm{d}\theta$.
 We will see that these methods do \emph{not} produce independent but autocorrelated samples.
-Therefore we end this section by stating the assumptions necessary for a central limit theorem to hold in the case of autocorrelated samples.
+With this in mind, we follow the creational process of these methods and first state the assumptions which have to be satisfied by the sampling process in order to yield good properties as for example a central limit theorem for dependent samples.
+Then we present the \emph{Metropolis-Hastings algorithm}, which creates samples that fulfill the above criteria.
+At last we talk about cases in which the Metropolis-Hastings algorithm fails and what can be done instead.
 
 \subsubsection*{Markov Chain Monte Carlo}
 
+Say we are able to construct a \emph{Markov chain} with unique invariant distribution equal to the posterior distribution we want to sample from.
+Given we know the transition kernel, Markov chains are very easy to simulate.
+Hence, we could start a chain, let it run \emph{long enough} and at some point consider all subsequent realizations as draws from the posterior; this is the core idea of MCMC ---we defer questions regarding the creation of transition kernels which result in specific invariant distributions until next paragraph.
+In practice we never know for sure when a chain is run \emph{long enough}.
+In part 3 we present some measures that help during the application.
+Here we do what statisticians do best: obsess over central limit theorems.
+Under mild conditions we can get something similar to a law of large numbers for Markov chains (\textcolor{red}{see e.g. fact 5, Roberts and Rosenthatl; General State Space Markov chains and MCMC algorithms}).
+This tells us that if we run the chain forever, our average will eventually converge to the number we seek.
+However, forever is a very long time.
+That is why we focus on assumptions which admit a central limit theorem with the usual $\sqrt{n}$ convergence rate, as it allows us to make more rigorous statements about our confidence in the whereabouts of the estimator for large but finite samples.
+
+
+\begin{remark}
+  As is often the case, there are many different sets of assumptions that allow for a CLT.
+  The following theorem presents two sets of assumptions which allow for the desired result.
+  We remark that we will \emph{not} formally introduce all concepts and will provide only a heuristic explaination of the assumptions.
+  This is due to the fact that Markov chain theory on general state spaces requires a good understanding of measure theory which we do not want to assume as a prerequisite.
+  The interested reader is refered to \textcolor{red}{Markov Chains and Stochastic Stability; Meyn and Tweedie}.
+  %A \emph{Markov chain} on the \emph{state space} $\Theta$ is a sequence of random variables $\{X_t : t \geqslant 0\}$ which assume values in $\Theta$ and fulfill the Markov property, that is
+  %\begin{align}
+  %P(X_{t+1} \in A \mid X_0 = x_0,\mydots,X_t=x_t) = P(X_{t+1} \in A \mid X_t=x_t) \,,
+  %\label{eq:markov_property}
+  %\end{align}
+  %for all $t \geqslant 0$ and for all measurable $A \subset \Theta$. We consider time-homogenous chains for which (\ref{eq:markov_property}) does not depend on $t$.
+  %In this case we can characterize the chain by its \emph{transition kernel} $\mathbb{P}$ with $P(X_{t+1} \in A \mid X_t = x) = \mathbb{P}(x, A)$ for all $t \geqslant 0, x \in \Theta$ and for all measurable $A \subset \Theta$.
+  %That means $\mathbb{P}(x, A)$ gives the probability of the chain falling into $A$ given it starts at point $x$ in the previous period. Note that if we work on a subset of $\reals^d$ the \emph{Radon-Nikodym derivate} with respect to \emph{Lebesgue measure} is the probility density function $\pi$ corresponding to $\mathbb{P}$.
+\end{remark}
+
+
+\begin{theorem}{(A Central Limit Theorem for Markov Chains).}
+  Let $\{X_t: t \geqslant 0 \}$ be a positive Harris Markov chain with invariant distribution $\pi$.
+  Let $h$ be measurable with $\int h^2 \mathrm{d}\pi < \infty$.
+  Assume either of the following holds:
+  \begin{enumerate}
+    \item $\{X_t: t \geqslant 0\}$ is uniformly ergodic,
+    \item $\{X_t: t \geqslant 0\}$ is $\pi$-reversible and geometrically ergodic.
+  \end{enumerate}
+  Then, there exists a constant $\sigma^2(h) < \infty$ such that
+  \begin{align}
+    \sqrt{t}\left(\frac{1}{t}\sum_t h(X_t) - \int h \mathrm{d}\pi \right) \overset{d}{\longrightarrow} \normal{0, \sigma^2(h)} \,.
+  \end{align}
+\end{theorem}
+\begin{proof}
+  See \textcolor{red}{Cogburn et al., 1972} for 1 and \textcolor{red}{Roberts and Rosenthal, 1997} for 2.
+\end{proof}
+\textcolor{red}{Extend paragraph with heuristic explaination of assumption.}
+
+\subsubsection*{Metropolis-Hastings Algorithm}
+
 \subsubsection*{Volume in Higher Dimensions}
-Let $S_d$ and $C_d$ denote the unit sphere and unit cube in $\reals^d$, respectively.
+Classical MCMC methods can have too slow convergence rates.
+In higher dimensions this might be due to probability mass being distributed very far from where it is expected.
+In this paragraph we motivate this phenomena and in the following we present methods which utilize it.
+
+Let $B_d$ denote the unit ball in $\reals^d$ and define $C_d$ as the smallest cube containing $B_d$.
 We consider two questions.
-First, how does the ratio $\frac{\vol{S_d}}{\vol{C_d}}$ changes as $d$ increases.
-And second, how does the ratio of probability mass distributed by a standard gaussian on these regions changes as $d$ increases.  
+First, how does the ratio $\nicefrac{\vol{B_d}}{\vol{C_d}}$ changes as $d$ increases.
+And second, how does the ratio of probability mass distributed by a standard gaussian on these regions changes as $d$ increases.
+Since closed form expressions of volumina of geometrical objects exist the first questions needs little work.
+Similary we can easily compute $P(X \in C_d) = \left[\Phi(1) - \Phi(-1)\right]^d$, where $\Phi$ denotes the one-dimensional gaussian cumulative distribution function.
+However, to compute $P(X \in B_d)$ we need to integrate over the unit ball with respect to a gaussian distribution, which is non-trivial.
+For this reason we decide to report an upper bound, as this is sufficient for our motivation.
+In particular we compute $\overline{P(X \in B_d)} := \sup_{\bm{x} \in B_d} \phi(\bm{x}) \vol{B_d} = \sup_{\bm{x} \in B_d} \phi(\bm{x}) \int_{B_d} \mathrm{d}\bm{x} \geqslant \int_{B_d} \phi(\bm{x}) \mathrm{d}\bm{x} = P(X \in B_d)$.
+The results of these computations are depicted in table \ref{tab:vol_high_dim}.
+We note that both ratios tend to zero very fast as $d$ increases.
+With this phenomena in mind one has to be cautious when working in high-dimensional spaces, since the regions of interest, that is the regions containing non-negligible probability mass, might not be located where our low-dimensional intution says.
+This idea is formalized by the \emph{Gaussian Annulus Theorem} \textcolor{red}{(Theorem 2.9; Foundations of Data Science, Blum et al.)} which states, inter alia, that most probability mass lies within an annulus centered at the origin with an average distance to the origin of $\sqrt{d}$.
+
+
+\begin{table}[ht]
+\def\arraystretch{1.3}
+\centering
+ \begin{tabular}{c | c c c c c c c}
+ $d$ & 1 & 2 & 3 & 5 & 7 & 10 & 15\\
+ \hline
+ ${\vol{B_d}} / {\vol{C_d}}$ & 1.00000 & 0.78540 & 0.52360 & 0.16449 & 0.03691 & 0.00249 & 0.00001\\
+ ${\overline{P(X \in B_d)}} / {P(X \in C_d)}$ & 1.16874 & 1.07281 & 0.83589 & 0.35870 & 0.10995 & 0.01184 & 0.00012
+ \end{tabular}
+ \caption{Comparison of volume ratio of unit ball and cube, and probability ratio of gaussian falling in unit ball and cube for varying dimension $d$. Numbers are rounded to five decimal places.}
+\label{tab:vol_high_dim}
+\end{table}
 
 
 \subsubsection*{Hamiltonian Monte Carlo}
@@ -317,20 +388,7 @@ an auxiliary momentum (velocity) parameter.
 
 \textbf{Phase space and Hamilton's Equations.}
 
-\subsubsection*{Central Limit Theorem for Markov Chains}
 
-\newpage
-These quantities can be very different objects.
-For instance, we might be interested in visualizing the marginal posterior distribution
-of some specific parameter, or we want to propagate the posterior distribution
-through some not necessarily linear transformation function.
-In Bayesian and frequentist statistics alike, a common approach of summarizing
-results of this kind is to compute expectations.
-
-In the following we will review methods to draw samples from the posterior
-distribution which, as we will see, goes hand in hand with approximating expectations.
-To illustrate potential problems of approximating expectations in higher dimensions,
-we will first consider the case in which we are equipped with an unimodal normalized posterior density.
 
 Let $p$ be the target density on some smooth space $\mathrm{Q}$.
 Let $f$ be some function.
@@ -353,52 +411,8 @@ $f$.}
 Using the intuition from above we are interested in examining the regions of the
 space in more detail for which the density has a significant impact and the
 volume is non-negligible. We will call this set the typical set.\footnote{\textcolor{red}{REEFFEEERENCE.}}
-To gain more intuition on how this set looks we will consider the normal density
-for various dimensions. Divide the space into boxes with
-side length 4 in such a way that we have one box centered at the mode of the
-density and one more adjacent box at each side. I.e., in one dimensions we
-find 3 boxed, in two dimensions we find 9 boxes and so on. Now for each dimension
-we compute the probability mass falling into the box containing the mode and the
-boxes surrounding the mode. For the normal case we can compute these values exactly.
 
-\begin{lstlisting}
-from scipy.stats import norm
-rv = norm(loc=0, scale=1)
-def inner_volume(dim):
-  return (rv.cdf(2)-rv.cdf(-2))**dim
-def outer_volume(dim):
-  return (rv.cdf(6)-rv.cdf(-6))**dim-(rv.cdf(2)-rv.cdf(-2))**dim
-\end{lstlisting}
-
-
-\begin{table}
-\centering
- \begin{tabular}{|l l l|}
- \hline
- Dimension & Inner Volume & Outer Volume \\ [0.5ex]
- \hline\hline
- 1 & 0.9544997361036416 & 0.045500261923183016 \\
- 2 & 0.9110697462219214 & 0.08893024983172781 \\
- 5 & 0.7922806756813302 & 0.2077193144527928 \\
- 10 & 0.6277086690580651 & 0.3722913112101811 \\
- 50 & 0.0974519722529203 & 0.9025479290883144 \\
- 100 & 0.009496886895983958 & 0.9905029157864953 \\ [1ex]
- \hline
- \end{tabular}
- \caption{Comparison of volume close to mode and in the regions around the mode for different dimensions.}
-\label{tab:volume}
-\end{table}
-
-Table \ref{tab:volume} shows the probability mass contained in the inner box centered
-at the mode in comparison to the aggregated probability mass of the boxes surrounding
-the inner box. As the dimensionality of our problem increases we observe that more
-and more mass is concentrated not in the regions where the density is highest, around the mode,
-but in the its adjacent neighborhoods. When constructing estimation techniques we
-have to account for this counter-intuitive behavior. In particular, we are intersted in
-exploring some sub-manifold of the relevant space which contains the non-negligible
-information on the expectation which can be defined to be invariant to the dimensionality of the problem, i.e. the typical set.
-
-\subsubsection{Markov Chain Monte Carlo}
+\subsubsection{Markov Chain Monte Carlo 2}
 Next we present a simple class of estimators which produce samples from the posterior
 distribution by constructing a \emph{Markov Chain} that has the posterior distribution
 as its stationary distribution.
