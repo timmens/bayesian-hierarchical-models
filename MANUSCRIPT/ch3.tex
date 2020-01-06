@@ -84,7 +84,7 @@ $$\widehat{R}=\frac{\widehat{var}^+ (\theta \mid y)}{W}$$
 
 \item Stan allows a great amount of  parametrization. For simplicity we will only focus on a small number of options
 \item delta is the metropolis acceptance rate. As shown in above section, mcmc lead to autocorrelated draws. 
-We can therfore set an acceptance rate $delta \in[0,1]. With this probability we accept a new draws with a lower posterior value. Why?
+We can therfore set an acceptance rate $\delta \in[0,1]$. With this probability we accept a new draws with a lower posterior value. Why?
 
 \item 
 A too high acceptance rate will lead to too many draws to be accepted and the chain to wander widly around.
@@ -95,7 +95,7 @@ A too low acceptance rate will lead to only values in the middle of the posterio
 
 \item this can be analyzed looking at  the autocorrelation plot.(insert some plots here with good or bad mixing)
 
-\item A delta of 0.8 is default. (We change this based on our parametrization)
+\item A $\delta$ of 0.8 is default. (We change this based on our parametrization)
  
 \item we vary J and N and check the performance of our Bayesian Estimation with the true results 
 
