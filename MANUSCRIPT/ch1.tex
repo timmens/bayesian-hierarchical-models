@@ -177,7 +177,7 @@ Here we utilize the equality $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2
 By looking at the likelihood (equation \ref{eq:likelihood2}) we note that in order to \emph{not} change the inherent structual dependence on the parameters, $\mu \mid \sigma^2$ has to be distributed according to $\normal{\mu_0, \sigma^2 / \kappa_0}$ with so called \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
 Similary, we note that an informative prior for $\sigma^2$ has to respect the structure in which $\sigma^2$ appears in the likelihood.
 We achieve this when $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$ with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
-Following \textcolor{red}{GELMAN ET AL} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$ with corresponding density function
+Following  \textcolor{red}{\citet{gelmanbda04}} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$ with corresponding density function
 \begin{align}
   p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]} \,.
 \end{align}
@@ -279,7 +279,7 @@ Hence, we could start a chain, let it run \emph{long enough} and at some point c
 In practice we never know for sure when a chain is run \emph{long enough}.
 In part 3 we present some measures that help during the application.
 Here we do what statisticians do best: obsess over central limit theorems.
-Under mild conditions we can get something similar to a law of large numbers for Markov chains (\textcolor{red}{see e.g. fact 5, Roberts and Rosenthatl; General State Space Markov chains and MCMC algorithms}).
+Under mild conditions we can get something similar to a law of large numbers for Markov chains (\textcolor{red}{see e.g. \citet{roberts2004}, fact 5}).
 This tells us that if we run the chain forever, our average will eventually converge to the number we seek.
 However, forever is a very long time.
 That is why we focus on assumptions which admit a central limit theorem with the usual $\sqrt{n}$ convergence rate, as it allows us to make more rigorous statements about our confidence in the whereabouts of the estimator for large but finite samples.
@@ -290,7 +290,7 @@ That is why we focus on assumptions which admit a central limit theorem with the
   The following theorem presents two sets of assumptions which allow for the desired result.
   We remark that we will \emph{not} formally introduce all concepts and will provide only a heuristic explaination of the assumptions.
   This is due to the fact that Markov chain theory on general state spaces requires a good understanding of measure theory which we do not want to assume as a prerequisite.
-  The interested reader is refered to \textcolor{red}{Markov Chains and Stochastic Stability; Meyn and Tweedie}.
+  The interested reader is refered to \textcolor{red}{\citet{meynandtweedie09}}.
   %A \emph{Markov chain} on the \emph{state space} $\Theta$ is a sequence of random variables $\{X_t : t \geqslant 0\}$ which assume values in $\Theta$ and fulfill the Markov property, that is
   %\begin{align}
   %P(X_{t+1} \in A \mid X_0 = x_0,\mydots,X_t=x_t) = P(X_{t+1} \in A \mid X_t=x_t) \,,
@@ -316,14 +316,14 @@ That is why we focus on assumptions which admit a central limit theorem with the
   \end{align}
 \end{theorem}
 \begin{proof}
-  See \textcolor{red}{Cogburn et al., 1972} for 1 and \textcolor{red}{Roberts and Rosenthal, 1997} for 2.
+  See \textcolor{red}{\citet{cogburn1972}} for 1 and \textcolor{red}{\citet{roberts1997}} for 2.
 \end{proof}
 \textcolor{red}{Extend paragraph with heuristic explaination of assumption.}
 
 \subsubsection*{Metropolis-Hastings Algorithm}
 From the above we know that given a Markov chain with invariant distribution equal to the posterior distribution $p(\theta \mid z)$, we can treat the realizations of the chain as samples from the posterior, under some regularity conditions.
-Here we consider one method which implicitly defines such a chain, namely the Metropolis-Hastings algorithm \textcolor{red}{(Metropolis et al. (1953), Hastings (1970))}.
-For other approaches and more novel algorithms see \textcolor{red}{Robert and Casella 2004; Monte Carlo Statistical methods} or \textcolor{red}{Liang et al. 2010; Advanced Markov Chain Monte Carlo Methods.}
+Here we consider one method which implicitly defines such a chain, namely the Metropolis-Hastings algorithm \textcolor{red}{(\citet{Metropolis1953}, \citet{hastings70})}.
+For other approaches and more involved algorithms see for example \textcolor{red}{\citet{roberts2004}} or \textcolor{red}{\citet{liang10}}.
 
 \begin{algorithm}
 \caption{Metropolis-Hastings}\label{alg:metropolis-hastings}
@@ -346,10 +346,14 @@ For different settings different proposal distributions are appropriate.
 A common choice are so called \emph{random walk} proposals which add some random number to the current position of the chain; for example a gaussian random walk proposal is given by $q(\cdot \mid x_t) = \normal{\cdot \mid x_t, \sigma^2}$ or equivalently stated $y = x_t + \normal{0, \sigma^2}$.
 If the resulting chain has an unique invariant distribution we only know that after some time the chain starts behaving accordingly.
 Therefore in practice we choose $T = B + T^*$ and drop the first $B$ samples, where $B$, the so called \emph{burn-in} samples, is large and $T^*$ represents the actual size of samples we want to draw.
-See \textcolor{red}{Sherlock, Fearnhed, Roberts (2010)} for a recent survey on random walk proposals.
+See \textcolor{red}{\citet{sherlock2010}} for a recent survey on random walk proposals.
 
 The simplicity of the algorithm is remarkable, but the main question of concern is if the resulting Markov chain inherits favorable properties.
 \textcolor{red}{Need to list what properties can be derived in general and what can only be derived for specific proposal densities.}
+
+The ability to sample draws in complex settings using the Metropolis-Hastings algorithm (and other Markov chain Monte Carlo methods for that matter) made Bayesian statistics applicable for real problems.
+Still, \textcolor{red}{\citet{Au2001EstimationOS}} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \textcolor{red}{\citet{zuev08}} provide a geometric intution.
+The following paragraph illustrates one of the problems of working in higher dimensions.
 
 \subsubsection*{Volume in Higher Dimensions}
 Classical MCMC methods can have too slow convergence rates.
@@ -368,7 +372,7 @@ In particular we compute $\overline{P(X \in B_d)} := \sup_{\bm{x} \in B_d} \phi(
 The results of these computations are depicted in table \ref{tab:vol_high_dim}.
 We note that both ratios tend to zero very fast as $d$ increases.
 With this phenomena in mind one has to be cautious when working in high-dimensional spaces, since the regions of interest, that is the regions containing non-negligible probability mass, might not be located where our low-dimensional intution says.
-This idea is formalized by the \emph{Gaussian Annulus Theorem} \textcolor{red}{(Theorem 2.9; Foundations of Data Science, Blum et al.)} which states, inter alia, that most probability mass lies within an annulus centered at the origin with an average distance to the origin of $\sqrt{d}$.
+This idea is formalized by the \emph{Gaussian Annulus Theorem} (\textcolor{red}{\citet{blum2017foundations}; theorem 2.9}) which states, inter alia, that most probability mass lies within an annulus centered at the origin with an average distance to the origin of $\sqrt{d}$.
 
 
 \begin{table}[ht]
@@ -387,178 +391,8 @@ This idea is formalized by the \emph{Gaussian Annulus Theorem} \textcolor{red}{(
 
 \subsubsection*{Hamiltonian Monte Carlo}
 
-\textbf{Foundations of Hamiltonian Monte Carlo.}
-Using random walk metropolis or similar guess and verify algorithms is too costly
-from a computational perspective in higher dimensions.
+We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo}, a innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \textcolor{red}{Duane, Kennedy et al. 1987; }.
+There are of course multiple MCMC algorithms which work in higher dimensions with many more being actively developed.
+Here we focus on Hamiltonian Monte Carlo as it is the main algorithm used in the probabilistic programming language STAN \textcolor{red}{CITE STAN}, which we will be using in our Monte Carlo study and application part.
 
-Question: How can we use the geometry of the typical set to get information
-on how to move through it?
-Answer: For continuous spaces we could have a vector field which is aligned with the typical set?
-Starting at some point in the typical set we would only have to move in the direction with
-the given momentum as given by the vector at this point and would again land in the typical set with a new vector.
-
-But this defers the question only to another question: How do we get a vector field
-which is aligned with the typical set?
-
-A usual starting point for question of this nature is looking at the implied differential structure of the target.
-This we get via the gradient. In particular, the gradient defines a vector field in the given space which is
-sensitive to the structure of the target in a way s.t. it points us to the extrema.
-But as we have seen above, the extrema (modes) are not necessarily where we expect
-a lot of probability mass. In fact, we've seen that the higher the dimension the more
-mass is concentrated exactly around some region centered at the mode.
-A clever analogy from physics can help us out here. Think of the modes as centers of gravity, for example a planet.
-The typical set floats around the planet. With higher dimensions we've observed that
-the orbit tends to be farther away from the planet. That is, we want to place an object
-in the space, such that it does not come to close to the planet but also does not drift away.
-In particular we need to give the object a certain velocity so that the gravitational (gradient)
-vector field keeps the object at a steady distance to the center (on the typical set).
-In our probabilistic setting this means that we have to expand the original probabilistc system with
-an auxiliary momentum (velocity) parameter.
-
-\textbf{Phase space and Hamilton's Equations.}
-
-
-
-Let $p$ be the target density on some smooth space $\mathrm{Q}$.
-Let $f$ be some function.
-The quantity of interest is given by the corresponding expectation
-\begin{align}
-    \mathbb{E}_p \left[f\right] = \int_{\mathrm{Q}} f(q) p(q) \mathrm{d}q \,.
-\end{align}
-For complex models we are usually not able to evaluate these integrals analytically,
-therefore we have to approximate the integral numerically.
-It is clear that for higher dimensions we run into problems when using naive
-quadrature methods which is known as the \emph{curse of dimensionality}.
-In particular when considering high-dimensional spaces most regions will not
-contribute to the expectation. This can have three causes. One, the region has a
-negligible density $p(q)$; two, the function has a negligible value $f(q)$;
-and three, the volume $\mathrm{d}q$ is negligible. Since we care about general
-methods that can be applied to various functions $f$ we will assume from here on
-that $f$ has non-negligible values on the whole space.\footnote{Still, for specific applications
-in which only one expectation is relevant we can make use of the functional form of
-$f$.}
-Using the intuition from above we are interested in examining the regions of the
-space in more detail for which the density has a significant impact and the
-volume is non-negligible. We will call this set the typical set.\footnote{\textcolor{red}{REEFFEEERENCE.}}
-
-\subsubsection{Markov Chain Monte Carlo 2}
-Next we present a simple class of estimators which produce samples from the posterior
-distribution by constructing a \emph{Markov Chain} that has the posterior distribution
-as its stationary distribution.
-
-Let $T(q', q)$ denote the markov transition kernel. If we can find a $T$ s.t.
-\begin{align}
-  p(q) = \int_{\mathrm{Q}} T(q', q) p(q') \mathrm{d}q' \,,
-  \label{eq:markov_int}
-\end{align}
-then the markov chain will have $p$ as its limiting distribution.\textcolor{red}{PROOOOOF}.
-The intuition behind equation \ref{eq:markov_int} is that if we sample from the
-target distribution and apply the transition kernel, we also want the new ensemble of
-samples to be distributed accoding the target distribution. But how do we generate
-actual samples?
-
-
-Let us assume we can draw samples $\{q_0, \mydots, q_N\}$ from the posterior distribution through following
-the markov chain. Then a straightforward estimator is $\hat{f}_N := \frac{1}{N} \sum_i f(q_i)$.
-Under some conditions \textcolor{red}{WHAT ARE THEEESE??}, we get
-\begin{align}
-  \hat{f}_N \overset{\mathrm{p}}{\longrightarrow} \mathbb{E}_p(f) \,.
-\end{align}
-Unfortunately this only tells us something about the limit. To learn more about the
-finite sample behavior we can make use of a central limit theorem for MCMC estimators.
-Under ideal circumstances we get
-\begin{align}
-  \hat{f}_N^{MCMC} \overset{a}{\sim} \normal{\mathbb{E}_p(f), \text{MCMC-SE}} \,,
-  \label{eq:mcmc_clt}
-\end{align}
-
-where $\text{MCMC-SE} = \sqrt{\text{Var}_p(f) / \text{ESS}}$ with ESS denoting the effective sample size.
-ESS can be estimated via $\hat{\text{ESS}} = N / (1 + 2 \sum_{l=1}^\infty \rho_l)$, where $\rho_l$ represents
-the autocorrelation of lag $l$ of the simulated markov chain.
-
-Since we start the markov chain with arbitrary starting values it can take some
-steps until the chain meanders through the relevant regions. Therefore in practice
-we throw away the first few hundred samples. This is known as \emph{warm up} or
-\emph{burn-in} in the literature.
-
-What are the \emph{ideal} circumstances so that equation \ref{eq:mcmc_clt} holds?
-A sufficient condition is given by the assumption of \emph{geometric ergodicity}.
-\textcolor{red}{WHERE WHERE WHERE??}.
-
-\subsubsection*{Metropolis-Hastings Algorithm}
-The Metropolis-Hastings algorithm provides us with a way to jump from on point
-in a space to another using the established stochastic structure of the density
-from which we are drawing samples and the transition kernel. The transition kernel
-can be thought of as a proposal density. Given $q$ we propose a draw $q'$ from $T(q' \mid q)$.
-The idea of the algorithm is that we accept this new point only with some probability $a$,
-where
-\begin{align}
-  a(q' \mid q) = \min \left (1, \frac{T(q\mid q') p(q')}{T(q' \mid q) p(q)} \right) \,.
-\end{align}
-Hence with some starting value $q_0$, the target density $p$ and some transition kernel $T$
-we can simulate a markov chain which will at some point produce points that resemble draws
-from $p$. However, in higher dimensions this is still not enough, as the estimator does
-not scale and becomes highly inefficient \textcolor{red}{REFERERERECNCE}.
-
-
-
-
-
-
-
-\subsection{APPENDIX}
-\textbf{Uninformative prior}
-Thus the marginal posterior of $\sigma^2$ can be obtained by integrating the joint posterior
-over $\theta$. Let $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denote the sample
-variance and note that it is easy to show to
-$\theta \mid \sigma^2, y \sim \normal{\bar{y}, \sigma^2/n}$ (see appendix for a proof).
-Then,
-\begin{align}
-  p(\sigma^2 \mid y) &\propto \int p(\theta, \sigma^2 \mid y) \mathrm{d} \theta\\
-  &\propto \int \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \int \EXP{\frac{1}{2\sigma^2/n}(\bar{y} - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \sqrt{2 \pi \sigma^2 / n} \\
-  &\propto (\sigma^2)^{-(n+1)/2} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \,.
-\end{align}
-Hence, $\sigma^2 \mid y \sim \text{scaled-Inv-} \chi^2(n-1, s^2)$.
-
-To finish our analysis we integrate the joint posterior over $\sigma^2$ to get
-the marginal posterior of $\theta$. We evaluate the integral by substitution using
-$z = \frac{a}{2 \sigma^2}$ with $a = (n-1)s + n(\theta - \bar{y})$.\footnote{\textcolor{red}{See appendix for explicit derivation}}
-Then,
-\begin{align}
-  p(\theta \mid y) &= \int_{(0, \infty)} p(\theta, \sigma^2 \mid y) \mathrm{d}\sigma^2\\
-  &\propto \sigma^{-(n+2)} \int_{(0, \infty)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \sigma^2\\
-  &\propto a^{-n/2} \int_{(0, \infty)} z^{(n-2)/2}\EXP{-z} \mathrm{d}z\\
-  &\propto a^{-n/2}\\
-  &= [(n-1)s + n(\theta - \bar{y})]^{-n/2}\\
-  &\propto \left[1 + \frac{(\theta - \bar{y})^2}{(n-1) s^2 / n}\right]^{-n/2} \,
-\end{align}
-which concludes our first analysis implying that $\theta \mid y \sim t_{n-1}(\bar{y}, \sigma^2/n)$.
-
-
-
-
-We know that for the problem at hand the standard maximum likelihood estimators
-and their variances are given by\footnote{\textcolor{red}{See appendix for proof.}}
-\begin{align}
-  \hat{\theta}_{ML} &= \frac{1}{n} \sum_i y_i = \bar{y}\,\\
-  \hat{\sigma}_{ML}^2 &= \frac{1}{n} \sum_i (y_i - \bar{y})^2 = \frac{n-1}{n} s^2\,\\
-  \mathrm{I}(\theta, \sigma)^{-1} &= \sqmat{\sigma^2 / n & 0\\0&\sigma^2/(2n)} \,.
-\end{align}
-The Bayesian counterpart to the ML-Estimator is the \emph{maximum a posteriori estimate},
-or in short \emph{MAP}. For $\theta \mid y$ we derived a noncentral Student's t-distribution
-with mean $\bar{y}$ and variance $\sigma^2/n$. Since this distribution is unimodal and
-symmetric the MAP estimate is simply the mean. We note that it is equivalent to
-the ML estimate on both the point estimate and included variance. For $\sigma^2$
-the results look slightly different. The mode and the mean of $\sigma^2 \mid y$
-are given by $\frac{n-1}{n+1} s^2$ and $\frac{n-1}{n-3} s^2$, respectively.
-Still we see a very close resemblance of the Bayesian estimator to the ML estimator.
-One could say that this is a property which is desirable for Bayesian estimators
-using uninformative priors. One obvious advantage of the Bayesian approach is the
-ease with which we can compute arbitrary probabilities using the posterior density.
-
-
-\textbf{Conjugate prior}
+\textcolor{red}{EXPLAIN HMC HERE.}
