@@ -1,21 +1,8 @@
 \section{Application}
 
-\subsection{MCMC in practice}
-\begin{enumerate}
- \item Practioners face mutliple problems when trying to apply Bayesian models. A prominent example is the selection of a right prior.
-
-\item The other important consideration is checking convergence of the mcmc chain. Asymptotic theory tells us that the MCMC will converge with a probability of one to the true density for an unlimited number of steps. Practioners are interested in the performance after only a limited number of steps. 
-Typically we initate our chain with a number of steps we discard later (burn-in) and test convergence based on the rest of the draws.
-\item  
-The easiest approach to check convergence is a mere graphical analysis. If the MCMC reached the underlying distribution, new parameters should be drawn around the the mean of the modell. Therefore, the timeseries of the draws should look similar to a stationary process. If the underlying distribution is not reached yet, a slope should be observed. 
-
-\item We can quantify this approach by calculating a variety of different convergence criterias. Simply spoken, they measure wether different subsection of a chain describe the same underlying distribution. One of the simplest approaches is based on Geweke(1992) and compares the mean of the draws in one subsection of the chain to an other. Inutitively, both should be the same. One diffulty lies in the correction of means by standard deviations, which need to be adjusted for the autocorrelation as draws are not independent from each other. The underlying test is a t-test $\mathbf{E}\left[g(\theta) \mid Y^T\right], i \in {A,C}$
-$$\mathbf{CD}_{GW K}=\hat{G}_{S_A}$$
 
 
-\item Our initial parameter values might habe a sizable effect on our reached distribution. That is why another part of the literature (based on Brooks and Gelman) focuses on starting with different values and comparing the effects on final posterior. If the parameters estimation of the multiple chains align, we can be more convinced that we hit the true distribution of the chain. 
 
-\end{enumerate}
 
 
 

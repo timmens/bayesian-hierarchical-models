@@ -1,1 +1,122 @@
 \section{Monte Carlo Study}
+
+\subsection{Convergence}
+\begin{enumerate}
+ \item Practioners face mutliple problems when trying to apply Bayesian models. A prominent example is the selection of a right prior.
+
+\item The other important consideration is checking convergence of the mcmc chain. Asymptotic theory tells us that the MCMC will converge with a probability of one to the true density for an unlimited number of steps. Practioners are interested in the performance after only a limited number of steps. 
+Typically we initate our chain with a number of steps we discard later (burn-in) and test convergence based on the rest of the draws.
+\item  
+The easiest approach to check convergence is a mere graphical analysis. If the MCMC reached the underlying distribution, new parameters should be drawn around the the mean of the modell. Therefore, the timeseries of the draws should look similar to a stationary process. If the underlying distribution is not reached yet, a slope should be observed. 
+
+\item We can take a more quantitative  approach by calculating a variety of different convergence criterias. Simply spoken, they measure wether different subsection of a chain describe the same underlying distribution. One of the simplest approaches is based on Geweke(1992) and compares the mean of the draws in one subsection of the chain to an other. Inutitively, both should be the same. One diffulty lies in the correction of means by standard deviations, which need to be adjusted for the autocorrelation as draws are not independent from each other. The underlying test is a t-test $\mathbf{E}\left[g(\theta) \mid Y^T\right], i \in {A,C}$
+$$\mathbf{CD}_{GW K}=\hat{G}_{S_A}$$
+
+
+\item Our initial parameter values might habe a sizable effect on our reached distribution. That is why another part of the literature (based on Brooks and Gelman) focuses on starting with different values and comparing the effects on final posterior. If the parameters estimation of the multiple chains align, we can be more convinced that we hit the true distribution of the chain. 
+
+%\item the variance within a chain is
+%$$\sigma_j^2=\frac{1}{ N-1} \sum_{n=1}^{N} (g_{nj}-\overline{g_j} )^2 $$
+% changed notatiation to follow stan reference manual
+%$$W=\frac{1}{ J(N-1)} \sum_{j=1}^{J} \sum_{n=1}^{N} (\overline{g_{nj}}-\overline{g_j} )^2=\frac{1}{J} \sum_{j=1}^{J}\sigma_j ^2 $$
+
+
+\item the variance between sequence variance B/N is given by
+$$B=\frac{N}{M-1} \sum_{m=1}^{M} (\overline{\theta}_m^{(\bullet)}-\overline{\theta}_{\bullet}^{(\bullet)} )^2 $$
+
+\item where 
+$$\overline{\theta}_m^{(\bullet)}=  \sum_{n=1}^{N} \theta_m^{(n)}$$
+
+\item and
+$$\overline{\theta}_{\bullet}^{(\bullet)}=\frac{1}{M} \sum_{m=1}^{M}  \theta_m^{(\bullet)}$$
+
+
+\item The within-chain variance is averaged over the chains,
+
+$$W=\frac{1}{M} \sum_{m=1}^{M} s_m^2$$
+
+\item where 
+$$s_m^2=\frac{1}{N-1} \sum_{m=1}^{M} (\theta_m^{(n)}-\overline{\theta}_{m}^{(\bullet)} )^2$$
+
+\item and
+$$\overline{\theta}_{\bullet}^{(\bullet)}=\frac{1}{M} \sum_{m=M}^{N}  \theta_m^{(\bullet)}$$
+
+
+\item The variance estimator is a mixture of the within-chain and cross-chain sample variances,
+$$\widehat{var}^+ (\theta \mid y)=\frac{N-1}{N}W+\frac{1}{N}B$$
+
+
+\item Finally, the potential scale reduction statistic is defined by the equation,
+$$\widehat{R}=\frac{\widehat{var}^+ (\theta \mid y)}{W}$$
+
+\item If the Markov Chain is converged$ \widehat{R}$ should be close to 1. Intuitively the variance within a chain should create all the variation of the draws, while the variance between different chains converges to 0.
+
+
+
+\subsection{Prior selection}
+\item The selection of a right prior is one critical part of bayesian modelling. And the often the subject to critizism.
+
+\item Following Gelman, we can differentiate between 5 types of priors
+ 
+\item fllat prior
+\item Super-vague but proper prior: normal(0, 1e6);
+\item Weakly informative prior, very weak: normal(0, 10);
+\item Generic weakly informative prior: normal(0, 1);
+\item Specific informative prior: normal(0.4, 0.2) or whatever. Sometimes this can be expressed as a scaling followed by a generic prior: $theta = 0.4 + 0.2*z; z ~ normal(0, 1)$
+
+\item The flat pior (often called uniformative prior) . Consequently, the posterior collapses to the Maximum Likelihood. 
+(from https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+\item Another option is a super
+
+
+
+
+\subsection{Technical considerations}
+
+\item some stuff about bad or good mixing
+
+
+
+\subsection{Stan}
+
+\item For our Bayesian Analysis we use the software Python as well as the software Stan through the interface Pystan
+\item Stan compiles the code directly into C and therefore allows the fast analysis need for our monte carlo study.
+
+\item Stan allows a great amount of  parametrization. For simplicity we will only focus on a small number of options
+\item delta is the metropolis acceptance rate. As shown in above section, mcmc lead to autocorrelated draws. 
+We can therfore set an acceptance rate $\delta \in[0,1]$. With this probability we accept a new draws with a lower posterior value. Why?
+
+\item 
+A too high acceptance rate will lead to too many draws to be accepted and the chain to wander widly around.
+As a result the autocorrelation we have a high autocorrelation between each draws.
+
+\item 
+A too low acceptance rate will lead to only values in the middle of the posterior to be accepted. We have a only slowly decaying autocorellation function again.
+
+\item this can be analyzed looking at  the autocorrelation plot.(insert some plots here with good or bad mixing)
+
+\item A $\delta$ of 0.8 is default. (We change this based on our parametrization)
+ 
+\item we vary J and N and check the performance of our Bayesian Estimation with the true results 
+
+
+\subsection{convergence tests}
+
+\item by not setting any starting values stan start automatically with
+\item diffuse random initializations automatically satisfying the declared parameter constraints.
+% https://mc-stan.org/docs/2_20/reference-manual/notation-for-samples-chains-and-draws.html
+
+
+\subsection results
+
+\item We cocentrate on 3 different cases in our Simulation study: flat prior, informative true prior and informative wrong prior. 
+\item we vary J and N and check the performance of our Bayesian Estimation with the true results 
+
+
+\item Based on the package stan-utilty we perform 2 peformance tests in our bayesian analysis
+\item First we test wether the empirical percentiles are similar to  
+
+
+
+
+\end{enumerate}
