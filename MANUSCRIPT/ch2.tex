@@ -1,22 +1,96 @@
 \section{Hierarchical Models}
-In the following subsections we will introduce the concept of hierarchical data
-and the models designed to work with that data. We present an analytical
-derivation for a simple but general case and then illustrate the most common
-model class, \emph{linear hierarchical models}.
+In the following we consider hierarchical models, when they are applicable and how to estimate them.
+We begin by presenting the idea of hiearchical data and modeling.
+Then we show how to solve a simple model analytically, before ending the section with introducing two main ideas.
+One, hierarchical linear models, arguably the most important subclass of hiearchical models.
+And two, a method to sample from the posteriors arising in more complex hierarchical models.
 
-\subsection{Hierarchical Data}
-Hierarchical data is present when there is a natural way to split observations
-into clusters. For example, we might observe data on children for many different
-schools. The data could also include schools for different states. So we would
-observe children in schools and schools in states. This would
-constitute the case of \emph{nested} groups, which gives meaning to the term
-hierarchical. There are however many cases which do not feature nested data
-or an interpretable hierarchical structure but do belong to the type of structured
-data that can be analyzed using hierarchical models. A prominent example are
-meta-analysis studies, which can be modeled hierarchically but are non-nested
-since units might be overlapping. When a clear interpretation of the hierarchy is missing
-one often encounters the description \emph{multi-leveled data} and \emph{multi-level model}.
+\subsection{Hierarchical Data and Modeling}
 
+Here we consider what makes data hierarchical and how we can use this component to model additional structure.
+Hierarchical data is present if the data can be clustered on some level; e.g. children in schools, survey responses on different years in different states or experiments in multiple labs.
+From the examples we see that there must not be a clear \emph{hierarchy} defined on the data.
+This is one of the reasons why some authors nowadays prefer the more general terms \emph{multi-level data} and \emph{multi-level model}, see for instance \citet{GelmanHill2007}.
+We categorize models by the number of levels they incorporate and if they use \emph{nested} or \emph{non-nested} data.
+In this paper we consider two-level models for nested data and refer again to \citet{GelmanHill2007} for a treatment of models with more levels and non-nested data.
+
+In practice we can store hierarchical data very efficiently using normalized relational dataframes. Let us continue the example of children in schools and assume we observe their results on a test, the parental income and the number of teachers per child in the school.
+Table \ref{tab:relational_table} portrays how multi-level data in this case could be stored.
+Having gained some intuition let us define our formal notation.
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{l l l l}
+child & result & income & school\\
+\hline
+1 & 10 & 500 & 1\\
+2 & 9 & 450 & 1\\
+3 & 12 & 520 & 2\\
+4 & 10 & 490 & 1
+\end{tabular}
+\quad
+\begin{tabular}{l l}
+school & teacher\\
+\hline
+1 & 0.5\\
+2 & 0.7
+\end{tabular}
+\end{center}
+\caption{Two tables containing fictional hierarchical data. Left: Data on the child-level, that is the test \emph{results}, parental \emph{income} and \emph{school} id. Right: Data on the school-level, in this case the number of \emph{teachers} per child.}
+\label{tab:relational_table}
+\end{table}
+
+\noindent
+Assume we observe data on $i=1,\mydots,n$ units which are clustered among $j=1,\mydots,J$ groups.
+Naturally we consider some outcome $y_i$ on the unit-level.
+Following the idea of different tables for different levels from above, we write $x_i$ for the covariates that vary by unit and $u_j$ for the covariates that only vary on the group-level.
+We link the two by writing $j[i]$ for the index of the group to which individual $i$ belongs, i.e. the full set of covariates from individual $i$ is given by $(x_i, u_{j[i]})$. But how can we utilize this hierarchical structure?
+
+The main idea behind hierarchical modeling is that we build (simple) models on each level while using the dependent variables from higher levels as input parameters on lower levels.
+For a general (two-level) case we may write
+\begin{align}
+  y_i \mid \theta_j &\sim p(y_i \mid x_i, \theta_j) \,,\\
+  \theta_j \mid \phi &\sim p(\theta_j \mid u_j, \phi) \,,\\
+  \phi &\sim p(\phi \mid \zeta) \text{ with } \zeta \text{ fixed } \,,
+\end{align}
+where we suppress the dependence on $x_i$ and $u_j$ by assuming they are fixed.
+In the first level we model the observations $y_i$ depending on the covariates $x_i$ and parameters $\theta_j$.
+As in a classical Bayesian model we continue by modeling the parameters.
+However in contrast to section 2 we do not just assume some prior distribution for the parameters but we explicitly model the parameter.
+From a Bayesian viewpoint this can be seen as a generalization of the prior.
+Despite this Bayesian interpretation, the first two equations define a proper non-Bayesian hierarchical model.
+To put the Bayesian in Bayesian hiearchical model we have to assign a prior distributions on the parameters $\phi$.
+Therefore one often speaks of priors $\theta_j$ and \emph{hyperpriors} $\phi$.
+
+\begin{figure}[!ht]
+\begin{center}
+\begin{tikzpicture}%
+  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
+  node distance=2.5cm,
+  >=latex,
+  on grid]
+  \node[vertex] (phi) {$\phi$};
+  \node[vertex,right=of phi] (theta) {$\theta_{j[i]}$};
+  \node[vertex,below right= 1cm and 2.5cm of theta] (y) {$y_i$};
+  \node[rectangle, draw=black, minimum size=0.9cm,left= of phi] (zeta) {$\zeta$};
+  \node[rectangle, draw=black, minimum size=0.9cm,above=1.5cm of theta] (u) {$u_j$};
+  \node[rectangle, draw=black, minimum size=0.9cm, above right=1cm and 2.5cm of y] (x) {$x_i$};
+  \draw[->]
+    (phi) edge (theta)
+    (theta) edge (y)
+    (zeta) edge (phi)
+    (u) edge (theta)
+    (x) edge (y);
+\end{tikzpicture}
+\end{center}
+\label{tik:general_sem}
+\caption{A general two-level Bayesian hierarchical model depicted as a directed acyclical graph. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
+\end{figure}
+
+
+
+
+
+\newpage
 \subsubsection*{Formal Example}
 Let us assume that we observe test scores $y_i$ for $i = 1,\mydots,n$ children
 in $j=1,\mydots,J$ different schools. For convenience let us write $j[i]$ for child

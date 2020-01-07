@@ -8,3 +8,5 @@ MANUSCRIPT/*.synctex.gz
 MANUSCRIPT/*.fdb_latexmk
 MANUSCRIPT/*.pyg
 MANUSCRIPT/*.pytxcode
+MANUSCRIPT/*.bbl
+MANUSCRIPT/*.blg
