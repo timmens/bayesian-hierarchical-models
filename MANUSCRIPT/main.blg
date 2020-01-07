@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/W32TeX)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: chicago.bst
+Database file #1: bibliography.bib
+Warning--empty booktitle in Au2001EstimationOS
+Warning--empty publisher in blum2017foundations
+Warning--no number and no volume in liang10
+Warning--page numbers missing in liang10
+Warning--page numbers missing in rashid2019socio
+You've used 17 entries,
+            2861 wiz_defined-function locations,
+            728 strings with 7981 characters,
+and the built_in function-call counts, 11838 in all, are:
+= -- 974
+> -- 894
+< -- 1
++ -- 268
+- -- 304
+* -- 1090
+:= -- 2164
+add.period$ -- 50
+call.type$ -- 17
+change.case$ -- 122
+chr.to.int$ -- 17
+cite$ -- 22
+duplicate$ -- 315
+empty$ -- 711
+format.name$ -- 356
+if$ -- 2194
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 20
+newline$ -- 86
+num.names$ -- 170
+pop$ -- 98
+preamble$ -- 1
+purify$ -- 227
+quote$ -- 0
+skip$ -- 337
+stack$ -- 0
+substring$ -- 601
+swap$ -- 98
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 310
+warning$ -- 5
+while$ -- 161
+width$ -- 0
+write$ -- 223
+(There were 5 warnings)
