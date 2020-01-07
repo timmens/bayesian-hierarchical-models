@@ -6,3 +6,5 @@ MANUSCRIPT/*.log
 MANUSCRIPT/*.fls
 MANUSCRIPT/*.synctex.gz
 MANUSCRIPT/*.fdb_latexmk
+MANUSCRIPT/*.pyg
+MANUSCRIPT/*.pytxcode

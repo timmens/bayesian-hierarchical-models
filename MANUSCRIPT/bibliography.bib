@@ -155,3 +155,58 @@ abstract = {Computer science as an academic discipline began in the 1960’s. Em
 url = {https://www.microsoft.com/en-us/research/publication/foundations-of-data-science-2/},
 pages = {1-465},
 }
+
+@article{stan,
+   author = {Bob Carpenter and Andrew Gelman and Matthew Hoffman and Daniel Lee and Ben Goodrich and Michael Betancourt and Marcus Brubaker and Jiqiang Guo and Peter Li and Allen Riddell},
+   title = {Stan: A Probabilistic Programming Language},
+   journal = {Journal of Statistical Software, Articles},
+   volume = {76},
+   number = {1},
+   year = {2017},
+   keywords = {probabilistic programming; Bayesian inference; algorithmic differentiation; Stan},
+   abstract = {Stan is a probabilistic programming language for specifying statistical models. A Stan program imperatively defines a log probability function over parameters conditioned on specified data and constants. As of version 2.14.0, Stan provides full Bayesian inference for continuous-variable models through Markov chain Monte Carlo methods such as the No-U-Turn sampler, an adaptive form of Hamiltonian Monte Carlo sampling. Penalized maximum likelihood estimates are calculated using optimization methods such as the limited memory Broyden-Fletcher-Goldfarb-Shanno algorithm. Stan is also a platform for computing log densities and their gradients and Hessians, which can be used in alternative algorithms such as variational Bayes, expectation propagation, and marginal inference using approximate integration. To this end, Stan is set up so that the densities, gradients, and Hessians, along with intermediate quantities of the algorithm such as acceptance probabilities, are easily accessible. Stan can be called from the command line using the cmdstan package, through R using the rstan package, and through Python using the pystan package. All three interfaces support sampling and optimization-based inference with diagnostics and posterior analysis. rstan and pystan also provide access to log probabilities, gradients, Hessians, parameter transforms, and specialized plotting.},
+   issn = {1548-7660},
+   pages = {1--32},
+   doi = {10.18637/jss.v076.i01},
+   url = {https://www.jstatsoft.org/v076/i01}
+}
+
+@article{duane87,
+title = "Hybrid Monte Carlo",
+journal = "Physics Letters B",
+volume = "195",
+number = "2",
+pages = "216 - 222",
+year = "1987",
+issn = "0370-2693",
+doi = "https://doi.org/11.1016/0370-2693(87)91197-X",
+url = "http://www.sciencedirect.com/science/article/pii/037026938791197X",
+author = "Simon Duane and A.D. Kennedy and Brian J. Pendleton and Duncan Roweth",
+abstract = "We present a new method for the numerical simulation of lattice field theory. A hybrid (molecular dynamics/Langevin) algorithm is used to guide a Monte Carlo simulation. There are no discretization errors even for large step sizes. The method is especially efficient for systems such as quantum chromodynamics which contain fermionic degrees of freedom. Detailed results are presented for four-dimensional compact quantum electrodynamics including the dynamical effects of electrons."
+}
+
+@misc{standev2018stancore,
+title = {{The Stan Core Library}},
+author = {{Stan Development Team}},
+note = {Version 2.18.0},
+year = {2018},
+url = {http://mc-stan.org/},
+}
+
+@misc{betancourt2017conceptual,
+    title={A Conceptual Introduction to Hamiltonian Monte Carlo},
+    author={Michael Betancourt},
+    year={2017},
+    eprint={1701.02434},
+    archivePrefix={arXiv},
+    primaryClass={stat.ME}
+}
+
+@misc{betancourt2017convergence,
+    title={The Convergence of Markov chain Monte Carlo Methods: From the Metropolis method to Hamiltonian Monte Carlo},
+    author={Michael Betancourt},
+    year={2017},
+    eprint={1706.01520},
+    archivePrefix={arXiv},
+    primaryClass={stat.ME}
+}
