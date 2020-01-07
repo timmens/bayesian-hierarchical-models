@@ -356,8 +356,7 @@ Still, \textcolor{red}{\citet{Au2001EstimationOS}} show that the classical Metro
 The following paragraph illustrates one of the problems of working in higher dimensions.
 
 \subsubsection*{Volume in Higher Dimensions}
-Classical MCMC methods can have too slow convergence rates.
-In higher dimensions this might be due to probability mass being distributed very far from where it is expected.
+Classical MCMC methods can have too slow convergence rates; In higher dimensions this might be due to probability mass being distributed very far from where it is expected (\textcolor{red}{\citet{betancourt2017convergence}}). 
 In this paragraph we motivate this phenomena and in the following we present methods which utilize it.
 
 Let $B_d$ denote the unit ball in $\reals^d$ and define $C_d$ as the smallest cube containing $B_d$.
@@ -391,8 +390,8 @@ This idea is formalized by the \emph{Gaussian Annulus Theorem} (\textcolor{red}{
 
 \subsubsection*{Hamiltonian Monte Carlo}
 
-We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo}, a innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \textcolor{red}{Duane, Kennedy et al. 1987; }.
+We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo}, a innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \textcolor{red}{\citet{duane87}}.
 There are of course multiple MCMC algorithms which work in higher dimensions with many more being actively developed.
-Here we focus on Hamiltonian Monte Carlo as it is the main algorithm used in the probabilistic programming language STAN \textcolor{red}{CITE STAN}, which we will be using in our Monte Carlo study and application part.
+Here we focus on Hamiltonian Monte Carlo as it is the main algorithm used in the probabilistic programming language STAN \textcolor{red}{(\citet{standev2018stancore})}, which we will be using in our Monte Carlo study and application part.
 
 \textcolor{red}{EXPLAIN HMC HERE.}

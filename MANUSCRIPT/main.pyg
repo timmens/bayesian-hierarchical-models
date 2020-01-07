@@ -1,6 +1,0 @@
-from scipy.stats import norm
-rv = norm(loc=0, scale=1)
-def inner_volume(dim):
-  return (rv.cdf(2)-rv.cdf(-2))**dim
-def outer_volume(dim):
-  return (rv.cdf(6)-rv.cdf(-6))**dim-(rv.cdf(2)-rv.cdf(-2))**dim
