@@ -11,6 +11,14 @@ Au, S.-K. and J.~L. Beck (2001).
 Blum, A., J.~Hopcroft, and R.~Kannan (2017, June).
 \newblock {\em Foundations of Data Science}.
 
+\bibitem[\protect\citeauthoryear{Buri{\'c} and Kim}{Buri{\'c} and
+  Kim}{2020}]{buric2020teacher}
+Buri{\'c}, I. and L.~E. Kim (2020).
+\newblock Teacher self-efficacy, instructional quality, and student
+  motivational beliefs: An analysis using multilevel structural equation
+  modeling.
+\newblock {\em Learning and Instruction\/}~{\em 66}, 101302.
+
 \bibitem[\protect\citeauthoryear{Cogburn}{Cogburn}{1972}]{cogburn1972}
 Cogburn, R. (1972).
 \newblock The central limit theorem for markov processes.
@@ -37,6 +45,14 @@ Katafygiotis, L. and K.~Zuev (2008, 04).
   reliability problems.
 \newblock {\em Probabilistic Engineering Mechanics\/}~{\em 23}, 208--218.
 
+\bibitem[\protect\citeauthoryear{Lamnisos, Giannakou, and Siligari}{Lamnisos
+  et~al.}{2019}]{lamnisos2019demographic}
+Lamnisos, D., K.~Giannakou, and T.~Siligari (2019).
+\newblock Demographic forecasting of population projection in greece: A
+  bayesian probabilistic study: Demetris lamnisos.
+\newblock {\em European Journal of Public Health\/}~{\em 29\/}(Supplement\_4),
+  ckz186--387.
+
 \bibitem[\protect\citeauthoryear{Liang, Liu, and Carroll}{Liang
   et~al.}{2010}]{liang10}
 Liang, F., C.~Liu, and R.~Carroll (2010, 07).
@@ -44,6 +60,13 @@ Liang, F., C.~Liu, and R.~Carroll (2010, 07).
   samples.
 \newblock {\em Advanced Markov Chain Monte Carlo Methods: Learning from Past
   Samples\/}.
+
+\bibitem[\protect\citeauthoryear{Meager}{Meager}{2019}]{meager2019understanding}
+Meager, R. (2019).
+\newblock Understanding the average impact of microcredit expansions: A
+  bayesian hierarchical analysis of seven randomized experiments.
+\newblock {\em American Economic Journal: Applied Economics\/}~{\em 11\/}(1),
+  57--91.
 
 \bibitem[\protect\citeauthoryear{Metropolis, Rosenbluth, Rosenbluth, Teller,
   and Teller}{Metropolis et~al.}{1953}]{Metropolis1953}
@@ -57,6 +80,20 @@ Metropolis, N., A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller
 Meyn, S. and R.~L. Tweedie (2009).
 \newblock {\em Markov Chains and Stochastic Stability\/} (2nd ed.).
 \newblock USA: Cambridge University Press.
+
+\bibitem[\protect\citeauthoryear{Ramsey, Ghosh, and Sonoda}{Ramsey
+  et~al.}{2019}]{ramsey2019saying}
+Ramsey, A.~F., S.~K. Ghosh, and T.~Sonoda (2019).
+\newblock Saying sayonara to the farm: Hierarchical bayesian modeling of farm
+  exits in japan.
+\newblock {\em Journal of Agricultural Economics\/}~{\em 70\/}(2), 372--391.
+
+\bibitem[\protect\citeauthoryear{Rashid}{Rashid}{2019}]{rashid2019socio}
+Rashid, M. (2019).
+\newblock Socio-economic factors of misconception about hiv/aids among
+  ever-married women in punjab: A comparison of non-spatial and spatial
+  hierarchical bayesian poisson model.
+\newblock {\em Kuwait Journal of Science\/}~{\em 46\/}(4).
 
 \bibitem[\protect\citeauthoryear{Roberts and Rosenthal}{Roberts and
   Rosenthal}{1997}]{roberts1997}
