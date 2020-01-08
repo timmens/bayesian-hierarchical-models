@@ -3,7 +3,7 @@
 In this section we discuss the applications of the hierarchical modelling approach in the form of a literature review. We then use real world data to give a practical illustration of the work we have developed in the previous sections of our paper and compare that to the frequentist approach to analyzing multilevel data with the aim of showcasing what differences/similarities there are between the two methods. We then depart form the comparative analysis to look deeper into the Bayesian approach and conduct robustness checks that vary certain aspects (e.g. priors) of it so that we can see how the estimation results change in response to that. The baseline here would be the estimation results from the comparison between Bayesian and frequentist approaches. We close the section off by a discussion of the limitations and challenges encountered in this section.
 
 
-\subsection{Literature Review on the application of Hierarchical Models}
+\subsection{Literature review on the application of Hierarchical Models}
 
 Bayesian Hierarchical models or multilevel models are a suitable approach to consider social contexts as well as individual respondents or subjects. It becomes attractive to consider hierarchical models in place of the common (or popularized) frequentist approach as soon as there is a need to relax the independence of residuals assumption as a result of similarities in the characteristics of a group of respondents or when the researcher seeks to disentangle variability at various levels of the data. These models have been used in various applications throughout fields in economic research. In education research, \cite{buric2020teacher} use these models to examine the relationship between teacher self-efficacy (TSE), instructional quality (i.e., classroom management, cognitive activation, and supportive climate) and student motivational beliefs (i.e., self efficacy and intrinsic motivation) by using responses from both teachers and students and implementing a sophisticated doubly latent multilevel structural equation modelling approach. The results reflect the necessity to disentangle variability at various levels of the data as the researchers find that, at class level, TSE was positively related to the three dimensions of instructional quality but not to students' motivational beliefs. They also find, as expected, that instructional quality was positively related to students’ motivational beliefs.
 
@@ -14,13 +14,16 @@ In development economics, \cite{ meager2019understanding} jointly estimates the 
 It is evident that Bayesian Hierarchical Models can be useful in the area of microeconomic research. There also have been applications to the Macroeconomics field. It is evident that Bayesian Hierarchical Models can be useful in the area of microeconomic research. There also have been applications to the Macroeconomic research field. \cite{ koop2010bayesian} notes that bayesian methods have become increasingly popular as a way of overcoming over-parameterization problems. In this paper, the authors discuss vector autoregressive multivariate time
 series models (VARs), factor augmented VARs and time-varying parameter extensions and show how Bayesian inference proceeds. 
 
-We now demonstrate below, an aplication to real world data of the ------ model and compare the results to its frequestist model and estimation counterpart.
+We now demonstrate below, an application to real world data of a comparison between the likelihood inference (frequentist)  and the Bayesian Inference approaches. For each of these approaches, we will fit three basic multilevel linear models: (a) a varying intercept model with no predictors (Model 1), (b) a varying intercept model with one predictor (Model 2), and (c)  a varying intercept and slope model (Model 3).
+
+ 
 
 \subsection{Frequentist and Bayesian Approaches in Practice: Application to Education Data}
 
 A common feature of data structures in education is that units of analysis (e.g., students) are nested in higher organizational clusters (e.g. schools). This kind of structure induces dependence among the responses observed for units within the same cluster. Students in the same school tend to be more alike in their academic and attitudinal characteristics than students chosen at random from the population at large. Multilevel models are designed to model such within-cluster dependence. As mentioned earlier, one advantage of multilevel models is that it allows us to disentangle variability between levels and in our data example,  multilevel models recognize the existence of data clustering (at two or more levels) by allowing for residual components at each level in the hierarchy. For example, a two-level model that allows for grouping of student outcomes within schools would include residuals at both the student and school level. The residual variance is thus partitioned into a between-school component (the variance of the school-level residuals) and a within-school component (the variance of the student-level residuals). 
 
 
+\subsubsection{The data}
 We will be analyzing the Gcsemv dataset from \cite{rasbash2000user}. The data include the General Certificate of Secondary Education (GCSE) exam scores of 1,905 students from 73 schools in England on a science subject. The Gcsemv dataset consists of the following 5 variables:
 \begin{itemize}
 	\item \textit{school}: school identifier
@@ -29,9 +32,37 @@ We will be analyzing the Gcsemv dataset from \cite{rasbash2000user}. The data in
 	\item \textit{written}: total score on written paper
 	\item \textit{course}: total score on coursework paper
 \end{itemize}
+Two components of the exam were recorded as outcome variables: written paper and course work. In this application, only the total score on the coursework paper (course) will be analyzed. 
 
-\subsubsection*{Visualization of the data}
+\subsubsection{Likelihood inference approach}
+In this sub-section, we fit the three basic multilevel linear models starting with a varying intercept model with no predictors (Model 1), we then proceed to the varying intercept model with one predictor (Model 2), and the varying intercept and slope model (Model 3).
 
+\subsubsection*{Model 1: Varying intercept model with no predictors (Variance components model)}
+
+Consider the simplest multilevel model for students $i=1,...,n$ nested within schools $j=1,...,J$ and for whom we have examination scores as responses. We can write a two-level varying intercept model with no predictors using the usual two-stage formulation as:
+
+\begin{align}
+	y_{ij} = \alpha_j + \epsilon_{ij} \text{ where } \epsilon_{ij} \sim \mathcal{N}(0,\,\sigma^{2}_y)
+\end{align}
+
+\begin{align}
+	\alpha_j = \mu_\alpha + \mu_j \text{ where } \mu_j \sim \mathcal{N}(0,\,\sigma^{2}_\alpha)
+\end{align}
+where $y_{ij}$ is the examination score for the $ith$ student in the $jth$ school, $\alpha_j$ is the varying intercept for the $jth$ school, and $\mu_\alpha$ is the overall mean across schools. Alternatively, the model can be expressed in reduced form as
+
+\begin{align}
+	y_{ij} = \mu_\alpha + \mu_j + \epsilon_{ij},.
+\end{align}
+If we further assume that the student-level errors $\epsilon_{ij}$ are normally distributed with mean $0$ and variance $\sigma^{2}_y$, and that the school-level varying intercepts $\alpha_j$ are normally distributed with mean $\mu_\alpha$ and variance $\sigma^{2}_\alpha$, then the model can be expressed as
+
+\begin{align}
+	y_{ij} =  \sim \mathcal{N}(\alpha_j,\,\sigma^{2}_y)
+\end{align}
+
+\begin{align}
+	\alpha_j =  \sim \mathcal{N}(\mu_\alpha,\,\sigma^{2}_\alpha)
+\end{align}
+This model can then be fit using a maximum likelihood package in R called \textit{lmer()}. We specify an intercept (the predictor “1”) and allow it to vary by the level-2 identifier (school). We also specify the \textit{REML = FALSE} option to obtain maximum likelihood (ML) estimates as opposed to the default restricted maximum likelihood (REML) estimates.
 
 
 \subsection{Looking Deeper into the Baysian Approach: Robustness Checks}
