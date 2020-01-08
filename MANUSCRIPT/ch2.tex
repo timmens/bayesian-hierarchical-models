@@ -3,10 +3,9 @@ In the following we consider hierarchical models, when they are applicable and h
 We begin by presenting the idea of hiearchical data and modeling.
 Then we show how to solve a simple model analytically, before ending the section with introducing two main ideas.
 One, hierarchical linear models, arguably the most important subclass of hiearchical models.
-And two, a method to sample from the posteriors arising in more complex hierarchical models.
+And two, a method to sample from the posteriors arising in complex settings.
 
 \subsection{Hierarchical Data and Modeling}
-
 Here we consider what makes data hierarchical and how we can use this component to model additional structure.
 Hierarchical data is present if the data can be clustered on some level; e.g. children in schools, survey responses on different years in different states or experiments in multiple labs.
 From the examples we see that there must not be a clear \emph{hierarchy} defined on the data.
@@ -48,18 +47,18 @@ We link the two by writing $j[i]$ for the index of the group to which individual
 The main idea behind hierarchical modeling is that we build (simple) models on each level while using the dependent variables from higher levels as input parameters on lower levels.
 For a general (two-level) case we may write
 \begin{align}
-  y_i \mid \theta_j &\sim p(y_i \mid x_i, \theta_j) \,,\\
+  y_i \mid \theta_{j[i]} &\sim p(y_i \mid x_i, \theta_{j[i]}) \,,\\
   \theta_j \mid \phi &\sim p(\theta_j \mid u_j, \phi) \,,\\
   \phi &\sim p(\phi \mid \zeta) \text{ with } \zeta \text{ fixed } \,,
 \end{align}
 where we suppress the dependence on $x_i$ and $u_j$ by assuming they are fixed.
 In the first level we model the observations $y_i$ depending on the covariates $x_i$ and parameters $\theta_j$.
-As in a classical Bayesian model we continue by modeling the parameters.
-However in contrast to section 2 we do not just assume some prior distribution for the parameters but we explicitly model the parameter.
-From a Bayesian viewpoint this can be seen as a generalization of the prior.
+As in a classical Bayesian model we continue by modeling the parameters; However, in contrast to section 2 we do not just assume some prior distribution for the parameters but we \emph{explicitly} model the parameter.
+From a Bayesian viewpoint this can be seen as a generalization to prior modeling.
 Despite this Bayesian interpretation, the first two equations define a proper non-Bayesian hierarchical model.
+We will see that in the linear case these models are well known in the frequentist world as \emph{mixed effects models} or \emph{random coefficient models}.
 To put the Bayesian in Bayesian hiearchical model we have to assign a prior distributions on the parameters $\phi$.
-Therefore one often speaks of priors $\theta_j$ and \emph{hyperpriors} $\phi$.
+As $\phi$ are themselves parameters for the parameter $\theta_j$, one often speaks of priors on $\theta_j$ and \emph{hyperpriors} on the \emph{hyperparameter} $\phi$.
 
 \begin{figure}[!ht]
 \begin{center}
@@ -72,7 +71,7 @@ Therefore one often speaks of priors $\theta_j$ and \emph{hyperpriors} $\phi$.
   \node[vertex,right=of phi] (theta) {$\theta_{j[i]}$};
   \node[vertex,below right= 1cm and 2.5cm of theta] (y) {$y_i$};
   \node[rectangle, draw=black, minimum size=0.9cm,left= of phi] (zeta) {$\zeta$};
-  \node[rectangle, draw=black, minimum size=0.9cm,above=1.5cm of theta] (u) {$u_j$};
+  \node[rectangle, draw=black, minimum size=0.9cm,above=1.5cm of theta] (u) {$u_{j[i]}$};
   \node[rectangle, draw=black, minimum size=0.9cm, above right=1cm and 2.5cm of y] (x) {$x_i$};
   \draw[->]
     (phi) edge (theta)
@@ -83,35 +82,52 @@ Therefore one often speaks of priors $\theta_j$ and \emph{hyperpriors} $\phi$.
 \end{tikzpicture}
 \end{center}
 \label{tik:general_sem}
-\caption{A general two-level Bayesian hierarchical model depicted as a directed acyclical graph. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
+\caption{A generic two-level Bayesian hierarchical model depicted as a directed acyclical graph modeling a single generic observation. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
 \end{figure}
 
 
+Figure \ref{tik:general_sem} illustrates the conditional dependence structure of modeling a generic observation $y_i$.
+In contrast, consider figure \ref{tik:group_sem} which illustrates the conditional dependence structure when modeling a generic observation $y(j)$ in group $j$.
+We depict random quantities in circles and fixed quantities in squares.
+Not only do these graphical representations help with understanding the structure of the model but we will see that when solving for the posterior they give an immediate way to check which parameters are conditionally independent.
 
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}%
+  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
+  node distance=2.5cm,
+  >=latex,
+  on grid]
+  \node[vertex] (phi) {$\phi$};
+  \node[rectangle, draw=black, minimum size=0.9cm,left=2cm of phi] (zeta) {$\zeta$};
+  \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
+  \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
+  \node[below=1.5cm of phi] (dots1) {$\dots$};
+  \node[rectangle, draw=black, minimum size=0.9cm, left=2cm of theta1] (u1) {$u_1$};
+  \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of thetaJ] (uJ) {$u_J$};
+  \node[vertex,below=2cm of theta1] (y1) {$y(1)$};
+  \node[vertex,below=2cm of thetaJ] (yJ) {$y(J)$};
+  \node[rectangle, draw=black, minimum size=0.9cm, left=2cm of y1] (x1) {$x(1)$};
+  \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of yJ] (xJ) {$x(J)$};
+  \node[below=3.5cm of phi] (dots1) {$\dots$};
+  \draw[->]
+    (zeta) edge (phi)
+    (phi) edge (theta1)
+    (phi) edge (thetaJ)
+    (u1) edge (theta1)
+    (uJ) edge (thetaJ)
+    (theta1) edge (y1)
+    (thetaJ) edge (yJ)
+    (x1) edge (y1)
+    (xJ) edge (yJ);
+\end{tikzpicture}
+\end{center}
+\label{tik:group_sem}
+\caption{A generic two-level Bayesian hierarchical model depicted as a directed acyclical graph modeling generic observations $y(j)$ in groups $j = 1,\mydots, J$. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
+\end{figure}
 
-
-\newpage
-\subsubsection*{Formal Example}
-Let us assume that we observe test scores $y_i$ for $i = 1,\mydots,n$ children
-in $j=1,\mydots,J$ different schools. For convenience let us write $j[i]$ for child
-$i$'s school. We assume that for all children in school $j$, the outcome $y_i$
-follows a common data generating process governed by some parameter $\theta_j$.
-To make this model hierarchical we assume that these $\theta_1,\mydots,\theta_J$
-also follow a common data generating process governed by some hyperparameter $\phi$.
-This gives
-\begin{align}
-  p(y_i \mid \theta_{j[i]}, \phi) = p(y_i \mid \theta_{j[i]})
-\end{align}
-for our model of test scores given all parameters. Note that since $\phi$ only
-affects $y_i$ through $\theta_{j[i]}$ we can drop it from the conditioning set.
-Further we model the common structure of the $\theta_j$'s through $p(\theta_j \mid \phi)$.
-To analyze this problem using Bayesian techniques we must at last assign a prior
-to $\phi$, that is, we define $p(\phi)$.
-
-\subsection{Solving for the posterior analytically}
-As in the previous section, we will first present the analytical derivation of
-the posterior in a simple normal hierarchical model. We continue using the
-example of modeling observed test scores of children in different schools.
+\subsection{Solving for the Posterior Analytically}
+As in the previous section we consider first an analytical derivation of the posterior distributions using a simple normal model, before dealing with more complex settings.
 
 The objects of our interest are given by the joint posterior $p(\theta_j, \phi \mid y)$
 and its two marginal posteriors. In order to derive these analytically we must
@@ -119,6 +135,9 @@ make convenient distributional assumptions. For the sake of exposition, we choos
 
 
 \subsection{Hierarchical Linear Models}
+The following subsection presents hierarchical linear models, an important subclass of the general multi-level model.
+As in classical statistics linear models are usually simpler to estimate and easier to interpret.
+The standard critique on linear models from classical statistics also applies here; however, we will see that due to the hiearchical nature we are able to model very complex structure even under a linearity assumption.
 
 \subsubsection{Varying Slopes Model With One Predictor In Each Level}
 We assume that units $i = 1,\mydots,n$ can be divided into $J$ distinct groups.
