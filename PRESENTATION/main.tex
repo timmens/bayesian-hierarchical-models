@@ -1,0 +1,76 @@
+\documentclass[serif, mathsansserif]{beamer}
+\usepackage{preamble}
+
+
+% titlepage
+\title{\raggedright\selectfont{\color{black}\textls[200]{\uppercase{Bayesian Hierarchical Models}}}}
+
+\author{\raggedright\selectfont{\color{black}\textls[200]{Linda Maokomatanda\\Tim Mensinger\\Markus Schick}}}
+
+\institute{\raggedright\selectfont\large\textls{University of Bonn}}
+\date{}
+
+
+% sectiontitlepage
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \itshape \huge \insertsectionhead
+  \vfill
+  \end{frame}
+}
+
+% settings
+\setbeamertemplate{frametitle}{\vspace*{0.7cm}\insertframetitle}
+\setbeamerfont{frametitle}{series=\itshape, size=\LARGE}
+\setbeamercolor{frametitle}{fg=black}
+
+% settings for tableofcontents
+\setbeamercolor{section in toc}{fg=black}
+\setbeamerfont{section in toc}{series=\itshape, size=\Large}
+
+% settings for section title
+\setbeamerfont{section title}{series=\itshape, size=\huge}
+
+% settings frame body
+\setbeamerfont*{standout}{series=\bfseries, size=\huge}
+
+% deactivate navigation symbols
+\setbeamertemplate{navigation symbols}{}
+\setbeamerfont{footline}{size=\large}
+\setbeamercolor{footline}{fg=black}
+
+\begin{document}
+
+\begin{frame}[noframenumbering,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}[noframenumbering, plain]
+  \tableofcontents
+\end{frame}
+% frame numbering after titlepage
+\setcounter{framenumber}{0}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+\input{part1}
+\input{part2}
+\input{part3}
+\input{part4}
+
+\begin{frame}[noframenumbering, plain]
+  \vfill
+  \centering
+  \huge \url{https://github.com/timmens/bayesian-hierarchical-models}
+  \vfill
+\end{frame}
+
+%\bibliographystyle{chicago}
+%\bibliography{bibliography}
+
+\end{document}
