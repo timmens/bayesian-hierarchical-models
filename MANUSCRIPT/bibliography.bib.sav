@@ -1,3 +1,4 @@
+% Encoding: UTF-8
 @book{gelmanbda04,
   added-at = {2009-10-28T04:42:52.000+0100},
   author = {Gelman, Andrew and Carlin, John B. and Stern, Hal S. and Rubin, Donald B.},
@@ -313,3 +314,5 @@ url = {http://mc-stan.org/},
   volume = {Analytical methods for social research},
   year = 2007
 }
+
+@Comment{jabref-meta: databaseType:bibtex;}

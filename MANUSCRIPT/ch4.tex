@@ -17,7 +17,7 @@ series models (VARs), factor augmented VARs and time-varying parameter extension
 We now demonstrate below, an application to real world data of a comparison between the likelihood (frequentist)  and the bayesian inference approaches. For each of these approaches, we will fit three basic multilevel linear models: (a) a varying intercept model with no predictors (Model 1), (b) a varying intercept model with one predictor (Model 2), and (c)  a varying intercept and slope model (Model 3). We will use the \textit{lmer} function in the \textit{lme4} package for R to determine maximum likelihood estimates of the parameters in linear mixed-effects models. We then the use \textit{rstanarm} package (also in R) to implement a fully Bayesian approach.
 
 
- 
+
 
 \subsection{Frequentist and Bayesian Approaches in Practice: Application to Education Data}
 
@@ -82,7 +82,7 @@ Residual             190.77   13.812
 Number of obs: 1725, groups:  school, 73
 
 Fixed effects:
-	   Estimate    Std. Error  t value
+Estimate    Std. Error  t value
 (Intercept)    73.72       1.11    66.4
 
 \end{Verbatim}
@@ -93,11 +93,11 @@ Under the `Fixed effects` part of the output, we see that the intercept $\mu_{\a
 The varying intercept model\footnote{Equivalently, the model can be expressed using a two-stage formulation as $$y_{ij} = \alpha_j + \beta x_{ij} +\epsilon_{ij},$$ $$\alpha_j = \mu_\alpha + u_j,$$ or in a reduced form as $$y_{ij} = \mu_\alpha + \beta x_{ij} + u_j + \epsilon_{ij}$$ where $\epsilon_{ij} \sim N(0, \sigma_{y}^{2})$ and $u_{j}\sim N(0, \sigma_{\alpha}^{2})$.} with an indicator variable for being female $x_{ij}$ can be written as
 
 \begin{align}
-y_{ij} \sim N(\alpha_{j}+\beta x_{ij} , \sigma_{y}^{2}),
+	y_{ij} \sim N(\alpha_{j}+\beta x_{ij} , \sigma_{y}^{2}),
 \end{align}
 
 \begin{align}
-\alpha_{j}\sim N(\mu_{\alpha}, \sigma_{\alpha}^{2}).
+	\alpha_{j}\sim N(\mu_{\alpha}, \sigma_{\alpha}^{2}).
 \end{align}
 The equation of the average regression line across schools is $\mu_{ij}=\mu_{\alpha}+\beta x_{ij}$. The regression lines for specific schools will be parallel to the average regression line (having the same slope $\beta$), but differ in terms of its intercept $\alpha_{j}$. This model can be estimated by adding `female` to the model, which will allow only the intercept to vary by school, and while keeping the "slope" for being female constant across schools as shown below:
 
@@ -180,7 +180,7 @@ Third, in order to specify a prior for the variances and covariances of the vary
 As we see in the snippet of the summary below, the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $73.75$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $73.72$.  The point estimate for $\sigma_{\alpha}$ from the bayesian estimation is $8.92$, which is larger than the ML estimate ($8.67$). This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$.
 
 \begin{Verbatim}[frame=single]
-            Median MAD_SD
+Median MAD_SD
 (Intercept) 73.75    1.1  
 
 Error terms:
@@ -197,12 +197,12 @@ We can extend the model as we did in the ML framework by including observed expl
 
 \newpage
 \begin{Verbatim}[frame=single]
-            Median MAD_SD
+Median MAD_SD
 (Intercept) 69.7    1.2  
 femaleF      6.7    0.7  
 
 Auxiliary parameter(s):
-      Median MAD_SD
+Median MAD_SD
 sigma 13.4    0.2  
 
 Error terms:
@@ -216,8 +216,8 @@ As seen from the results above, the point estimates of $\mu_{\alpha}$, $\beta$, 
 
 We also fit Model 3 using the baysian estimation framework.  Note that here, we use the default priors which are mostly similar to what was done in Model 1.  Additionally, we are also required to specify a prior for the covariance matrix $\Sigma$ for $\alpha_j$ and $\beta_j$ in this Model.  \textit{stan\_lmer} decomposes this covariance matrix (up to a factor of $\sigma_y$) into (i) a correlation matrix $R$ and (ii) a matrix of variances $V$, and assigns them separate priors as shown below.
 
-$$
-\begin{aligned}
+
+\begin{align}
 \Sigma &= 
 \left(\begin{matrix} 
 \sigma_\alpha^2 & \rho\sigma_\alpha \sigma_\beta \\ 
@@ -240,8 +240,8 @@ $$
 0&\sigma_\beta/\sigma_y 
 \end{matrix} \right)\\ 
 &= \sigma_y^2VRV.
-\end{aligned}
-$$
+\end{align}
+
 
 The correlation matrix $R$ is 2 by 2 matrix with 1's on the diagonal and $\rho$'s on the off-diagonal. \textit{stan\_lmer} assigns it an LKJ \footnote{For more details about the LKJ distribution, see \url{http://www.psychstatistics.com/2014/12/27/d-lkj-priors/} and \url{http://mc-stan.org/users/documentation/case-studies/lotka-volterra-predator-prey.html}} prior (\cite{lewandowski2009generating}), with regularization parameter 1.  This is equivalent to assigning a uniform prior for $\rho$.  The more the regularization parameter exceeds one, the more peaked the distribution for $\rho$ to take the value 0.  
 
