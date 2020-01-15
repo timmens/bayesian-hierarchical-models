@@ -70,22 +70,7 @@ We can then fit a linear mixed model by maximum likelihood (ML).
 %\end{lstlisting}
 We specify an intercept (the predictor “1”) and allow it to vary by the level-2 identifier (school). We also specify the \textit{REML = FALSE} option to obtain maximum likelihood (ML) estimates as opposed to the default restricted maximum likelihood (REML) estimates.
 
-\begin{Verbatim}[frame=single]
-Linear mixed model fit by maximum likelihood  ['lmerMod']
-Formula: course ~ 1 + (1 | school)
-Data: GCSE
-
-Random effects:
-Groups   Name        Variance Std.Dev.
-school   (Intercept)  75.24    8.674  
-Residual             190.77   13.812  
-Number of obs: 1725, groups:  school, 73
-
-Fixed effects:
-Estimate    Std. Error  t value
-(Intercept)    73.72       1.11    66.4
-
-\end{Verbatim}
+\textcolor{red}{input results here}
 
 Under the `Fixed effects` part of the output, we see that the intercept $\mu_{\alpha}$, averaged over the population of schools, is estimated as $\textbf{73.72}$. Under the `Random effects` part of the output, we see that the between-school standard deviation $\sigma_{\alpha}$ is estimated as $\textbf{8.67}$ and the within-school standard deviation $\sigma_{y}$ as $\textbf{13.81}$. 
 
@@ -107,23 +92,7 @@ The equation of the average regression line across schools is $\mu_{ij}=\mu_{\al
 %REML = FALSE).
 %\end{lstlisting}
 
-\begin{Verbatim}[frame=single]
-Random effects:
-Groups   Name        Variance Std.Dev.
-school   (Intercept)  76.65    8.755  
-Residual             179.96   13.415  
-Number of obs: 1725, groups:  school, 73
-
-Fixed effects:
-Estimate Std. Error t value
-(Intercept)   69.730      1.185   58.87
-femaleF        6.739      0.678    9.94
-
-Correlation of Fixed Effects:
-(Intr)
-femaleF -0.338
-
-\end{Verbatim}
+\textcolor{red}{input results here}
 
 The average regression line across schools is thus estimated as $\hat{\mu}_{ij} = \textbf{69.73} + \textbf{6.74} x_{ij}$, with $\sigma_\alpha$ and $\sigma_y$ estimated as $8.76$ and $\textbf{13.41}$ respectively.  Treating these estimates of $\mu_\alpha$, $\beta$, $\sigma^2_{y}$, and $\sigma^2_{\alpha}$ as the true parameter values, we can then obtain the Best Linear Unbiased Predictions (BLUPs) for the school-level errors $\hat{u}_j = \hat{\alpha}_{j} - \hat{\mu}_{\alpha}$. 
 
@@ -140,24 +109,8 @@ $$y_{ij}\sim N(\alpha_{j}+\beta_{j}x_{ij} , \sigma_y ^2 ),$$ $$\left( \begin{mat
 
 Note that now we have variation in the $\alpha_{j}$'s and the $\beta_{j}$'s, and also a correlation parameter $\rho$ between $\alpha_j$ and $\beta_j$. This model can be fit using \textit{lmer()} as follows:
 
-%\newpage
-\begin{Verbatim}[frame=single]
-Random effects:
-Groups   Name        Variance Std.Dev. Corr 
-school   (Intercept) 102.94   10.146        
-femaleF      47.94    6.924   -0.52
-Residual             169.79   13.030        
-Number of obs: 1725, groups:  school, 73
+\textcolor{red}{input results here}
 
-Fixed effects:
-Estimate Std. Error t value
-(Intercept)   69.425      1.352  51.336
-femaleF        7.128      1.131   6.302
-
-Correlation of Fixed Effects:
-(Intr)
-femaleF -0.574
-\end{Verbatim}
 In this model, the residual within-school standard deviation is estimated as $\hat{\sigma}_{y}=13.03$. The estimated standard deviations of the school intercepts and the school slopes are $\hat{\sigma}_{\alpha}= 10.15$ and $\hat{\sigma}_{\beta}=6.92$ respectively. The estimated correlation between varying intercepts and slopes is $\hat{\rho} = -0.52$. 
 
 \subsubsection{Full Bayesian Inference Approach}
@@ -179,37 +132,15 @@ Third, in order to specify a prior for the variances and covariances of the vary
 \subsubsection*{Model 1 results}  
 As we see in the snippet of the summary below, the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $73.75$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $73.72$.  The point estimate for $\sigma_{\alpha}$ from the bayesian estimation is $8.92$, which is larger than the ML estimate ($8.67$). This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$.
 
-\begin{Verbatim}[frame=single]
-Median MAD_SD
-(Intercept) 73.75    1.1  
-
-Error terms:
-Groups   Name         Std.Dev.
-school   (Intercept)  8.92    
-Residual              13.8    
-Num. levels: school 73 
-\end{Verbatim}
+\textcolor{red}{input results here}
 
 When using the bayesian estimation function, standard errors are obtained by considering the median absolute deviation (MAD) of each draw from the median of those draws.  It is well known that ML tends to underestimate uncertainties because it relies on point estimates of hyperparameters. Full Bayes, on the other hand, propagates the uncertainty in the hyperparameters throughout all levels of the model and provides more appropriate estimates of uncertainty.
 
 \subsubsection*{Model 2: Varying intercept model with a single predictor}
 We can extend the model as we did in the ML framework by including observed explanatory variables at the student level $x_{ij}$, in this example, an indicator variable for being female. A simple varying intercept model with one predictor at the student level can be written as $y_{ij} \sim N(\alpha_{j} + \beta x_{ij}, \sigma_{y}^{2})$ and $\alpha_{j} \sim N(\mu_{\alpha}, \sigma_{\alpha}^{2})$. We use noninformative prior distributions for the hyperparameters ($\mu_{\alpha}$ and $\sigma_{\alpha}$) as specified in Model. Additionally, the regression coefficient $\beta$ is given normal prior distributions with mean 0 and standard deviation 100. This states, roughly, that we expect this coefficient to be in the range $(-100, 100)$, and if the ML estimate is in this range, the prior distribution is providing very little information for the inference.  
 
-\newpage
-\begin{Verbatim}[frame=single]
-Median MAD_SD
-(Intercept) 69.7    1.2  
-femaleF      6.7    0.7  
+\textcolor{red}{input results here}
 
-Auxiliary parameter(s):
-Median MAD_SD
-sigma 13.4    0.2  
-
-Error terms:
-Groups   Name        Std.Dev.
-school   (Intercept)  9      
-Residual             13    
-\end{Verbatim}
 As seen from the results above, the point estimates of $\mu_{\alpha}$, $\beta$, and $\sigma_{y}$ are almost identical to the ML fitted estimates. However, partly because ML ignores the uncertainty about $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$, the Bayesian estimate for $\sigma_{\alpha}$ ($9.0$) is larger than the ML estimate ($8.8$), as with Model 1.
 
 \subsubsection*{Model 3: Varying intercept and slope model with a single predictor}
