@@ -1,9 +1,25 @@
 \section{Bayesian Thinking}
 
 \begin{frame}{Probabilistic Modeling}
+  \Large{
+  \begin{itemize}
+    \item[] \emphcol{Data:} $Z_i = (y_i, X_i) \in \mathcal{Z} \quad (=\reals \times \reals^K$)\pause
+    \item[] \emphcol{Model:} Probability distribution $p$ on $\mathcal{Z}$\pause
+    \item[] \emphcol{In Practice:} Restrict attention to $p \in \mathcal{M}$\pause
+    \item[] \emphcol{Parameterize:} $\mathcal{M} \leftrightarrow \Theta \subset \reals^d$\pause
+    \item[] \emphcol{Example:} Family of normal distributions\pause\\
+    \quad\quad\quad\quad (See \only<6>{blackboard)}\pause \only<6->{\st{blackboard} whiteboard)}
+  \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}{Schools of Thought}
+  \Large{
+  \begin{itemize}
+    \item[] \emphcol{Frequentist:}
+    \item[] \emphcol{Bayesian:}
+  \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}{Frequentist}
@@ -13,15 +29,54 @@
 \end{frame}
 
 \begin{frame}{Bayes' Theorem}
+  \Large{
+    \begin{align*}
+      p(\theta \mid \text{data}) = \frac{p(\text{data} \mid \theta) p(\theta)}{p(\text{data})} \propto p(\text{data} \mid \theta) p(\theta)
+    \end{align*}\pause
+    \vfill
+    \begin{align*}
+      posterior = \frac{likelihood \times prior}{evidence} \propto likelihood \times prior
+    \end{align*}
+  }
 \end{frame}
 
 \begin{frame}{Solving for the Posterior Analytically}
+  \Large{
+  \begin{itemize}
+    \item[] \emphcol{Setting:} $\{y_i: i=1,\mydots,n\}$ with $y_i \overset{\text{iid}}{\sim} \normal{\mu, \sigma^2}$\\
+    \quad\quad\quad\quad and $\sigma^2$ known\pause
+    \item[] \emphcol{Likelihood:} $p(y \mid \mu) = \prod_i p(y_i \mid \mu)$\pause
+    \item[] \emphcol{Prior:} $p(\mu)$\pause
+    \item[] \emphcol{Posterior:} $p(\mu \mid y)\pause \propto p(y \mid \mu) p(\mu)$\pause
+    \item[] \emphcol{Goal:} Infer distribution of $\mu \mid y$\pause\\
+    \quad\quad\, Why?
+  \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}{Uninformative Prior}
+  \Large{
+  Let $p(\mu) \propto 1$.\pause\\
+  Note that $p(y \mid \mu) \propto \EXP{-\frac{1}{2 \sigma^2}\sum_i (y_i - \mu)^2}$.\pause\\
+  Hence
+  \begin{align*}
+    p(\mu \mid y) &\propto \EXP{-\frac{1}{2 \sigma^2}\sum_i (y_i - \mu)^2}\\
+    &\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2}
+  \end{align*}\pause
+  $\implies \mu \mid y \sim \normal{\bar{y}, \sigma^2 / n}$
+  }
 \end{frame}
 
 \begin{frame}{Conjugate Prior}
+  \Large{
+  Let $\mu \sim \normal{\mu_0, \sigma_0^2}$.\pause\\
+  Hence
+  \begin{align*}
+    p(\mu \mid y) &\propto p(y \mid \mu) p(\mu)\\
+    &\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2 -\frac{1}{2\sigma_0^2} (\mu - \mu_0)^2}
+  \end{align*}\pause
+  $\implies \mu \mid y \sim \normal{\bar{y}, \sigma^2 / n}$
+  }
 \end{frame}
 
 \begin{frame}

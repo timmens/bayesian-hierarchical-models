@@ -7,6 +7,9 @@
 %colors
 \definecolor{mycol}{rgb}{0.65, 0.16, 0.16}
 
+%emph
+\newcommand{\emphcol}[1]{\textcolor{mycol}{\emph{#1}}}
+
 % titlepage
 \title{\raggedright\selectfont{\color{black}\textls[200]{\uppercase{Bayesian Hierarchical Models}}}}
 
@@ -34,14 +37,14 @@
     \usebeamerfont{footline}%
     \usebeamercolor[fg]{footline}%
     \hspace{1em}%
-    \insertframenumber/\inserttotalframenumber
+    \textcolor{mycol}{\insertframenumber/\inserttotalframenumber}
 }
 }
 
 % settings
 \setbeamertemplate{frametitle}{\vspace*{0.7cm}\insertframetitle}
 \setbeamerfont{frametitle}{series=\itshape, size=\LARGE}
-\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{frametitle}{fg=mycol}
 
 % settings for tableofcontents
 \setbeamercolor{section in toc}{fg=black}
@@ -73,7 +76,7 @@
     \usebeamerfont{footline}%
     \usebeamercolor[fg]{footline}%
     \hspace{1em}%
-    \insertframenumber/\inserttotalframenumber
+    \textcolor{mycol}{\insertframenumber/\inserttotalframenumber}
 }
 \input{part1}
 \input{part2}
