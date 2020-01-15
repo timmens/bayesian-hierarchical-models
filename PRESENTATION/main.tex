@@ -1,6 +1,9 @@
 \documentclass[serif, mathsansserif]{beamer}
 \usepackage{preamble}
 
+% graphics path
+\graphicspath{graphics/}
+
 
 % titlepage
 \title{\raggedright\selectfont{\color{black}\textls[200]{\uppercase{Bayesian Hierarchical Models}}}}
@@ -13,12 +16,22 @@
 
 % sectiontitlepage
 \AtBeginSection[]{
+\setbeamertemplate{footline}[frame number]{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
   \begin{frame}
   \vfill
   \centering
   \itshape \huge \insertsectionhead
   \vfill
   \end{frame}
+\addtocounter{framenumber}{-1}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
 }
 
 % settings
@@ -63,7 +76,11 @@
 \input{part3}
 \input{part4}
 
-\begin{frame}[noframenumbering, plain]
+
+\setbeamertemplate{footline}[frame number]{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\begin{frame}[noframenumbering]
   \vfill
   \centering
   \huge \url{https://github.com/timmens/bayesian-hierarchical-models}
@@ -72,5 +89,4 @@
 
 %\bibliographystyle{chicago}
 %\bibliography{bibliography}
-
 \end{document}
