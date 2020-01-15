@@ -2,12 +2,11 @@
 In this section we will introduce the core topics of Bayesian data analysis, and whenever possible compare proposed methods and results to their frequentist counterpart.
 As we will see, Bayesian statistics differs from mainstream statistics on a fundamental level; Thus, we have to start there.
 
-\textcolor{red}{What remains to be introduced:}
-\begin{enumerate}
-  \item Notation: $p(...)$
-\end{enumerate}
+Before beginning let us talk shortly about our notation.
+We try to use a standard notation whenever possible, nonetheless, we make one exception in that we write $p(X)$ for the probability density function of the random variable $X$, where $X$ might be scalar-valued or vector-valued.
+In cases where this leads to confusion we introduce a subscript as $p_X(\cdot)$.
 
-\subsection{(Probabilistic) Modeling}
+\subsection{Probabilistic Modeling}
 Before going further, let us first formalize our notion of stochastic modeling.
 Imagine being interested in some \textit{phenomena}, for example the effect of bigger class sizes on school children performance.
 Most phenomena cannot be observed directly and only manifest themself through some latent variable system.
@@ -29,15 +28,14 @@ For everything that follows let us therefore make the omnipresent assumption tha
 Next we discuss how the Bayesian and the classical mindset differ. In particular we focus on the predominant way of thinking for most of statistical history, \textit{frequentist statistics}. We do not aim at an exhaustive overview here nor do we presume that the individual statistician belongs to one and only one of the following categories.
 
 \textbf{Frequentist.} The frequentist approach assumes that the true data generating process is completely specified by an unkown but fixed quantity $\theta_0 \in \Theta$.
-\textcolor{red}{FOLLOWING IS NOT TRUE, MAKE IT CLEAR WHAT YOU MEAN.}
-Either implicitly or explicitly we define the \textit{likelihood} $p(z; \theta)$ by modeling the observational process for $z \in \mathbb{Z}$ using a parameterization $\theta$.
+For a sensible comparison we focus on approaches where the \emph{likelihood function} $p(z; \theta)$ is defined either explicitly or implicitly during the modeling process, as for example in maximum-likelihood estimation.
 The main challenges include finding a (point) estimator for $\theta_0$, quantifying the uncertainty of the estimate and testing hypothesis.
 One fundamental idea which stretches over all these topics is the interpretation of probability as the limit of an infinite sequence of relative frequencies ---hence the name.
 That is, the probability of an event happening is just the limit of the frequency of that event happening over infinitely many independent experiments.
 What are the implications of this understanding of probability?
 Many interesting questions do not provide us with a thought experiment in which we can consider an ever increasing sequence of experiments.
 In these cases using probability is either trivial or lacking an indisputable interpretation.
-As we use the mathematical rigor of probability theory in our formal derivations, we will obtain (mathematically) correct results; however, the interpretation of these results might be highly unintuitive ---for example consider confidence intervals.
+As we use the mathematical rigor of probability theory in our formal derivations, we will obtain (mathematically) correct results; however, the interpretation of these results might be highly unintuitive ---a known example is provided by the interpreation of confidence intervals; is the true value contained in the given confidence interval? We do not know, but were we to repeat the analysis with newly drawn data infinitely often, the true value would be in the interval 95\% of the time.
 Since $\theta_0$ is fixed all probability statements regarding this object are trivial, that is, either one or zero. This propagates to the problem of hypothesis testing.
 All hypothesis are either true or false and therefore have probabilities of one or zero.
 A hypothesis $H_0$ is rejected if conditional on $H_0$ being true the probability of observing the data in the given sample is lower than some threshold, i.e. $P(\text{data} \mid H_0) < \alpha$.
@@ -94,19 +92,14 @@ As it will be of major importance in the subsequent sections we remind the reade
   We write $X \sim \scaledInvChi{\nu, \tau^2}$ to denote that the random variable $X$ follows a scaled inverse $\chi^2$ distribution with parameters $\nu$ and $\tau^2$.
 \end{definition}
 
-\textcolor{red}{
-\begin{definition}{(Normal scaled inverse $\chi^2$ distribution).}
-\end{definition}
-}
-
 \subsubsection*{Uninformative Prior}
 We start our first Bayesian analysis by considering a prior which contains virtually no information.
 This results in an analysis being mainly, if not completely, driven by the likelihood.
 A common assumption is independence of the individual priors, that is $p(\theta) = p(\mu, \sigma^2) = p(\mu) p(\sigma^2)$.
 A natural choice of declaring full ignorance of prior information is to assign a prior over the complete domain of the random parameter. For our case this mean $p(\mu) \propto 1$.
-We note that this does not define proper proability distribution, which will not matter in this case but can lead to problems in others.\footnote{LINK TO PAPER}
+We note that this does not define proper proability distribution, which will not matter in this case but can lead to problems in others \textcolor{red}{(Will I find a nice paper which describes this?)}.
 Since the variance is restricted to be positive we impose a uniform prior on the log-transform thereof: $p(\log \sigma) \propto 1$.
-This leads to the improper prior\footnote{\textcolor{red}{See appendix for a derivation.}}
+Using that $x \mapsto \text{exp}^2(x)$ is one-to-one we can apply standard methods, which yield the density of the transformed variable
 \begin{align}
   p(\mu, \sigma^2) \propto (\sigma^2)^{-1} \,.
 \end{align}
@@ -145,7 +138,7 @@ Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$
  Parameter & ML Estimate & ML Variance & MAP & Posterior Mean & Posterior Variance\\[0.5ex]
  \hline
  $\mu$ & $\bar{y}$ & $\sigma^2/n$ & $\bar{y}$ & $\bar{y}$ & $s^2 / n$\\
- $\sigma^2$ & $\frac{n-1}{n} s^2$ & $2 \sigma^4 /n$ & ? & $\frac{n-1}{n-3} s^2$ & $\frac{2 (n-1)^2}{(n-3)^2 (n-5)} s^4$\\
+ $\sigma^2$ & $\frac{n-1}{n} s^2$ & $2 \sigma^4 /n$ & $\frac{n-1}{n+1} s^2$ & $\frac{n-1}{n-3} s^2$ & $\frac{2 (n-1)^2}{(n-3)^2 (n-5)} s^4$\\
  \end{tabular}
  }
 \caption{\small {Comparison of Bayesian estimates using an uninformative prior and ML estimates. See appendix for a detailed derivation.}}
@@ -177,7 +170,7 @@ Here we utilize the equality $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2
 By looking at the likelihood (equation \ref{eq:likelihood2}) we note that in order to \emph{not} change the inherent structual dependence on the parameters, $\mu \mid \sigma^2$ has to be distributed according to $\normal{\mu_0, \sigma^2 / \kappa_0}$ with so called \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
 Similary, we note that an informative prior for $\sigma^2$ has to respect the structure in which $\sigma^2$ appears in the likelihood.
 We achieve this when $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$ with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
-Following  \textcolor{red}{\citet{gelmanbda04}} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$ with corresponding density function
+Following \citet{gelmanbda04} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$ with corresponding density function
 \begin{align}
   p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]} \,.
 \end{align}
@@ -259,7 +252,7 @@ In this section we consider approaches that allow us to characterize the posteri
 
 For the rest of this section let us assume that we observe data $z \in \mathbb{Z}$ and can compute the likelihood $p(z \mid \theta)$ and prior $p(\theta)$ for $\theta \in \Theta$.
 As before, our goal lies in analyzing the posterior distribution given by $p(\theta \mid z) \propto p(z \mid \theta) p(\theta)$.
-Unlike before however, we now consider cases where the posterior is highly complex or even non-existent in analytical form, which happens for example when the likelihood contribution stems from a algorithmic computational model.
+Unlike before however, we now consider cases where the posterior is highly complex or even non-existent in analytical form, which happens for example when the likelihood contribution stems from an algorithmic computational model.
 
 Say we are somehow able to draw independent samples $\theta_1, \mydots, \theta_n$ from $p(\theta \mid z)$.
 By independence we get the well known result $\frac{1}{n} \sum_i h(\theta_i) \overset{d}{\longrightarrow} \mathcal{N} \left( \Exp{h(\theta) \mid z}, \var{h(\theta) \mid z} / \sqrt{n} \right)$, under mild conditions on $h$ and $p(\theta \mid z)$.
@@ -279,7 +272,7 @@ Hence, we could start a chain, let it run \emph{long enough} and at some point c
 In practice we never know for sure when a chain is run \emph{long enough}.
 In part 3 we present some measures that help during the application.
 Here we do what statisticians do best: obsess over central limit theorems.
-Under mild conditions we can get something similar to a law of large numbers for Markov chains (\textcolor{red}{see e.g. \citet{roberts2004}, fact 5}).
+Under mild conditions we can get something similar to a law of large numbers for Markov chains (see e.g. \citet{roberts2004}, fact 5).
 This tells us that if we run the chain forever, our average will eventually converge to the number we seek.
 However, forever is a very long time.
 That is why we focus on assumptions which admit a central limit theorem with the usual $\sqrt{n}$ convergence rate, as it allows us to make more rigorous statements about our confidence in the whereabouts of the estimator for large but finite samples.
@@ -290,7 +283,7 @@ That is why we focus on assumptions which admit a central limit theorem with the
   The following theorem presents two sets of assumptions which allow for the desired result.
   We remark that we will \emph{not} formally introduce all concepts and will provide only a heuristic explaination of the assumptions.
   This is due to the fact that Markov chain theory on general state spaces requires a good understanding of measure theory which we do not want to assume as a prerequisite.
-  The interested reader is refered to \textcolor{red}{\citet{meynandtweedie09}}.
+  The interested reader is refered to \citet{meynandtweedie09}.
   %A \emph{Markov chain} on the \emph{state space} $\Theta$ is a sequence of random variables $\{X_t : t \geqslant 0\}$ which assume values in $\Theta$ and fulfill the Markov property, that is
   %\begin{align}
   %P(X_{t+1} \in A \mid X_0 = x_0,\mydots,X_t=x_t) = P(X_{t+1} \in A \mid X_t=x_t) \,,
@@ -316,14 +309,14 @@ That is why we focus on assumptions which admit a central limit theorem with the
   \end{align}
 \end{theorem}
 \begin{proof}
-  See \textcolor{red}{\citet{cogburn1972}} for 1 and \textcolor{red}{\citet{roberts1997}} for 2.
+  See \citet{cogburn1972} for 1 and \citet{roberts1997} for 2.
 \end{proof}
 \textcolor{red}{Extend paragraph with heuristic explaination of assumption.}
 
 \subsubsection*{Metropolis-Hastings Algorithm}
 From the above we know that given a Markov chain with invariant distribution equal to the posterior distribution $p(\theta \mid z)$, we can treat the realizations of the chain as samples from the posterior, under some regularity conditions.
-Here we consider one method which implicitly defines such a chain, namely the Metropolis-Hastings algorithm \textcolor{red}{(\citet{Metropolis1953}, \citet{hastings70})}.
-For other approaches and more involved algorithms see for example \textcolor{red}{\citet{roberts2004}} or \textcolor{red}{\citet{liang10}}.
+Here we consider one method which implicitly defines such a chain, namely the Metropolis-Hastings algorithm (\citet{Metropolis1953}, \citet{hastings70}).
+For other approaches and more involved algorithms see for example \citet{roberts2004} or \citet{liang10}.
 
 \begin{algorithm}
 \caption{Metropolis-Hastings}\label{alg:metropolis-hastings}
@@ -346,23 +339,23 @@ For different settings different proposal distributions are appropriate.
 A common choice are so called \emph{random walk} proposals which add some random number to the current position of the chain; for example a gaussian random walk proposal is given by $q(\cdot \mid x_t) = \normal{\cdot \mid x_t, \sigma^2}$ or equivalently stated $y = x_t + \normal{0, \sigma^2}$.
 If the resulting chain has an unique invariant distribution we only know that after some time the chain starts behaving accordingly.
 Therefore in practice we choose $T = B + T^*$ and drop the first $B$ samples, where $B$, the so called \emph{burn-in} samples, is large and $T^*$ represents the actual size of samples we want to draw.
-See \textcolor{red}{\citet{sherlock2010}} for a recent survey on random walk proposals.
+See \citet{sherlock2010} for a recent survey on random walk proposals.
 
 The simplicity of the algorithm is remarkable, but the main question of concern is if the resulting Markov chain inherits favorable properties.
 \textcolor{red}{Need to list what properties can be derived in general and what can only be derived for specific proposal densities.}
 
 The ability to sample draws in complex settings using the Metropolis-Hastings algorithm (and other Markov chain Monte Carlo methods for that matter) made Bayesian statistics applicable for real problems.
-Still, \textcolor{red}{\citet{Au2001EstimationOS}} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \textcolor{red}{\citet{zuev08}} provide a geometric intution.
+Still, \citet{Au2001EstimationOS} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \citet{zuev08} provide a geometric intution.
 The following paragraph illustrates one of the problems of working in higher dimensions.
 
 \subsubsection*{Volume in Higher Dimensions}
-Classical MCMC methods can have too slow convergence rates; In higher dimensions this might be due to probability mass being distributed very far from where it is expected (\textcolor{red}{\citet{betancourt2017convergence}}). 
-In this paragraph we motivate this phenomena and in the following we present methods which utilize it.
+Classical MCMC methods can have too slow convergence rates; In higher dimensions this might be due to probability mass being distributed very far from where it is expected (\citet{betancourt2017convergence}).
+In this paragraph we motivate this phenomenon and in the following we present methods which utilize it.
 
 Let $B_d$ denote the unit ball in $\reals^d$ and define $C_d$ as the smallest cube containing $B_d$.
 We consider two questions.
-First, how does the ratio $\nicefrac{\vol{B_d}}{\vol{C_d}}$ changes as $d$ increases.
-And second, how does the ratio of probability mass distributed by a standard gaussian on these regions changes as $d$ increases.
+First, how does the ratio $\nicefrac{\vol{B_d}}{\vol{C_d}}$ change as $d$ increases.
+And second, how does the ratio of probability mass distributed by a standard gaussian on these regions change as $d$ increases.
 Since closed form expressions of volumina of geometrical objects exist the first questions needs little work.
 Similary we can easily compute $P(X \in C_d) = \left[\Phi(1) - \Phi(-1)\right]^d$, where $\Phi$ denotes the one-dimensional gaussian cumulative distribution function.
 However, to compute $P(X \in B_d)$ we need to integrate over the unit ball with respect to a gaussian distribution, which is non-trivial.
@@ -370,9 +363,8 @@ For this reason we decide to report an upper bound, as this is sufficient for ou
 In particular we compute $\overline{P(X \in B_d)} := \sup_{\bm{x} \in B_d} \phi(\bm{x}) \vol{B_d} = \sup_{\bm{x} \in B_d} \phi(\bm{x}) \int_{B_d}1 \mathrm{d}\bm{x} \geqslant \int_{B_d} \phi(\bm{x}) \mathrm{d}\bm{x} = P(X \in B_d)$.
 The results of these computations are depicted in table \ref{tab:vol_high_dim}.
 We note that both ratios tend to zero very fast as $d$ increases.
-With this phenomena in mind one has to be cautious when working in high-dimensional spaces, since the regions of interest, that is the regions containing non-negligible probability mass, might not be located where our low-dimensional intution says.
-This idea is formalized by the \emph{Gaussian Annulus Theorem} (\textcolor{red}{\citet{blum2017foundations}; theorem 2.9}) which states, inter alia, that most probability mass lies within an annulus centered at the origin with an average distance to the origin of $\sqrt{d}$.
-
+With this phenomenon in mind one has to be cautious when working in high-dimensional spaces, since the regions of interest, that is the regions containing non-negligible probability mass, might not be located where our low-dimensional intution says.
+This idea is formalized by the \emph{Gaussian Annulus Theorem} (\citet{blum2017foundations}; theorem 2.9) which states, inter alia, that most probability mass lies within an annulus centered at the origin with an average distance to the origin of $\sqrt{d}$.
 
 \begin{table}[ht]
 \def\arraystretch{1.3}
@@ -387,11 +379,30 @@ This idea is formalized by the \emph{Gaussian Annulus Theorem} (\textcolor{red}{
 \label{tab:vol_high_dim}
 \end{table}
 
+We have seen some unintuitive behavior in higher dimensions which might explain why regular methods do not work or only work very slowly.
+The next paragraph presents one method which utilizes this behavior to efficiently produce samples.
 
 \subsubsection*{Hamiltonian Monte Carlo}
 
-We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo}, a innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \textcolor{red}{\citet{duane87}}.
+We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo} (HMC), a innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \citet{duane87}.
 There are of course multiple MCMC algorithms which work in higher dimensions with many more being actively developed.
-Here we focus on Hamiltonian Monte Carlo as it is the main algorithm used in the probabilistic programming language STAN \textcolor{red}{(\citet{standev2018stancore})}, which we will be using in our Monte Carlo study and application part.
+Here we focus on HMC as it is the main algorithm used in the probabilistic programming language STAN (\citet{standev2018stancore}), which we will be using in our Monte Carlo study and application part.
 
-\textcolor{red}{EXPLAIN HMC HERE.}
+We note that it is impossible to provide a rigorous introduction to HMC here, which is why we will focus on the general intution and refer to a series of papers by Michael Betancourt and several coauthors on, the geometric foundations of HMC (\citet{betancourt2014geometric}); geometric ergodicity of HMC (\citet{livingstone2016geometric}) and HMC for hiearchical models (\citet{betancourt2013hamiltonian}).\footnote{Besides doing theoretical research on HMC, Michael Betancourt worked for STAN on integrating the HMC algorithm and runs an educational blog where he presents his research using modern tools, see \url{https://betanalpha.github.io/}.}
+
+One reason why ordinary MCMC methods might converge only very slowly in higher dimensions is that the proposal distribution used in the Metropolis-Hastings algorithm does not properly capture the geometry of the high-dimensional space which leads to many rejected proposals and therefore an inefficient exploration of the parameter space.
+The main idea of HMC is to extend the parameter space by constructing a specific vector field on it, which moves the chain from one proposed point to another in a way so that we consider points that lie in regions with high probability mass and we regulary jump to faw away points as to explore the space as quickly as possible.
+But how do we construct this vector field?
+Note that when considering differentiable posterior densities the gradient defines a vector field.
+However, this vector field points to the modes of the posterior and as we saw in the last paragraph, in higher dimensions we will find little to no probability mass near the modes.
+This is where Hamiltonian mechanics comes into play by providing a set of equations (Hamilton's equations) that describe the time-evolution of the interplay of kinetic and potential energy of a system.
+What this means for our case is best explained by imagining the mode as the center of gravity, with gravity pulling harder as we get closer to the mode ---this can be thought of as the gradient vector field.
+But as most probability mass is spread around an annulus around the mode we do not want to move closer to the center of gravity, we want to move around an orbit around the mode.
+The distance of the orbit to the mode and exact shape depent of course on the dimensionality and posterior distribution of the problem.
+Hamilton's equations provide us with a way to construct a vector field so that moving along the field drifts the Markov chain into this orbit.
+Once reached the chain explores the relevant space quickly.
+
+Why is the above important?
+Bayesian statistics and its application to real world problems has gained immense popularity with the invention of Markov chain Monte Carlo methods.
+It's naive application to general complex high-dimensional problems is not computationally feasible however.
+These problems are under active development and new approaches on the algorithmic and theoretical side, as the one presented above, prove fruitfull.

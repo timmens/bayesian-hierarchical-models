@@ -81,13 +81,13 @@ As $\phi$ are themselves parameters for the parameter $\theta_j$, one often spea
     (x) edge (y);
 \end{tikzpicture}
 \end{center}
-\label{tik:general_sem}
+\label{fig:general_sem}
 \caption{A generic two-level Bayesian hierarchical model depicted as a directed acyclical graph modeling a single generic observation. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
 \end{figure}
 
 
-Figure \ref{tik:general_sem} illustrates the conditional dependence structure of modeling a generic observation $y_i$.
-In contrast, consider figure \ref{tik:group_sem} which illustrates the conditional dependence structure when modeling a generic observation $y(j)$ in group $j$.
+Figure \ref{fig:general_sem} illustrates the conditional dependence structure of modeling a generic observation $y_i$.
+In contrast, consider figure \ref{fig:group_sem} which illustrates the conditional dependence structure when modeling a generic observation $y(j)$ in group $j$.
 We depict random quantities in circles and fixed quantities in squares.
 Not only do these graphical representations help with understanding the structure of the model but we will see that when solving for the posterior they give an immediate way to check which parameters are conditionally independent.
 
@@ -122,93 +122,62 @@ Not only do these graphical representations help with understanding the structur
     (xJ) edge (yJ);
 \end{tikzpicture}
 \end{center}
-\label{tik:group_sem}
+\label{fig:group_sem}
 \caption{A generic two-level Bayesian hierarchical model depicted as a directed acyclical graph modeling generic observations $y(j)$ in groups $j = 1,\mydots, J$. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
 \end{figure}
 
-\subsection{Solving for the Posterior Analytically}
+\subsection{\textcolor{red}{Solving for the Posterior Analytically}}
+\textcolor{red}{
 As in the previous section we consider first an analytical derivation of the posterior distributions using a simple normal model, before dealing with more complex settings.
-
+}
 The objects of our interest are given by the joint posterior $p(\theta_j, \phi \mid y)$
 and its two marginal posteriors. In order to derive these analytically we must
 make convenient distributional assumptions. For the sake of exposition, we choose
 
-
 \subsection{Hierarchical Linear Models}
 The following subsection presents hierarchical linear models, an important subclass of the general multi-level model.
 As in classical statistics linear models are usually simpler to estimate and easier to interpret.
-The standard critique on linear models from classical statistics also applies here; however, we will see that due to the hiearchical nature we are able to model very complex structure even under a linearity assumption.
+The standard critique on linear models from classical statistics, i.e. model misspecification, also applies here; however, we will see that due to the hiearchical nature we are able to model very complex structure even under a linearity assumption.
 
-\subsubsection{Varying Slopes Model With One Predictor In Each Level}
-We assume that units $i = 1,\mydots,n$ can be divided into $J$ distinct groups.
-We start with a very simple model assuming that intercept is fixed for all
-groups, that is
+Being more precise, linearity here means that on each level that is being modeled, parameters enter the \emph{level-model} lineary.
+We will continue by shortly presenting the general (two-level) hierarchical linear model.
+In the last subsection we consider the \emph{varying slopes model} which will be further analyzed in the monte carlo study.
+We also note here that the varying slopes model is closely related to the \emph{varying intercepts model} which will be used in the application part.
+
+\subsubsection*{General Definition}
+As before we consider outcomes $y_i$ for $i=1,\mydots,n$ in groups $j=1,\mydots,J$ with individual-level characteristics $x_i$ and group-level characteristics $u_{j[i]}$.
+When talking about hierarchical linear models, we consider models that can be written as follows
 \begin{align}
-  y = \alpha + \beta_j x + \epsilon \,,
+  y_i &= \alpha_{j[i]} + x_i^\prime \beta_{j[i]} + \epsilon_i \,,\\
+  \beta_j &= \gamma_0 + u_j^\prime \gamma + \eta_j \,,
 \end{align}
-with $\epsilon$ following a mean zero normal distribution with variance
-$\sigma_{\epsilon}^2$.
-To incorporate the idea that the groups follow a common structure we also
-assume
-\begin{align}
-  \beta_j &= \gamma_0 + \gamma_1 u_j + \eta \,,
-\end{align}
-for $j = 1,\mydots,J$, with $\eta$ mean zero normal with variance $\sigma_\eta^2$.
+where $\epsilon_i$ and $\eta_j$ denote innovation terms on the respective level with distributional assumptions $\epsilon_i \sim p(\epsilon; \theta_\epsilon)$ and $\eta_j \sim p(\eta; \theta_\eta)$.
+Note that this can be extended for the heteroscedastic or autocorrelated case.
+The model becomes Bayesian as we impose prior distributions on all parameters.
 
-Since $\gamma_0$ and $\gamma_1$ do not vary by group they are sometimes referred
-to as \emph{fixed effects}. Similary as $\eta$ is drawn randomly for each group
-it is sometimes called a \emph{random effect}. Put together this shows the close
-resemblance of the hierarchical linear model to classical mixed effects models
-\textcolor{red}{(some reference here would be nice!)}
-
-Following the notation of \textcolor{red}{Gelman and Hill (2007)} we describe the
-model equation of a single individual $i$ by
+\subsubsection*{Varying Slopes Model with one Predictor in each Level}
+To finish this section we will showcase the \emph{varying slopes model}, on which we rely heavily in the monte carlo study and which is closely related to the model considered in the application part.
+In particular we consider the case where each level features one regressor.
+Written formally we have
 \begin{align}
   y_i = \alpha + \beta_{j[i]} x_i + \epsilon_i \,,
 \end{align}
-where $j[i]$ denotes the group to which individual $i$ belongs.
+for the individual level, with $\epsilon_i \overset{\text{iid}}{\sim} \normal{0, \sigma_\epsilon^2}$.
+And for the group-level we get
+\begin{align}
+  \beta_j &= \gamma_0 + \gamma_1 u_j + \eta_j \,,
+\end{align}
+with $\eta_j \overset{\text{iid}}{\sim} \normal{0, \sigma_\eta^2}$.
+In a classicist interpretation we would call $\gamma_0$ and  $\gamma_1$ the \emph{fixed effects} as they do not vary group and the $\eta_j's$ the \emph{random effects} as they do vary by group.
+As \citet{GelmanHill2007} note, in a Bayesian interpretation this nomenclature is unfortunate as everything in a Bayesian setting is assumed to be random.
 
-The model defined by the assumptions and equations above \textcolor{red}{(where and what)} can of course be made
-arbitrarily complex. For example we could add higher order polynomial terms or
-more predictors, as in regular linear regression modeling. Further, the
-normality assumption of the errors could be relaxed and most importantly, why
-stop at two levels? Naturally we could model the group-level coefficients using
-a third level. For the sake of a simpler explaination however, we will stick to
-the presented model.
-
-%\subsubsection{Varying Intercept and Slope Model with One Predictor in Each Level}
-%We assume that units $i = 1,\mydots,n$ can be divided into $J$ distinct groups.
-%In each group $j$ we model our outcome variable $y$ as a linear function in $x$,
-%that is
-%\begin{align}
-  %y = \alpha_j + \beta_j x + \epsilon \,,
-%\end{align}
-%with $\epsilon$ following a mean zero normal distribution with variance
-%$\sigma_{\epsilon}^2$.
-%To incorporate the idea that the groups follow a common structure we also
-%assume
-%\begin{align}
-  %\alpha_j &= \gamma_0^{\alpha} + \gamma_1^{\alpha} u_j + \eta_\alpha \\
-  %\beta_j &= \gamma_0^{\beta} + \gamma_1^{\beta} u_j + \eta_\beta \,,
-%\end{align}
-%for $j = 1,\mydots,J$, with
-%\begin{align}
-  %\sqmat{\eta_\alpha \\ \eta_\beta} \sim \normal{\sqmat{\sigma_\alpha^2 & \rho \sigma_\alpha \sigma_\beta \\ & \sigma_\beta^2}}
-%\end{align}
-%
-%Following the notation of \textcolor{red}{Gelman and Hill (2007)} we describe the model equation of a single individual $i$ by
-%\begin{align}
-  %y_i = \alpha_{j[i]} + \beta_{j[i]} x_i + \epsilon_i \,,
-%\end{align}
-%where $j[i]$ denotes the group to which individual $i$ belongs.
-%This particular model is known as the two-level varying intercept / varying slope model with one unit-level predictor (here $x_i$) and one group-level predictor
-%(here $u_i$).
-%The model defined by equations \textcolor{red}{(1) - (4)} can of
-%course be made arbitrarily complex by adding higher order polynomial terms or
-%more predictors, as in a regular linear regression models. Further the normality
-%assumption of equation \textcolor{red}{(4)} is not mandotory and can be swapped
-%with nearly any other distributional assumption. Also, why stop at two levels?
-%We could naturally model the coefficients in equation \textcolor{red}{2 and 3}
-%using a third level. All these extensions can in practice be necessary when
-%modelling complex structures; however for the sake of simplicity and clarity
-%we will stick to our clean model.
+Were we to let $\alpha$ vary by group and instead fix $\beta$ we would get a \emph{varying intercept model} as will be used in the application part.
+A justified question is if these comparably simple models have any sensible application.
+Using the example from \citet{GelmanHill2007}, consider modeling $J$ different experiments where in each experiment the baseline conditions were the same.
+In this setting we would like to measure the effect of some treatment (with treatment status $T_i$) on some outcome $y_i$.
+In this case we could model the outcomes as $y_i \mid \theta_{j[i]} \sim \normal{\alpha + \theta_{j[i]} T_i, \sigma^2}$,
+that is as a varying slopes model.
+Similar examples can be found to justify the use of varying intercept models.
+In a real application we usually combine varying intercept and varying slope models; however,
+this does not mean that every parameter must vary by group.
+Domain level knowledge can be used to guide the probabilistic modeler in choosing which parameters should vary and how many levels should be build.
