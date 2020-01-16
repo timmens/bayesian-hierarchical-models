@@ -16,16 +16,18 @@
 \begin{frame}{Schools of Thought}
   \Large{
   \begin{itemize}
-    \item[] \emphcol{Frequentist:}
-    \item[] \emphcol{Bayesian:}
+    \item[] \emphcol{Frequentist:} !!!!NOT FINSIHED YET
+    \item[] \emphcol{Bayesian:}!!!!NOT FINSIHED YET
   \end{itemize}
   }
 \end{frame}
 
 \begin{frame}{Frequentist}
+  !!!!NOT FINSIHED YET
 \end{frame}
 
 \begin{frame}{Bayesian}
+  !!!!NOT FINSIHED YET
 \end{frame}
 
 \begin{frame}{Bayes' Theorem}
@@ -61,21 +63,34 @@
   Hence
   \begin{align*}
     p(\mu \mid y) &\propto \EXP{-\frac{1}{2 \sigma^2}\sum_i (y_i - \mu)^2}\\
-    &\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2}
+    &\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2} \,.
   \end{align*}\pause
-  $\implies \mu \mid y \sim \normal{\bar{y}, \sigma^2 / n}$
+  $\implies \mu \mid y \sim \normal{\bar{y}, \sigma^2 / n}$.
   }
 \end{frame}
 
 \begin{frame}{Conjugate Prior}
   \Large{
   Let $\mu \sim \normal{\mu_0, \sigma_0^2}$.\pause\\
-  Hence
+  Then
   \begin{align*}
-    p(\mu \mid y) &\propto p(y \mid \mu) p(\mu)\\
-    &\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2 -\frac{1}{2\sigma_0^2} (\mu - \mu_0)^2}
+    \action<+->{p(\mu \mid y) &\propto p(y \mid \mu) p(\mu)\\}
+    \action<+->{&\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2 -\frac{1}{2\sigma_0^2} (\mu - \mu_0)^2}\\}
+    \action<+->{&\propto \EXP{-\frac{1}{2 \sigma_\mu} (\mu - \bar{\mu}_n)^2}}
   \end{align*}\pause
-  $\implies \mu \mid y \sim \normal{\bar{y}, \sigma^2 / n}$
+  $\implies \mu \mid y \sim \normal{\bar{\mu}_n, \sigma_\mu}$.
+  }
+\end{frame}
+
+\begin{frame}{Conjugate Prior - 2}
+  \Large{
+  \begin{align*}
+  \action<+->{\mu &\sim \normal{\mu_0, \sigma_0^2}\\}
+  \action<+->{\mu \mid y &\sim \normal{\bar{\mu}_n, \sigma_\mu} \,, \text{with}\\}
+  \action<+->{\sigma_\mu &= \left( \frac{1}{\sigma^2 / n} + \frac{1}{\sigma_0^2} \right)^{-1}\\}
+  \action<+->{\bar{\mu} &= \frac{1}{\sigma_\mu} \left(\frac{1}{\sigma^2 /n} \mathcolor{myred}{\bm{\bar{y}}} + \frac{1}{\sigma_0^2} \mathcolor{myred}{\bm{\mu_0}} \right)\\}
+  \action<+->{&= \alpha \mathcolor{myred}{\bm{\bar{y}}} + (1-\alpha) \mathcolor{myred}{\bm{\mu_0}}}
+  \end{align*}
   }
 \end{frame}
 
@@ -83,12 +98,52 @@
   \vfill
   \centering
   \Large A normal model without features, really?
-  \includegraphics[height=1.5cm]{raphics/upside-down-face}
+  \includegraphics[height=1.5cm]{graphics/upside-down-face}
   \vfill
 \end{frame}
 
 \begin{frame}{Sampling from the Posterior}
+  \Large{
+    \begin{itemize}
+      \item[] \emphcol{Problem:} $p(\theta \mid \text{data}) = \mathcolor{myred}{\bm{const.}} \,\, p(\text{data} \mid \theta) p(\theta)$\pause
+      \item[] \emphcol{Solution:} Sampling?
+    \end{itemize}
+  }
 \end{frame}
 
-\begin{frame}{Monte Carlo Markov Chain}
+\begin{frame}{Sampling from the Posterior - 2}
+  \Large{
+    \begin{itemize}
+      \item[] \emphcol{Object of interest:} $\theta \mid \text{data}$\pause
+      \item[] \emphcol{Quantity of interest:} $\Exp{h(\theta) \mid \text{data}}=: \mathbb{E}_\theta[h]$\pause
+      \item[] \emphcol{Estimation:} Let $\theta^{(1)},\mydots,\theta^{(n)} \overset{\text{iid}}{\sim} p(\theta \mid \text{data})$, then\\
+      \quad\quad $\frac{1}{\sqrt{n}}\left(\sum_i \theta^{(i)} - \mathbb{E}_\theta[h]\right) \overset{\text{d}}{\longrightarrow} \normal{0, \omega}$
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}{Sampling from the Posterior - 3}
+    \Large{
+      But how do we sample from $p(\theta \mid \text{data})$?
+    }
+\end{frame}
+
+\begin{frame}{Markov Chain Monte Carlo}
+  \Large{
+  !!!!!!!!!!!!! NOT FINISHED YET\\
+  Idea and Metropolis Hastings algorithm?\\
+  !!!!!!!!!!!!! NOT FINISHED YET
+  }
+\end{frame}
+
+\begin{frame}{Markov Chain Monte Carlo - 2}
+  \Large{
+  \vfill
+  \begin{figure}
+  \centering
+  \includegraphics<1>[height=6cm]{graphics/toy-mcmc}\pause
+  \includegraphics<2>[height=6cm]{graphics/toy-mcmc-with-samples}
+  \end{figure}
+  \vfill
+  }
 \end{frame}
