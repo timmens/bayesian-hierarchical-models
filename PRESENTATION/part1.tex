@@ -8,7 +8,7 @@
     \item[] \emphcol{In Practice:} Restrict attention to $p \in \mathcal{M}$\pause
     \item[] \emphcol{Parameterize:} $\mathcal{M} \leftrightarrow \Theta \subset \reals^d$\pause
     \item[] \emphcol{Example:} Family of normal distributions\pause\\
-    \quad\quad\quad\quad (See \only<6>{blackboard)}\pause \only<6->{\st{blackboard} whiteboard)}
+    \quad\quad\quad\quad (See \only<6>{blackboard)}\pause \only<+->{\st{blackboard} whiteboard)}
   \end{itemize}
   }
 \end{frame}
@@ -53,27 +53,27 @@
 
 \begin{frame}{Uninformative Prior}
   \Large{
-  Let $p(\mu) \propto 1$.\pause\\
-  Note that $p(y \mid \mu) \propto \EXP{-\frac{1}{2 \sigma^2}\sum_i (y_i - \mu)^2}$.\pause\\
+  Let $p(\mu) \propto 1$\pause\\
+  Note that $p(y \mid \mu) \propto \EXP{-\frac{1}{2 \sigma^2}\sum_i (y_i - \mu)^2}$\pause\\
   Hence
   \begin{align*}
     p(\mu \mid y) &\propto \EXP{-\frac{1}{2 \sigma^2}\sum_i (y_i - \mu)^2}\\
-    &\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2} \,.
+    &\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2}
   \end{align*}\pause
-  $\implies \mu \mid y \sim \normal{\bar{y}, \sigma^2 / n}$.
+  $\implies \mu \mid y \sim \normal{\bar{y}, \sigma^2 / n}$
   }
 \end{frame}
 
 \begin{frame}{Conjugate Prior}
   \Large{
-  Let $\mu \sim \normal{\mu_0, \sigma_0^2}$.\pause\\
+  Let $\mu \sim \normal{\mu_0, \sigma_0^2}$\pause\\
   Then
   \begin{align*}
     \action<+->{p(\mu \mid y) &\propto p(y \mid \mu) p(\mu)\\}
     \action<+->{&\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2 -\frac{1}{2\sigma_0^2} (\mu - \mu_0)^2}\\}
     \action<+->{&\propto \EXP{-\frac{1}{2 \sigma_\mu} (\mu - \bar{\mu}_n)^2}}
   \end{align*}\pause
-  $\implies \mu \mid y \sim \normal{\bar{\mu}_n, \sigma_\mu}$.
+  $\implies \mu \mid y \sim \normal{\bar{\mu}_n, \sigma_\mu}$
   }
 \end{frame}
 
@@ -81,7 +81,7 @@
   \Large{
   \begin{align*}
   \action<+->{\mu &\sim \normal{\mu_0, \sigma_0^2}\\}
-  \action<+->{\mu \mid y &\sim \normal{\bar{\mu}_n, \sigma_\mu} \,, \text{with}\\}
+  \action<+->{\mu \mid y &\sim \normal{\bar{\mu}, \sigma_\mu} \,, \text{with}\\}
   \action<+->{\sigma_\mu &= \left( \frac{1}{\sigma^2 / n} + \frac{1}{\sigma_0^2} \right)^{-1}\\}
   \action<+->{\bar{\mu} &= \frac{1}{\sigma_\mu} \left(\frac{1}{\sigma^2 /n} \mathcolor{myred}{\bm{\bar{y}}} + \frac{1}{\sigma_0^2} \mathcolor{myred}{\bm{\mu_0}} \right)\\}
   \action<+->{&= \alpha \mathcolor{myred}{\bm{\bar{y}}} + (1-\alpha) \mathcolor{myred}{\bm{\mu_0}}}

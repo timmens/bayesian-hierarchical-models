@@ -12,7 +12,7 @@
 \newcommand{\emphcol}[1]{\textcolor{myred}{\emph{#1}}}
 
 % titlepage
-\title{\raggedright\selectfont{\color{black}\textls[200]{\uppercase{Bayesian Hierarchical Models}}}}
+\title{\raggedright\selectfont{\color{black}\textls[200]{\uppercase{Bayesian\\Hierarchical\\Models}}}}
 
 \author{\raggedright\selectfont{\color{black}\textls[200]{Linda Maokomatanda\\Tim Mensinger\\Markus Schick}}}
 
@@ -66,6 +66,9 @@
 % settings for tableofcontents
 \setbeamercolor{section in toc}{fg=black}
 \setbeamerfont{section in toc}{series=\itshape, size=\Large}
+\setbeamertemplate{section in toc}{%
+  {\color{myred}\inserttocsectionnumber.}~\inserttocsection
+}
 
 % settings for section title
 \setbeamerfont{section title}{series=\itshape, size=\huge}
