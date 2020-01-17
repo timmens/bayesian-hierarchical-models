@@ -18,6 +18,16 @@
 \usepackage{xcolor}
 \usepackage{enumerate}
 \usepackage{soul}
+\usepackage{tikz}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{listings}
+
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
 
 %CUSTOM COMMANDS
 \newcommand{\Obase}{O}
@@ -53,3 +63,5 @@
 \newcommand{\NormalscaledInvChi}[1]{\normalfont \text{normal-scaled-Inv-}\chi^2\left(#1\right)}
 \newcommand{\vol}[1]{\text{vol}\left(#1\right)}
 \newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\DeclareMathOperator\supp{supp}

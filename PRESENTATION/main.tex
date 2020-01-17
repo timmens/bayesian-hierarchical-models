@@ -31,6 +31,11 @@
 }
 \makeatother
 
+% algorithm numbering
+\makeatletter
+\renewcommand{\fnum@algorithm}{\fname@algorithm}
+\makeatother
+
 % sectiontitlepage
 \AtBeginSection[]{
 \setbeamertemplate{footline}[frame number]{}

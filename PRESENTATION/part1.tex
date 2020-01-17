@@ -22,14 +22,6 @@
   }
 \end{frame}
 
-\begin{frame}{Frequentist}
-  !!!!NOT FINSIHED YET
-\end{frame}
-
-\begin{frame}{Bayesian}
-  !!!!NOT FINSIHED YET
-\end{frame}
-
 \begin{frame}{Bayes' Theorem}
   \Large{
     \begin{align*}
@@ -82,7 +74,7 @@
   }
 \end{frame}
 
-\begin{frame}{Conjugate Prior - 2}
+\begin{frame}{Conjugate Prior}
   \Large{
   \begin{align*}
   \action<+->{\mu &\sim \normal{\mu_0, \sigma_0^2}\\}
@@ -97,8 +89,8 @@
 \begin{frame}
   \vfill
   \centering
-  \Large A normal model without features, really?
-  \includegraphics[height=1.5cm]{graphics/upside-down-face}
+  \Large A normal model without features, really?\\
+  \centering \includegraphics[height=1.5cm]{graphics/upside-down-face}
   \vfill
 \end{frame}
 
@@ -111,7 +103,7 @@
   }
 \end{frame}
 
-\begin{frame}{Sampling from the Posterior - 2}
+\begin{frame}{Sampling from the Posterior}
   \Large{
     \begin{itemize}
       \item[] \emphcol{Object of interest:} $\theta \mid \text{data}$\pause
@@ -122,21 +114,29 @@
   }
 \end{frame}
 
-\begin{frame}{Sampling from the Posterior - 3}
+\begin{frame}{Sampling from the Posterior}
     \Large{
       But how do we sample from $p(\theta \mid \text{data})$?
     }
 \end{frame}
 
 \begin{frame}{Markov Chain Monte Carlo}
-  \Large{
-  !!!!!!!!!!!!! NOT FINISHED YET\\
-  Idea and Metropolis Hastings algorithm?\\
-  !!!!!!!!!!!!! NOT FINISHED YET
-  }
+\begin{algorithm}[H]
+\caption{Metropolis-Hastings (1953, 1970)}\pause
+\begin{algorithmic}[1]
+  \Require $(\pi, q, T)=$ (target, proposal, no. of samples)\pause
+\State initialize $x_0$ in $\supp q$\pause
+\For{$t = 0,\mydots,T$}
+  \State canditate: $y \sim q(\cdot \mid x_t)$\pause
+  \State acceptance prob.: $\mathcal{A} \gets \min\left\{ \ddfrac{\pi(y)}{\pi(x_t)} \ddfrac{q(y \mid x_t)}{q(x_t \mid y)}, 1\right\}$\pause
+  \State update: $x_{t+1} \gets \begin{cases} y &\mbox{,with prob. } \mathcal{A}\\ x_t &\mbox{,with remaining prob.} \end{cases}$\pause
+\EndFor{}
+\State \textbf{return} $\{x_t : t = 1,\mydots,T\}$
+\end{algorithmic}
+\end{algorithm}
 \end{frame}
 
-\begin{frame}{Markov Chain Monte Carlo - 2}
+\begin{frame}{Markov Chain Monte Carlo}
   \Large{
   \vfill
   \begin{figure}
