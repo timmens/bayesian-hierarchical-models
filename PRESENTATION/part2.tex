@@ -69,8 +69,11 @@
 
 \begin{frame}{The Posterior Revisited}
   \Large{
-    \emphcol{Posterior:}\\
-    \hfill$p(\theta, \phi \mid \text{data}) \propto p(\text{data} \mid \theta) p(\theta \mid \phi) p(\phi)$\hfill
+    \emphcol{Posterior:}
+    \begin{align*}
+    \action<+->{p(\theta, \phi \mid \text{data}) &\propto p(\text{data} \mid \theta) p(\theta \mid \phi) p(\phi)\\}
+    \action<+->{p(\phi \mid \text{data}) &\propto \int p(\theta, \phi \mid \text{data}) \mathrm{d} \theta}
+    \end{align*}
   }
 \end{frame}
 
