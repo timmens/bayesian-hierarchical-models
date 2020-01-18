@@ -57,8 +57,46 @@
 
 \begin{frame}{ML and Bayesian Approach: Results}
 	\Large{
-				
+			\begin{columns}
+								
+				\begin{column}{0.7\textwidth}
+					\begin{table}
+						\footnotesize
+						\begin{tabular}{l*{2}{c}}
+							\toprule \\[-1.0em]
+							\multicolumn{3}{c}{Dependent variable: Course test score}\\ \\[-1.0em]
+							&ML &Bayes\\ \midrule \\[-1.0em]
+							\emph{A. Random effects} \\
+							Intercept & -- & --\\
+							& (10.146) & (10.249)\\ \\[-1.0em]
+							Female & -- & --\\
+							& (6.924) & (7.099)\\ \\[-1.0em]
+							\\ \\[-1.0em]\emph{B. Fixed effects} \\
+							Intercept & 69.425 & 69.413\\
+							& (1.352) & (1.287)\\ \\[-1.0em]
+							Female & 7.128 & 7.132\\
+							& (1.131) & (1.165)\\ \\[-1.0em]
+							\\ \\[-1.0em]\hline \\[-1.0em]
+							\emph{N} \\
+							\hspace{3mm}Students&1725&1725\\
+							\hspace{3mm}Schools&73&73\\
+							\bottomrule
+						\end{tabular}
+					\end{table}    
+				\end{column}
+			
+			\begin{column}{0.48\textwidth}
+				\begin{itemize}
+					\item point estimates almost the same
+					\item Bayes standard deviations for random effects may be higher because ML does not take into account group level variance
+				\end{itemize}			
+			\end{column}
+		
+			\end{columns}
+			
+			
 	}
+
 \end{frame}
 
 \begin{frame}{Bayesian approach - further analysis}
