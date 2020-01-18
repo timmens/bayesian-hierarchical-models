@@ -1,39 +1,152 @@
 \section{Bayesian Thinking}
 
 \begin{frame}{Probabilistic Modeling}
+  \Large{
+  \begin{itemize}
+    \item[] \emphcol{Data:} $Z_i = (y_i, X_i) \in \mathcal{Z} \quad (=\reals \times \reals^K$)\pause
+    \item[] \emphcol{Model:} Probability distribution $p$ on $\mathcal{Z}$\pause
+    \item[] \emphcol{In Practice:} Restrict attention to $p \in \mathcal{M}$\pause
+    \item[] \emphcol{Parameterize:} $\mathcal{M} \leftrightarrow \Theta \subset \reals^d$\pause
+    \item[] \emphcol{Example:} Family of normal distributions\pause\\
+    \quad\quad\quad\quad (See \only<6>{blackboard)}\pause \only<+->{\st{blackboard} whiteboard)}
+  \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}{Schools of Thought}
-\end{frame}
-
-\begin{frame}{Frequentist}
-\end{frame}
-
-\begin{frame}{Bayesian}
+  \Large{
+  \begin{itemize}
+    \item[] \emphcol{True Model:} $\mathcal{M}_{\theta_0}$ for $\theta_0 \in \Theta$\pause
+    \item[] \emphcol{Frequentist:} $\theta_0$ fixed quantity\pause
+    \item[] \emphcol{Bayesian:} $\theta_0$ fixed quantity\pause, but model\\
+    \quad\quad\quad\quad uncertainty by imposing a\\
+    \quad\quad\quad\quad prob. distr. on $\Theta$
+  \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}{Bayes' Theorem}
+  \Large{
+    \begin{align*}
+      p(\theta \mid \text{data}) = \frac{p(\text{data} \mid \theta) p(\theta)}{p(\text{data})} \propto p(\text{data} \mid \theta) p(\theta)
+    \end{align*}\pause
+    \vfill
+    \begin{align*}
+      posterior = \frac{likelihood \times prior}{evidence} \propto likelihood \times prior
+    \end{align*}
+  }
 \end{frame}
 
 \begin{frame}{Solving for the Posterior Analytically}
+  \Large{
+  \begin{itemize}
+    \item[] \emphcol{Setting:} $\{y_i: i=1,\mydots,n\}$ with $y_i \overset{\text{iid}}{\sim} \normal{\mu, \sigma^2}$\\
+    \quad\quad\quad\quad and $\sigma^2$ known\pause
+    \item[] \emphcol{Likelihood:} $p(y \mid \mu) = \prod_i p(y_i \mid \mu)$\pause
+    \item[] \emphcol{Prior:} $p(\mu)$\pause
+    \item[] \emphcol{Posterior:} $p(\mu \mid y)\pause \propto p(y \mid \mu) p(\mu)$\pause
+    \item[] \emphcol{Goal:} Infer distribution of $\mu \mid y$\pause\\
+    \quad\quad\, Why?
+  \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}{Uninformative Prior}
+  \Large{
+  Let $p(\mu) \propto 1$\pause\\
+  Note that $p(y \mid \mu) \propto \EXP{-\frac{1}{2 \sigma^2}\sum_i (y_i - \mu)^2}$\pause\\
+  Hence
+  \begin{align*}
+    p(\mu \mid y) &\propto \EXP{-\frac{1}{2 \sigma^2}\sum_i (y_i - \mu)^2}\\
+    &\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2}
+  \end{align*}\pause
+  $\implies \mu \mid y \sim \normal{\bar{y}, \sigma^2 / n}$
+  }
 \end{frame}
 
 \begin{frame}{Conjugate Prior}
+  \Large{
+  Let $\mu \sim \normal{\mu_0, \sigma_0^2}$\pause\\
+  Then
+  \begin{align*}
+    \action<+->{p(\mu \mid y) &\propto p(y \mid \mu) p(\mu)\\}
+    \action<+->{&\propto \EXP{-\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2 -\frac{1}{2\sigma_0^2} (\mu - \mu_0)^2}\\}
+    \action<+->{&\propto \EXP{-\frac{1}{2 \sigma_\mu} (\mu - \bar{\mu}_n)^2}}
+  \end{align*}\pause
+  $\implies \mu \mid y \sim \normal{\bar{\mu}_n, \sigma_\mu}$
+  }
+\end{frame}
+
+\begin{frame}{Conjugate Prior}
+  \Large{
+  \begin{align*}
+  \action<+->{\mu &\sim \normal{\mu_0, \sigma_0^2}\\}
+  \action<+->{\mu \mid y &\sim \normal{\bar{\mu}, \sigma_\mu} \,, \text{with}\\}
+  \action<+->{\sigma_\mu &= \left( \frac{1}{\sigma^2 / n} + \frac{1}{\sigma_0^2} \right)^{-1}\\}
+  \action<+->{\bar{\mu} &= \frac{1}{\sigma_\mu} \left(\frac{1}{\sigma^2 /n} \mathcolor{myred}{\bm{\bar{y}}} + \frac{1}{\sigma_0^2} \mathcolor{myred}{\bm{\mu_0}} \right)\\}
+  \action<+->{&= \alpha \mathcolor{myred}{\bm{\bar{y}}} + (1-\alpha) \mathcolor{myred}{\bm{\mu_0}}}
+  \end{align*}
+  }
 \end{frame}
 
 \begin{frame}
   \vfill
   \centering
-  \Large A normal model without features, really?
-  \includegraphics[height=1.5cm]{raphics/upside-down-face}
+  \Large A normal model without features, really?\\
+  \centering \includegraphics[height=1.5cm]{graphics/upside-down-face}
   \vfill
 \end{frame}
 
+%\begin{frame}{Sampling from the Posterior}
+%  \Large{
+%    \begin{itemize}
+%      \item[] \emphcol{Problem:} $p(\theta \mid \text{data}) = \mathcolor{myred}{\bm{const.}} \,\, p(\text{data} \mid \theta) p(\theta)$\pause
+%      \item[] \emphcol{Solution:} Sampling?
+%    \end{itemize}
+%  }
+%\end{frame}
+
 \begin{frame}{Sampling from the Posterior}
+  \Large{
+    \begin{itemize}
+      \item[] \emphcol{Object of interest:} $\theta \mid \text{data}$\pause
+      \item[] \emphcol{Quantity of interest:} $\Exp{h(\theta) \mid \text{data}}=: \mathbb{E}_\theta[h]$\pause
+      \item[] \emphcol{Estimation:} Let $\theta^{(1)},\mydots,\theta^{(n)} \overset{\text{iid}}{\sim} p(\theta \mid \text{data})$, then\\
+      \quad\quad $\frac{1}{\sqrt{n}}\left(\sum_i \theta^{(i)} - \mathbb{E}_\theta[h]\right) \overset{\text{d}}{\longrightarrow} \normal{0, \omega}$
+    \end{itemize}
+  }
 \end{frame}
 
-\begin{frame}{Monte Carlo Markov Chain}
+\begin{frame}{Sampling from the Posterior}
+    \Large{
+      But how do we sample from $p(\theta \mid \text{data})$?
+    }
+\end{frame}
+
+\begin{frame}{Markov Chain Monte Carlo}
+\begin{algorithm}[H]
+\caption{Metropolis-Hastings (1953, 1970)}\pause
+\begin{algorithmic}[1]
+  \Require $(\pi, q, T)=$ (target, proposal, no. of samples)\pause
+\State initialize $x_0$ in $\supp q$\pause
+\For{$t = 0,\mydots,T$}
+  \State canditate: $y \sim q(\cdot \mid x_t)$\pause
+  \State acceptance prob.: $\mathcal{A} \gets \min\left\{ \ddfrac{\pi(y)}{\pi(x_t)} \ddfrac{q(y \mid x_t)}{q(x_t \mid y)}, 1\right\}$\pause
+  \State update: $x_{t+1} \gets \begin{cases} y &\mbox{,with prob. } \mathcal{A}\\ x_t &\mbox{,with remaining prob.} \end{cases}$\pause
+\EndFor{}
+\State \textbf{return} $\{x_t : t = 1,\mydots,T\}$
+\end{algorithmic}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{Markov Chain Monte Carlo}
+  \Large{
+  \vfill
+  \begin{figure}
+  \centering
+  \includegraphics<1>[height=6cm]{graphics/toy-mcmc}\pause
+  \includegraphics<2>[height=6cm]{graphics/toy-mcmc-with-samples}
+  \end{figure}
+  \vfill
+  }
 \end{frame}

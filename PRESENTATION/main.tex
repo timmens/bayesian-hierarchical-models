@@ -5,10 +5,14 @@
 \graphicspath{graphics/}
 
 %colors
-\definecolor{mycol}{rgb}{0.65, 0.16, 0.16}
+\definecolor{myred}{rgb}{0.65, 0.16, 0.16}
+\definecolor{mygrey}{rgb}{0.23, 0.27, 0.29}
+
+%emph
+\newcommand{\emphcol}[1]{\textcolor{myred}{\emph{#1}}}
 
 % titlepage
-\title{\raggedright\selectfont{\color{black}\textls[200]{\uppercase{Bayesian Hierarchical Models}}}}
+\title{\raggedright\selectfont{\color{black}\textls[200]{\uppercase{Bayesian\\Hierarchical\\Models}}}}
 
 \author{\raggedright\selectfont{\color{black}\textls[200]{Linda Maokomatanda\\Tim Mensinger\\Markus Schick}}}
 
@@ -16,36 +20,55 @@
 \date{}
 
 
+% math color
+\makeatletter
+\def\mathcolor#1#{\@mathcolor{#1}}
+\def\@mathcolor#1#2#3{%
+  \protect\leavevmode
+  \begingroup
+    \color#1{#2}#3%
+  \endgroup
+}
+\makeatother
+
+% algorithm numbering
+\makeatletter
+\renewcommand{\fnum@algorithm}{\fname@algorithm}
+\makeatother
+
 % sectiontitlepage
 \AtBeginSection[]{
 \setbeamertemplate{footline}[frame number]{}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}{}
   \begin{frame}
-  \textcolor{mycol}{\rule{\textwidth}{2pt}}
+  \textcolor{myred}{\rule{\textwidth}{2pt}}
   \vfill
   \centering
   \itshape \Huge \textcolor{black}{\insertsectionhead}
   \vfill
-  \textcolor{mycol}{\rule{\textwidth}{2pt}}
+  \textcolor{myred}{\rule{\textwidth}{2pt}}
   \end{frame}
 \addtocounter{framenumber}{-1}
 \addtobeamertemplate{navigation symbols}{}{%
     \usebeamerfont{footline}%
     \usebeamercolor[fg]{footline}%
     \hspace{1em}%
-    \insertframenumber/\inserttotalframenumber
+    \textcolor{myred}{\insertframenumber/\inserttotalframenumber}
 }
 }
 
 % settings
 \setbeamertemplate{frametitle}{\vspace*{0.7cm}\insertframetitle}
 \setbeamerfont{frametitle}{series=\itshape, size=\LARGE}
-\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{frametitle}{fg=myred}
 
 % settings for tableofcontents
 \setbeamercolor{section in toc}{fg=black}
 \setbeamerfont{section in toc}{series=\itshape, size=\Large}
+\setbeamertemplate{section in toc}{%
+  {\color{myred}\inserttocsectionnumber.}~\inserttocsection
+}
 
 % settings for section title
 \setbeamerfont{section title}{series=\itshape, size=\huge}
@@ -73,7 +96,7 @@
     \usebeamerfont{footline}%
     \usebeamercolor[fg]{footline}%
     \hspace{1em}%
-    \insertframenumber/\inserttotalframenumber
+    \textcolor{myred}{\insertframenumber/\inserttotalframenumber}
 }
 \input{part1}
 \input{part2}

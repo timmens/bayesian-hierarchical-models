@@ -1,12 +1,91 @@
 \section{Hierarchical Models}
 
-\begin{frame}{The Prior Revisited}
+\begin{frame}{Structure of HMC - Setup}
+  \Large{
+  \emphcol{Hierarchical Data:}
+  \begin{itemize}
+    \item[] \emphcol{Individual Level:} $(y_i, x_i)$ for $i = 1,\mydots,n$
+    \item[] \emphcol{Group Level:} $u_j$ for $j = 1,\mydots,J$
+  \end{itemize}\pause
+  \emphcol{Example:}
+  \begin{itemize}
+    \item[] \emphcol{Test Outcome:} $y_i$
+    \item[] \emphcol{Parental Income:} $x_i$
+    \item[] \emphcol{Num. of Teachers:} $u_j$
+  \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}{Structure of HMC}
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}%
+  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
+  node distance=2.5cm,
+  >=latex,
+  on grid]
+  \node[vertex] (phi) {$\phi$};
+  \node[rectangle, draw=black, minimum size=0.9cm,left=2cm of phi] (zeta) {$\zeta$};
+  \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
+  \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
+  \node[below=1.5cm of phi] (dots1) {$\dots$};
+  \node[rectangle, draw=black, minimum size=0.9cm, left=2cm of theta1] (u1) {$u_1$};
+  \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of thetaJ] (uJ) {$u_J$};
+  \node[vertex,below=2cm of theta1] (y1) {$y(1)$};
+  \node[vertex,below=2cm of thetaJ] (yJ) {$y(J)$};
+  \node[rectangle, draw=black, minimum size=0.9cm, left=2cm of y1] (x1) {$x(1)$};
+  \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of yJ] (xJ) {$x(J)$};
+  \node[below=3.5cm of phi] (dots1) {$\dots$};
+  \draw[->]
+    (zeta) edge (phi)
+    (phi) edge (theta1)
+    (phi) edge (thetaJ)
+    (u1) edge (theta1)
+    (uJ) edge (thetaJ)
+    (theta1) edge (y1)
+    (thetaJ) edge (yJ)
+    (x1) edge (y1)
+    (xJ) edge (yJ);
+\end{tikzpicture}
+\end{center}
+\end{figure}
 \end{frame}
 
-\begin{frame}{Varying Slopes and Varying Intercepts}
+\begin{frame}{The Prior Revisited}
+  \Large{
+    \emphcol{Before:}
+    \begin{itemize}
+        \item[] \emphcol{Model:} $p(\text{data} \mid \theta)$
+        \item[] \emphcol{Prior:} $p(\theta)$
+      \end{itemize}\pause
+    \emphcol{Now:}
+    \begin{itemize}
+      \item[] \emphcol{Model:} $p(\text{data} \mid \theta, \phi) = p(\text{data} \mid \theta)$
+      \item[] \emphcol{Prior:} $p(\theta \mid \phi)$
+      \item[] \emphcol{Hyperprior:} $p(\phi)$
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}{The Posterior Revisited}
+  \Large{
+    \emphcol{Posterior:}
+    \begin{align*}
+    \action<+->{p(\theta, \phi \mid \text{data}) &\propto p(\text{data} \mid \theta) p(\theta \mid \phi) p(\phi)\\}
+    \action<+->{p(\phi \mid \text{data}) &\propto \int p(\theta, \phi \mid \text{data}) \mathrm{d} \theta}
+    \end{align*}
+  }
+\end{frame}
+
+\begin{frame}{Varying Slopes, Varying Intercepts}
+  \Large{
+    \begin{itemize}
+      \item[] \emphcol{Setup:} Individual $i$ in group $j$\pause
+      \item[] \emphcol{Individual Level:} $y_i = \alpha_{j[i]} + \beta_{j[i]} x_i + \epsilon_i$\pause
+      \item[] \emphcol{Group Level:} $\sqmat{\alpha_j\\\beta_j} = \gamma_0 + \gamma u_j + \eta_j$\pause
+      \item[] \emphcol{Priors on:} $\gamma_0, \gamma, \epsilon_i, \eta_j$\pause
+    \end{itemize}
+  }
 \end{frame}
 
 \begin{frame}
