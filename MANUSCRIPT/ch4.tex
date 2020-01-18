@@ -14,7 +14,7 @@ In development economics, \cite{ meager2019understanding} jointly estimates the 
 It is evident that Bayesian Hierarchical Models can be useful in the area of microeconomic research. There also have been applications to the Macroeconomics field. It is evident that Bayesian Hierarchical Models can be useful in the area of microeconomic research. There also have been applications to the Macroeconomic research field. \cite{ koop2010bayesian} notes that bayesian methods have become increasingly popular as a way of overcoming over-parameterization problems. In this paper, the authors discuss vector autoregressive multivariate time
 series models (VARs), factor augmented VARs and time-varying parameter extensions and show how Bayesian inference proceeds. 
 
-We now demonstrate below, an application to real world data of a comparison between the likelihood (frequentist)  and the bayesian inference approaches. For each of these approaches, we will fit three basic multilevel linear models: (a) a varying intercept model with no predictors (Model 1), (b) a varying intercept model with one predictor (Model 2), and (c)  a varying intercept and slope model (Model 3). We will use the \textit{lmer} function in the \textit{lme4} package for R to determine maximum likelihood estimates of the parameters in linear mixed-effects models. We then the use \textit{rstanarm} package (also in R) to implement a fully Bayesian approach.
+We now demonstrate below, an application to real world data of a comparison between the likelihood (frequentist)  and the bayesian inference approaches. For each of these approaches, we will fit a basic varying intercept and slope multilevel linear model with one predictor. We will use the \textit{lmer} function in the \textit{lme4} package for R to determine maximum likelihood estimates of the parameters in linear mixed-effects models. We then the use \textit{rstanarm} package (also in R) to implement a fully Bayesian approach.
 
 
 
@@ -33,67 +33,50 @@ We will be analyzing the Gcsemv dataset from \cite{rasbash2000user}. The data in
 	\item \textit{written}: total score on written paper
 	\item \textit{course}: total score on coursework paper
 \end{itemize}
-Two components of the exam were recorded as outcome variables: written paper and course work. In this application, only the total score on the coursework paper (course) will be analyzed. In our example, we seek to estimate the effect of gender on test scores.
+Two components of the exam were recorded as outcome variables: written paper and course work. In this application, only the total score on the coursework paper (course) will be analyzed. In our example, the model summarizes the difference in average test scores between male and female students.
 
 \subsubsection{Likelihood inference approach}
-In this sub-section, we fit the three basic multilevel linear models starting with a varying intercept model with no predictors (Model 1), we then proceed to the varying intercept model with one predictor (Model 2), and the varying intercept and slope model (Model 3) using the \textit{lmer()} functions. Functions such as lmer() are based on a combination of maximum likelihood (ML) estimation of the model parameters, and empirical Bayes (EB) predictions of the varying intercepts and/or slopes resulting in the Best Linear Unbiased Predictions (BLUPs) of the model parameters. We use these functions so that our parameter estimates from both the ML and Bayesian framework are comparable.
+In this sub-section, we fit the a basic varying intercept and slope multilevel linear model with one predictor using the \textit{lmer()} functions. Functions such as lmer() are based on a combination of maximum likelihood (ML) estimation of the model parameters, and empirical Bayes (EB) predictions of the varying intercepts and/or slopes resulting in the Best Linear Unbiased Predictions (BLUPs) of the model parameters. We use these functions so that our parameter estimates from both the ML and the Bayesian framework are comparable.
 
-\subsubsection*{Model 1: Varying intercept model with no predictors (Variance components model)}
-
-Consider the simplest multilevel model for students $i=1,...,n$ nested within schools $j=1,...,J$ and for whom we have examination scores as responses. We can write a two-level varying intercept model with no predictors using the usual two-stage formulation as:
+\subsubsection*{Model 1: Varying intercept and slope model with a single predictor}
+In this model, we allow both the intercept and the slope to vary randomly across schools using the following model: expressed\footnote{Equivalently, the model can be expressed as: $$y_{ij}\sim N(\alpha_{j}+\beta_{j}x_{ij} , \sigma_y ^2 ),$$
+$$
+\left( \begin{matrix} \alpha _{ j } \\ \beta _{ j } \end{matrix} \right) \sim N\left( \left( \begin{matrix} { \mu  }_{ \alpha  } \\ { \mu  }_{ \beta  } \end{matrix} \right) , \left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).$$}:
 
 \begin{align}
-	y_{ij} = \alpha_j + \epsilon_{ij} \text{ where } \epsilon_{ij} \sim \mathcal{N}(0,\,\sigma^{2}_y)
+	y_{ij} = \alpha_j + \beta_j x_{ij} +\epsilon_{ij},
 \end{align}
 
 \begin{align}
-	\alpha_j = \mu_\alpha + \mu_j \text{ where } \mu_j \sim \mathcal{N}(0,\,\sigma^{2}_\alpha)
-\end{align}
-where $y_{ij}$ is the examination score for the $ith$ student in the $jth$ school, $\alpha_j$ is the varying intercept for the $jth$ school, and $\mu_\alpha$ is the overall mean across schools. Alternatively, the model can be expressed in reduced form as
-
-\begin{align}
-	y_{ij} = \mu_\alpha + \mu_j + \epsilon_{ij},.
-\end{align}
-If we further assume that the student-level errors $\epsilon_{ij}$ are normally distributed with mean $0$ and variance $\sigma^{2}_y$, and that the school-level varying intercepts $\alpha_j$ are normally distributed with mean $\mu_\alpha$ and variance $\sigma^{2}_\alpha$, then the model can be expressed as
-
-\begin{align}
-	y_{ij} =  \sim \mathcal{N}(\alpha_j,\,\sigma^{2}_y)
+	\alpha_j = \mu_\alpha + u_j,
 \end{align}
 
 \begin{align}
-	\alpha_j =  \sim \mathcal{N}(\mu_\alpha,\,\sigma^{2}_\alpha)
+	\beta_j = \mu_\beta + v_j,
 \end{align}
-We can then fit a linear mixed model by maximum likelihood (ML). 
-%\begin{lstlisting}
-%#Estimate linear mixed model by ML - Model 1
-%M1 <- lmer(formula = course ~ 1 + (1 | school), data = GCSE, REML =  FALSE)
-%\end{lstlisting}
-We specify an intercept (the predictor “1”) and allow it to vary by the level-2 identifier (school). We also specify the \textit{REML = FALSE} option to obtain maximum likelihood (ML) estimates as opposed to the default restricted maximum likelihood (REML) estimates.
+
+or in a reduced form as
+ 
+\begin{align}
+	y_{ij} = \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij}
+\end{align}
+
+where 
+\begin{align}
+\epsilon_{ij} \sim N(0, \sigma_{y}^{2}) 
+\end{align}
+
+and 
+\begin{align}
+\left( \begin{matrix} u_j \\ v_j \end{matrix} \right) \sim N\left( \left( \begin{matrix} 0 \\ 0 \end{matrix} \right) ,\left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).
+\end{align}
+Note that now we have variation in the $\alpha_{j}$'s and the $\beta_{j}$'s, and also a correlation parameter $\rho$ between $\alpha_j$ and $\beta_j$. This model can be fit using \textit{lmer()}:
 
 \textcolor{red}{input results here}
 
-Under the `Fixed effects` part of the output, we see that the intercept $\mu_{\alpha}$, averaged over the population of schools, is estimated as $\textbf{73.72}$. Under the `Random effects` part of the output, we see that the between-school standard deviation $\sigma_{\alpha}$ is estimated as $\textbf{8.67}$ and the within-school standard deviation $\sigma_{y}$ as $\textbf{13.81}$. 
+In this model, the residual within-school standard deviation is estimated as $\hat{\sigma}_{y}=13.03$. The estimated standard deviations of the school intercepts and the school slopes are $\hat{\sigma}_{\alpha}= 10.15$ and $\hat{\sigma}_{\beta}=6.92$ respectively. The estimated correlation between varying intercepts and slopes is $\hat{\rho} = -0.52$. 
 
-\subsubsection*{Model 2: Varying intercept model with a single predictor}
-The varying intercept model\footnote{Equivalently, the model can be expressed using a two-stage formulation as $$y_{ij} = \alpha_j + \beta x_{ij} +\epsilon_{ij},$$ $$\alpha_j = \mu_\alpha + u_j,$$ or in a reduced form as $$y_{ij} = \mu_\alpha + \beta x_{ij} + u_j + \epsilon_{ij}$$ where $\epsilon_{ij} \sim N(0, \sigma_{y}^{2})$ and $u_{j}\sim N(0, \sigma_{\alpha}^{2})$.} with an indicator variable for being female $x_{ij}$ can be written as
-
-\begin{align}
-	y_{ij} \sim N(\alpha_{j}+\beta x_{ij} , \sigma_{y}^{2}),
-\end{align}
-
-\begin{align}
-	\alpha_{j}\sim N(\mu_{\alpha}, \sigma_{\alpha}^{2}).
-\end{align}
-The equation of the average regression line across schools is $\mu_{ij}=\mu_{\alpha}+\beta x_{ij}$. The regression lines for specific schools will be parallel to the average regression line (having the same slope $\beta$), but differ in terms of its intercept $\alpha_{j}$. This model can be estimated by adding `female` to the model, which will allow only the intercept to vary by school, and while keeping the "slope" for being female constant across schools as shown below:
-
-%\begin{lstlisting}
-%#Estimate linear mixed model by ML - Model 2
-%M2 <- lmer(formula = course ~ 1 + female + (1 | school), data = GCSE,
-%REML = FALSE).
-%\end{lstlisting}
-
-\textcolor{red}{input results here}
-
+\textcolor{red}{get facts for results straight here}
 The average regression line across schools is thus estimated as $\hat{\mu}_{ij} = \textbf{69.73} + \textbf{6.74} x_{ij}$, with $\sigma_\alpha$ and $\sigma_y$ estimated as $8.76$ and $\textbf{13.41}$ respectively.  Treating these estimates of $\mu_\alpha$, $\beta$, $\sigma^2_{y}$, and $\sigma^2_{\alpha}$ as the true parameter values, we can then obtain the Best Linear Unbiased Predictions (BLUPs) for the school-level errors $\hat{u}_j = \hat{\alpha}_{j} - \hat{\mu}_{\alpha}$. 
 
 The BLUPs are equivalent to the so-called Empirical Bayes (EB) prediction, which is the mean of the posterior distribution of $u_{j}$ given all the estimated parameters, as well as the random variables $y_{ij}$ and $x_{ij}$ for the cluster.  These predictions are called "Bayes" because they make use of the pre-specified prior distribution \footnote{We elaborate more on prior distributions in Section the full Bayesian approach section} $\alpha_j \sim N(\mu_\alpha, \sigma^2_\alpha)$, and by extension $u_j \sim N(0, \sigma^2_\alpha)$, and called "Empirical" because the parameters of this prior, $\mu_\alpha$ and $\sigma^2_{\alpha}$, in addition to $\beta$ and $\sigma^2_{y}$, are estimated from the data.
@@ -102,75 +85,39 @@ Compared to the Maximum Likelihood (ML) approach of predicting values for $u_j$ 
 
 By using the \textit{ranef} function, we can also show how much the intercept is shifted up or down in particular schools. For example, in the first school in the dataset, the estimated intercept is about \textbf{10.17} lower than average, so that the school-specific regression line is $69.73 - 10.17 + 6.74 x_{ij}$.
 
-\subsubsection*{Model 3: Varying intercept and slope model with a single predictor}
-We now extend the varying intercept model with a single predictor to allow both the intercept and the slope to vary randomly across schools using the following model\footnote{Equivalently, the model can be expressed in a two-stage formulation as $$y_{ij} = \alpha_j + \beta_j x_{ij} +\epsilon_{ij},$$ $$\alpha_j = \mu_\alpha + u_j,$$ $$\beta_j = \mu_\beta + v_j,$$ or in a reduced form as $$y_{ij} = \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij}$$ where $\epsilon_{ij} \sim N(0, \sigma_{y}^{2})$ and $\left( \begin{matrix} u_j \\ v_j \end{matrix} \right) \sim N\left( \left( \begin{matrix} 0 \\ 0 \end{matrix} \right) ,\left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right)$.}:
-
-$$y_{ij}\sim N(\alpha_{j}+\beta_{j}x_{ij} , \sigma_y ^2 ),$$ $$\left( \begin{matrix} \alpha _{ j } \\ \beta _{ j } \end{matrix} \right) \sim N\left( \left( \begin{matrix} { \mu  }_{ \alpha  } \\ { \mu  }_{ \beta  } \end{matrix} \right) , \left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).$$
-
-Note that now we have variation in the $\alpha_{j}$'s and the $\beta_{j}$'s, and also a correlation parameter $\rho$ between $\alpha_j$ and $\beta_j$. This model can be fit using \textit{lmer()} as follows:
-
-\textcolor{red}{input results here}
-
-In this model, the residual within-school standard deviation is estimated as $\hat{\sigma}_{y}=13.03$. The estimated standard deviations of the school intercepts and the school slopes are $\hat{\sigma}_{\alpha}= 10.15$ and $\hat{\sigma}_{\beta}=6.92$ respectively. The estimated correlation between varying intercepts and slopes is $\hat{\rho} = -0.52$. 
 
 \subsubsection{Full Bayesian Inference Approach}
-As previously mentioned, functions such as \textit{lmer()} are based on a combination of maximum likelihood (ML) estimation of the model parameters, and empirical Bayes (EB) predictions of the varying intercepts and/or slopes. However, in some instances, when the number of groups is small or when the model contains many varying coefficients or non-nested components, the ML approach may not work as well in part because there may not be enough information to estimate variance parameters precisely. In such cases, a fully Bayesian approach provides reasonable inferences with the added benefit of accounting for all the uncertainty in the parameter estimates when predicting the varying intercepts and slopes, and their associated uncertainty. This is one of the reasons why a fully Bayesian estimation is particularly interesting. Other reasons are discussed in section \ref{section:Deeper}. We now demonstate below, how to fit Models 1, 2 and 3 from above in a fully bayesian framework using the \textit{rstammarm} package. \textit{Rstanarm} is a wrapper for the \textit{rstan} package that enables the most common applied regression models to be estimated using Markov Chain Monte Carlo (MCMC) but still be specified using customary R modeling syntax.
+As previously mentioned, functions such as \textit{lmer()} are based on a combination of maximum likelihood (ML) estimation of the model parameters, and empirical Bayes (EB) predictions of the varying intercepts and/or slopes. However, in some instances, when the number of groups is small or when the model contains many varying coefficients or non-nested components, the ML approach may not work as well in part because there may not be enough information to estimate variance parameters precisely. In such cases, a fully Bayesian approach provides reasonable inferences with the added benefit of accounting for all the uncertainty in the parameter estimates when predicting the varying intercepts and slopes, and their associated uncertainty. This is one of the reasons why a fully Bayesian estimation is particularly interesting. Other reasons are discussed in section \ref{section:Deeper}. We now demonstate below, how to fit Models 1 from above in a fully bayesian framework using the \textit{rstammarm} package. \textit{Rstanarm} is a wrapper for the \textit{rstan} package that enables the most common applied regression models to be estimated using Markov Chain Monte Carlo (MCMC) but still be specified using customary R modeling syntax.
 
-\subsubsection*{Model 1: Varying intercept model with no predictors (Variance components model)}
+\subsubsection*{Model 1: Varying intercept and slope model with a single predictor}
 
-We can implement a fully Bayesian estimation for multilevel models with only minimal changes to our existing code with \textit{lmer()} from the maximum likelihood application in the previous section. We specify Model 1 with default prior distributions for $\mu_{\alpha}$, $\sigma_{\alpha}$, and $\sigma_{y}$ by prepending \textit{stan\textunderscore} to the \textit{lmer} call. The \textit{stan\textunderscore lmer()} function is similar in syntax to \textit{lmer()} but rather than performing maximum likelihood estimation, Bayesian estimation is performed via MCMC.  As each step in the MCMC estimation approach involves random draws from the parameter space, we include a seed option to ensure that each time the code is run, \textit{stan\textunderscore lmer} outputs the same results.
+We can implement a fully Bayesian estimation for multilevel models with only minimal changes to our existing code with \textit{lmer()} from the maximum likelihood application in the previous section. 
 
-\subsubsection*{Prior distributions}
-Model 1 is a varying intercept model with normally distributed student residuals and school-level intercepts: $y_{ij} \sim N(\alpha_{j}, \sigma_{y}^{2}),$ and $\alpha_{j}\sim N(\mu_{\alpha}, \sigma_{\alpha}^{2})$. The normal distribution for the $\alpha_{j}$'s can be thought of as a prior distribution for these varying intercepts. The parameters of this prior distribution, $\mu_{\alpha}$ and $\sigma_{\alpha}$, are estimated from the data when using maximum likelihood estimation. In full Bayesian inference, all the hyperparameters ($\mu_{\alpha}$ and $\sigma_{\alpha}$), along with the other unmodeled parameters (in this case, $\sigma_{y}$) also need a prior distribution. For this illustration, we use weakly informative priors that provide moderate regularization \footnote{Regularization can be regarded as a technique to ensure that estimates are bounded within an acceptable range of values.} and help stabilize computation.
-
-First, before accounting for the scale of the variables, $\mu_{\alpha}$ is given normal prior distribution with mean 0 and standard deviation 10.  That is, $\mu_{\alpha} \sim N(0, 10^2)$. The standard deviation of this prior distribution, 10, is five times as large as the standard deviation of the response if it were standardized. This should be a close approximation to a noninformative prior over the range supported by the likelihood, which should give inferences similar to those obtained by maximum likelihood methods if similarly weak priors are used for the other parameters. \textit{rstanarm} scales the priors in relation to the scale of variables in the estimation proccess.
-
-Second, the (unscaled) prior for $\sigma_{y}$ is set to an exponential distribution with rate parameter set to 1.
-
-Third, in order to specify a prior for the variances and covariances of the varying (or "random") effects, \textit{rstanarm} will decompose this matrix into a correlation matrix of the varying effects and a function of their variances.  Since there is only one varying effect in this example, the default (unscaled) prior for $\sigma_{\alpha}$ that the package uses reduces to an exponential distribution with rate parameter set to 1.
-
-\subsubsection*{Model 1 results}  
-As we see in the snippet of the summary below, the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $73.75$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $73.72$.  The point estimate for $\sigma_{\alpha}$ from the bayesian estimation is $8.92$, which is larger than the ML estimate ($8.67$). This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$.
-
-\textcolor{red}{input results here}
-
-When using the bayesian estimation function, standard errors are obtained by considering the median absolute deviation (MAD) of each draw from the median of those draws.  It is well known that ML tends to underestimate uncertainties because it relies on point estimates of hyperparameters. Full Bayes, on the other hand, propagates the uncertainty in the hyperparameters throughout all levels of the model and provides more appropriate estimates of uncertainty.
-
-\subsubsection*{Model 2: Varying intercept model with a single predictor}
-We can extend the model as we did in the ML framework by including observed explanatory variables at the student level $x_{ij}$, in this example, an indicator variable for being female. A simple varying intercept model with one predictor at the student level can be written as $y_{ij} \sim N(\alpha_{j} + \beta x_{ij}, \sigma_{y}^{2})$ and $\alpha_{j} \sim N(\mu_{\alpha}, \sigma_{\alpha}^{2})$. We use noninformative prior distributions for the hyperparameters ($\mu_{\alpha}$ and $\sigma_{\alpha}$) as specified in Model. Additionally, the regression coefficient $\beta$ is given normal prior distributions with mean 0 and standard deviation 100. This states, roughly, that we expect this coefficient to be in the range $(-100, 100)$, and if the ML estimate is in this range, the prior distribution is providing very little information for the inference.  
-
-\textcolor{red}{input results here}
-
-As seen from the results above, the point estimates of $\mu_{\alpha}$, $\beta$, and $\sigma_{y}$ are almost identical to the ML fitted estimates. However, partly because ML ignores the uncertainty about $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$, the Bayesian estimate for $\sigma_{\alpha}$ ($9.0$) is larger than the ML estimate ($8.8$), as with Model 1.
-
-\subsubsection*{Model 3: Varying intercept and slope model with a single predictor}
-
-We also fit Model 3 using the baysian estimation framework.  Note that here, we use the default priors which are mostly similar to what was done in Model 1.  Additionally, we are also required to specify a prior for the covariance matrix $\Sigma$ for $\alpha_j$ and $\beta_j$ in this Model.  \textit{stan\_lmer} decomposes this covariance matrix (up to a factor of $\sigma_y$) into (i) a correlation matrix $R$ and (ii) a matrix of variances $V$, and assigns them separate priors as shown below.
-
+We specify Model 1 with default prior distributions for $\mu_{\alpha}$, $\sigma_{\alpha}$, and $\sigma_{y}$ by prepending \textit{stan\textunderscore} to the \textit{lmer} call. The \textit{stan\textunderscore lmer()} function is similar in syntax to \textit{lmer()} but rather than performing maximum likelihood estimation, Bayesian estimation is performed via MCMC. As each step in the MCMC estimation approach involves random draws from the parameter space, we include a seed option to ensure that each time the code is run, \textit{stan\textunderscore lmer} outputs the same results.
 
 \begin{align}
-\Sigma &= 
-\left(\begin{matrix} 
-\sigma_\alpha^2 & \rho\sigma_\alpha \sigma_\beta \\ 
-\rho\sigma_\alpha\sigma_\beta&\sigma_\beta^2 
-\end{matrix} \right)\\ &= 
-\sigma_y^2\left(\begin{matrix} 
-\sigma_\alpha^2/\sigma_y^2 & \rho\sigma_\alpha \sigma_\beta/\sigma_y^2 \\ 
-\rho\sigma_\alpha\sigma_\beta/\sigma_y^2 & \sigma_\beta^2/\sigma_y^2 
-\end{matrix} \right)\\ &= 
-\sigma_y^2\left(\begin{matrix} 
-\sigma_\alpha/\sigma_y & 0 \\ 
-0&\sigma_\beta/\sigma_y
-\end{matrix} \right)
-\left(\begin{matrix} 
-1 & \rho\\ 
-\rho&1 
-\end{matrix} \right)
-\left(\begin{matrix} 
-\sigma_\alpha/\sigma_y & 0 \\ 
-0&\sigma_\beta/\sigma_y 
-\end{matrix} \right)\\ 
-&= \sigma_y^2VRV.
+	\Sigma &= 
+	\left(\begin{matrix} 
+		\sigma_\alpha^2 & \rho\sigma_\alpha \sigma_\beta \\ 
+		\rho\sigma_\alpha\sigma_\beta&\sigma_\beta^2 
+	\end{matrix} \right)\\ &= 
+	\sigma_y^2\left(\begin{matrix} 
+		\sigma_\alpha^2/\sigma_y^2 & \rho\sigma_\alpha \sigma_\beta/\sigma_y^2 \\ 
+		\rho\sigma_\alpha\sigma_\beta/\sigma_y^2 & \sigma_\beta^2/\sigma_y^2 
+	\end{matrix} \right)\\ &= 
+	\sigma_y^2\left(\begin{matrix} 
+		\sigma_\alpha/\sigma_y & 0 \\ 
+		0&\sigma_\beta/\sigma_y
+	\end{matrix} \right)
+	\left(\begin{matrix} 
+		1 & \rho\\ 
+		\rho&1 
+	\end{matrix} \right)
+	\left(\begin{matrix} 
+		\sigma_\alpha/\sigma_y & 0 \\ 
+		0&\sigma_\beta/\sigma_y 
+	\end{matrix} \right)\\ 
+	&= \sigma_y^2VRV.
 \end{align}
 
 
@@ -178,21 +125,42 @@ The correlation matrix $R$ is 2 by 2 matrix with 1's on the diagonal and $\rho$'
 
 The matrix of (scaled) variances $V$ can first be collapsed into a vector of (scaled) variances, and then decomposed into three parts, $J$, $\tau^2$ and $\pi$ as shown below. 
 
-$$
-\left(\begin{matrix} 
-\sigma_\alpha^2/\sigma_y^2 \\ 
-\sigma_\beta^2/\sigma_y^2 
-\end{matrix} \right) = 
-2\left(\frac{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2}{2}\right)\left(\begin{matrix} 
-\frac{\sigma_\alpha^2/\sigma_y^2}{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2} \\ 
-\frac{\sigma_\beta^2/\sigma_y^2}{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2} 
-\end{matrix} \right)=
-J\tau^2 \pi. 
-$$  
+\begin{align}
+	\left(\begin{matrix} 
+		\sigma_\alpha^2/\sigma_y^2 \\ 
+		\sigma_\beta^2/\sigma_y^2 
+	\end{matrix} \right) = 
+	2\left(\frac{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2}{2}\right)\left(\begin{matrix} 
+		\frac{\sigma_\alpha^2/\sigma_y^2}{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2} \\ 
+		\frac{\sigma_\beta^2/\sigma_y^2}{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2} 
+	\end{matrix} \right)=
+	J\tau^2 \pi.
+\end{align}
+ 
+
 
 In this formulation, $J$ is the number of varying effects in the model (here, $J=2$), $\tau^2$ can be viewed as an average (scaled) variance across the varying effects $\alpha_j$ and $\beta_j$, and $\pi$ is a non-negative vector that sums to 1 (called a Simplex/probability vector).  A symmetric Dirichlet \footnote{The Dirichlet distribution is a multivariate generalization of the beta distribution with one concentration parameter, which can be interpreted as prior counts of a multinomial random variable (the simplex vector in our context), for details, see \url{https://cran.r-project.org/web/packages/rstanarm/vignettes/glmer.html\#detail}} distribution with concentration parameter set to 1 is then used as the prior for $\pi$.  By default, this implies a jointly uniform prior over all Simplex vectors of the same size.  A scale-invariant Gamma prior with shape and scale parameters both set to 1 is then assigned for $\tau$.  This is equivalent to assigning as a prior the exponential distribution with rate parameter set to 1 which is consistent with the prior assigned to $\sigma_y$. 
+This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$.
 
+\subsubsection*{Prior distributions}
+Model 1 is a varying intercept and slope model with normally distributed student residuals and school-level intercepts: $y_{ij} \sim N(\alpha_{j}, \sigma_{y}^{2}),$ and $\alpha_{j}\sim N(\mu_{\alpha}, \sigma_{\alpha}^{2})$. The normal distribution for the $\alpha_{j}$'s can be thought of as a prior distribution for these varying intercepts. The parameters of this prior distribution, $\mu_{\alpha}$ and $\sigma_{\alpha}$, are estimated from the data when using maximum likelihood estimation. In full Bayesian inference, all the hyperparameters ($\mu_{\alpha}$ and $\sigma_{\alpha}$), along with the other unmodeled parameters (in this case, $\sigma_{y}$) also need a prior distribution. For this illustration, we use weakly informative priors that provide moderate regularization \footnote{Regularization can be regarded as a technique to ensure that estimates are bounded within an acceptable range of values.} and help stabilize computation.
 
+First, before accounting for the scale of the variables, $\mu_{\alpha}$ is given normal prior distribution with mean 0 and standard deviation 10.  That is, $\mu_{\alpha} \sim N(0, 10^2)$. The standard deviation of this prior distribution, 10, is five times as large as the standard deviation of the response if it were standardized. This should be a close approximation to a noninformative prior over the range supported by the likelihood, which should give inferences similar to those obtained by maximum likelihood methods if similarly weak priors are used for the other parameters. \textit{rstanarm} scales the priors in relation to the scale of variables in the estimation proccess.
+
+Second, the (unscaled) prior for $\sigma_{y}$ is set to an exponential distribution with rate parameter set to 1.
+
+Third, in order to specify a prior for the variances and covariances of the varying (or "random") effects, \textit{rstanarm} will decompose this matrix into a correlation matrix of the varying effects and a function of their variances.  Since there is only one varying effect in this example, the default (unscaled) prior for $\sigma_{\alpha}$ that the package uses reduces to an exponential distribution with rate parameter set to 1.
+
+Additionally, we are also required to specify a prior for the covariance matrix $\Sigma$ for $\alpha_j$ and $\beta_j$ in this Model.  \textit{stan\_lmer} decomposes this covariance matrix (up to a factor of $\sigma_y$) into (i) a correlation matrix $R$ and (ii) a matrix of variances $V$, and assigns them separate priors as shown below. 
+
+\subsubsection*{Model 1 results}  
+As we see in the snippet of the summary below, the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $73.75$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $73.72$.  The point estimate for $\sigma_{\alpha}$ from the bayesian estimation is $8.92$, which is larger than the ML estimate ($8.67$). 
+\textcolor{red}{input results here}
+
+When using the bayesian estimation function, standard errors are obtained by considering the median absolute deviation (MAD) of each draw from the median of those draws.  It is well known that ML tends to underestimate uncertainties because it relies on point estimates of hyperparameters. Full Bayes, on the other hand, propagates the uncertainty in the hyperparameters throughout all levels of the model and provides more appropriate estimates of uncertainty.
+
+\textcolor{red}{check this for wording to use above}
+As we see in the snippet of the summary below, the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $73.75$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $73.72$.  The point estimate for $\sigma_{\alpha}$ from the bayesian estimation is $8.92$, which is larger than the ML estimate ($8.67$). This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$.
 
 \subsection{Looking Deeper into the Baysian Approach}
 \label{section:Deeper}
