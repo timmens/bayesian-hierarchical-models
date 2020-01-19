@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # construct Markov chain
     def ppgauss(x, y):
         return pgauss(x, y, mean, cov)
-    samples = metropolis_hastings(ppgauss, nsamples=70)
+    mc_samples = metropolis_hastings(ppgauss, nsamples=500)
 
     # sampling points
     nsamples = 5000
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     # plot samples
     ax = sns.scatterplot(x=data[:,0], y=data[:, 1],
-                         alpha=0.2)
+                         alpha=0.4)
 
     # plotting contours
     ax.contour(x, y, rv.pdf(pos).reshape(500,500),
@@ -71,8 +71,8 @@ if __name__ == "__main__":
     ax.tick_params(axis='both', which='major', labelsize=22)
 
     # coordinate system settings
-    plt.axhline(0, color='black', linewidth=0.8)
-    plt.axvline(0, color='black', linewidth=0.8)
+    plt.axhline(0, color='black', linewidth=1.)
+    plt.axvline(0, color='black', linewidth=1.)
     plt.ylim(-1.2, 4.5)
     plt.xlim(-1.2, 3.8)
     ax.set(frame_on=False)
@@ -81,8 +81,14 @@ if __name__ == "__main__":
     plt.savefig("../graphics/toy-mcmc.pdf", bbox_inches='tight', pad_inches=0, transparent=True)
     
     
-    # add Markov chain samples
-    plt.plot(samples[:,0],samples[:, 1], color='brown', marker='o', linewidth=2)
+    # add first 70 Markov chain samples
+    plt.plot(mc_samples[:70,0],mc_samples[:70, 1], color='brown', marker='o', linewidth=2.25)
     
     # save plot
     plt.savefig("../graphics/toy-mcmc-with-samples.pdf", bbox_inches='tight', pad_inches=0, transparent=True)
+
+    # add remaining Markov chain samples
+    plt.plot(mc_samples[70:,0],mc_samples[70:, 1], color='brown', marker='o', linewidth=2.25)
+    
+    # save plot
+    plt.savefig("../graphics/toy-mcmc-with-all-samples.pdf", bbox_inches='tight', pad_inches=0, transparent=True)

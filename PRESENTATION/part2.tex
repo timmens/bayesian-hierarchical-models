@@ -1,6 +1,6 @@
 \section{Hierarchical Models}
 
-\begin{frame}{Structure of HMC - Setup}
+\begin{frame}{Structure of HM - Setup}
   \Large{
   \emphcol{Hierarchical Data:}
   \begin{itemize}
@@ -16,7 +16,7 @@
   }
 \end{frame}
 
-\begin{frame}{Structure of HMC}
+\begin{frame}{Structure of HM}
 \begin{figure}
 \begin{center}
 \begin{tikzpicture}%
@@ -71,7 +71,8 @@
   \Large{
     \emphcol{Posterior:}
     \begin{align*}
-    \action<+->{p(\theta, \phi \mid \text{data}) &\propto p(\text{data} \mid \theta) p(\theta \mid \phi) p(\phi)\\}
+    \action<+->{p(\theta, \phi \mid \text{data}) &\propto p(\text{data} \mid \theta) p(\theta, \phi)\\}
+    \action<+->{&\propto p(\text{data} \mid \theta) p(\theta \mid \phi) p(\phi)\\}
     \action<+->{p(\phi \mid \text{data}) &\propto \int p(\theta, \phi \mid \text{data}) \mathrm{d} \theta}
     \end{align*}
   }
