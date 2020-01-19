@@ -3,68 +3,107 @@
 
 \begin{frame}{Stan}
   \Large{
-
   \begin{itemize}
-      \item[] \emphcol{What is Stan?} C\texttt{++} package (fast run times) \pause
+      \item[] \emphcol{What is Stan?} C\texttt{++} package (fast run times)\pause
       \item[] \emphcol{Use cases:} Bayesian/Maximum Likelihood estimation of statistical models\pause
       \item[] \emphcol{Interfaces:} Pystan, Rstan,Stan.jl,...
    \end{itemize}
   }
 \end{frame}
 
-\begin{frame}{Bayesian Models with Stan}
-  \Large{
-  Stan uses an internal modelling language for model specification. \pause
-  We tested the Random Slope model:
- \begin{align}
-  y = \alpha + \beta_j x + \epsilon,  \epsilon \sim N(1,1) \pause
- \end{align}
- \begin{align}
-  \beta_j = \gamma_0 + \gamma_1 u_j + \eta_j , \eta  \sim N(1,1)
- \end{align}
-}
-  \begin{figure}
-  \centering
-  \includegraphics<3>[height=2.8 cm]{graphics/stan_data} \pause
-  \includegraphics<4>[height=2.8 cm]{graphics/stan_parameter} \pause
-  \includegraphics<5>[height=2.8 cm]{graphics/stan_model} \pause
-  \includegraphics<6>[height=2.8 cm]{graphics/stan_priors} 
-  \end{figure}
+\begin{frame}[fragile]{Bayesian Models with Stan}
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \Large{
+       \begin{align*}
+          \action<+->{y &= \alpha + \beta_j x + \epsilon \,,\\
+          \epsilon &\sim \normal{1,1}\\[0.5em]}
+          \action<+->{\beta_j &= \gamma_0 + \gamma_1 u_j + \eta_j \,,\\
+          \eta  &\sim \normal{1,1}}
+       \end{align*}
+      }
+    \end{column}
+
+  \begin{column}{0.6\textwidth}
+    \begin{onlyenv}<3>
+      \begin{lstlisting}[language=Stan]
+    data {
+    vector[N] y;
+    vector[N] x;
+    vector[N] u;
+    int<lower=1,upper=J>
+            school[N];
+    }
+      \end{lstlisting}
+  \end{onlyenv}
+    \begin{onlyenv}<4>
+      \begin{lstlisting}[language=Stan]
+   parameter {
+   vector[J] eta_b;
+   real gamma_0;
+   real gamma_1;
+   real<lower=0> sigma_b;
+   }
+      \end{lstlisting}
+  \end{onlyenv}
+    \begin{onlyenv}<5>
+      \begin{lstlisting}[language=Stan]
+  # model
+  for (i in 1:N) {
+    beta[i] = gamma_0 +
+         u[i] * gamma_1 +
+           eta[school[i]]
+
+    y_hat[i] = a +
+        x[i] * beta[i];
+  }
+  y ~ normal(
+         y_hat, sigma_y
+       );
+      \end{lstlisting}
+  \end{onlyenv}
+    \begin{onlyenv}<6>
+      \begin{lstlisting}[language=Stan]
+  # priors
+  gamma_0 ~ normal(0, 1);
+  gamma_1 ~ normal(1, 1);
+  eta ~ normal(0, sigma_b);
+  sigma_b ~ cauchy(0, 5);
+      \end{lstlisting}
+  \end{onlyenv}
+
+  \end{column}
+  \end{columns}
+
 \end{frame}
 
 \begin{frame}{How can we sure that we sample from the right distribution? }
   \Large{
-  %\vfill	
   \begin{figure}
   \centering
-  \includegraphics<1>[height=5.3 cm]{graphics/single-chain-1} \pause
-   \includegraphics<2>[height=5.3 cm]{graphics/single-chain-2}\pause
-    \includegraphics<3>[height=5.3 cm]{graphics/single-chain-3}
+  \includegraphics<1>[height=6.5cm]{graphics/single-chain-1}
+  \includegraphics<2>[height=6.5cm]{graphics/single-chain-2}
+  \includegraphics<3>[height=6.5cm]{graphics/single-chain-3}
   \end{figure}
-  %\vfill
-
-  \begin{itemize}
-     \item[] Use a number of burn-in draws
- \end{itemize}
   }
 \end{frame}
 
 
 
-\begin{frame}{Monitoring Convergence }
+\begin{frame}{Monitoring Convergence}
   \Large{
-  %\vfill	
+
   \begin{figure}
   \centering
   \includegraphics<1>[height=5.3 cm]{graphics/s-convergence} \pause
-   \includegraphics<2->[height=5.3 cm]{graphics/m-convergence}
+  \includegraphics<2->[height=5.3 cm]{graphics/m-convergence}
   \end{figure}
-  %\vfill
+
   }
   \begin{itemize}
-     \only <1>    { \item[] Quantify this approach}
+     \only<1>    { \item[] Quantify this approach}
      \only<2-3> { \item[] \emphcol{Variance of a single chain:} $$ s_m^2= \frac{1}{N-1}\sum_{n=1}^{N} (\theta_m^{(n)}-\overline{\theta}_{m}^{(\bullet)} )^2$$ }\pause
- \item[] \emphcol{Average within chain variance:} $$W=\frac{1}{M} \sum_{m=1}^{M} s_m^2 $$  
+ \item[] \emphcol{Average within chain variance:} $$W=\frac{1}{M} \sum_{m=1}^{M} s_m^2 $$
  \end{itemize}
 \end{frame}
 
@@ -72,18 +111,18 @@
 
 \begin{frame}{Monitoring Convergence }
   \Large{
-  %\vfill	
+  %\vfill
   \begin{figure}
-  \centering
-  \includegraphics<1>[height=5.3 cm]{graphics/s-convergence} \pause
-   \includegraphics<2->[height=5.3 cm]{graphics/m-convergence}
+    \centering
+    \includegraphics<1>[height=5.3 cm]{graphics/s-convergence} \pause
+    \includegraphics<2->[height=5.3 cm]{graphics/m-convergence}
   \end{figure}
   %\vfill
   }
   \begin{itemize}
      \only <1>    { \item[] Quantify this approach}
      \only<2-3> { \item[] \emphcol{Variance of a single chain:} $$ s_m^2= \frac{1}{N-1}\sum_{n=1}^{N} (\theta_m^{(n)}-\overline{\theta}_{m}^{(\bullet)} )^2$$ }\pause
- \item[] \emphcol{Average within chain variance:} $$W=\frac{1}{M} \sum_{m=1}^{M} s_m^2 $$  
+ \item[] \emphcol{Average within chain variance:} $$W=\frac{1}{M} \sum_{m=1}^{M} s_m^2 $$
  \end{itemize}
 \end{frame}
 
@@ -92,7 +131,7 @@
 
   \begin{itemize}
        \item[] \emphcol{Average Variance between chains:} $$ B/N=\frac{1}{M-1} \sum_{m=1}^{M} (\overline{\theta}_m^{(\bullet)}  - \overline{\theta}_{\bullet}^{(\bullet)} )^2 $$  \pause
- \item[] \emphcol{Total Variance:} $$\widehat{var}^+ (\theta \mid y)=\frac{N-1}{N}W+\frac{1}{N}B$$   
+ \item[] \emphcol{Total Variance:} $$\widehat{\text{Var}}^+ (\theta \mid y)=\frac{N-1}{N}W+\frac{1}{N}B$$
 
 \end{itemize}
   }
@@ -102,9 +141,9 @@
   \Large{
   %\vfill
   \begin{itemize}
-     \item[] \emphcol{Scale Reducing Factor:} $$\widehat{R}=\sqrt{\frac{\widehat{var}^+ (\theta \mid y)}{W}}$$  \pause
+     \item[] \emphcol{Scale Reducing Factor:} $$\widehat{R}=\sqrt{\frac{\widehat{\text{Var}}^+ (\theta \mid y)}{W}}$$  \pause
  \end{itemize}
-	
+
   \begin{figure}
   \centering
   \includegraphics<2>[height=5.5cm]{graphics/failure-convergence} \pause
@@ -114,28 +153,28 @@
   }
 \end{frame}
 
-\begin{frame}{Study Design}
- \begin{itemize}
- \item[] \emphcol{Good Prior:}   $\gamma_0 \sim N(1,1),  \gamma_1 \sim N(1,1)$ \pause
- \item[] \emphcol{Bad Prior:}   $\gamma_0 \sim N(2,1),  \gamma_1 \sim N(2,1)$ \pause
- \item[] \emphcol{Bad weak Prior:}   $\gamma_0 \sim N(2,3),  \gamma_1 \sim N(2,3)$ \pause
- \item[] \emphcol{Univariate Prior:}   $\gamma_0 \sim,  UNI[-\infty,\infty] ,  \gamma_1 \sim UNI[-\infty,\infty]$ \pause
-
- \item[] \emphcol{In all models:}  $\sigma_y, \sigma_b \sim$ half-cauchy (0,5)   
- \end{itemize}
-
-
+\begin{frame}{Prior Design}
+ \Large{
+   \begin{itemize}
+   \setlength\itemsep{0.5em}
+   \item[] \emphcol{Good Prior:}   $\gamma_0 \sim \normal{1,1},  \gamma_1 \sim \normal{1,1}$ \pause
+   \item[] \emphcol{Bad Prior:}   $\gamma_0 \sim \normal{2,1},  \gamma_1 \sim \normal{2,1}$ \pause
+   \item[] \emphcol{Weak, Bad Prior:}   $\gamma_0 \sim \normal{2,3},  \gamma_1 \sim \normal{2,3}$ \pause
+   \item[] \emphcol{Flat Prior:}   $\gamma_0 \sim \mathcal{U}(-\infty,\infty) ,  \gamma_1 \sim \mathcal{U}(-\infty,\infty)$ \pause
+   \item[] \emphcol{In all models:}  $\sigma_y, \sigma_b \sim \text{half-Cauchy}(0,5)$
+  \end{itemize}
+}
 \end{frame}
 
-     
+
 
 
 
 \begin{frame}{Posterior Distribution with a good prior }
-  \Large{	
+  \Large{
   \begin{figure}
   \centering
-  \includegraphics<1>[height=5.5cm]{graphics/fitting-posterior} 
+  \includegraphics<1>[height=5.5cm]{graphics/fitting-posterior}
  \caption{Posterior Draws of $\gamma_1$ with N=200, J=10 and 300 simulations}
   \end{figure}
   %\vfill
@@ -144,10 +183,10 @@
 
 
 \begin{frame}{What happense if we decrease the number of levels J? }
-  \Large{	
+  \Large{
   \begin{figure}
   \centering
-  \includegraphics<1>[height=5.5cm]{graphics/fitting-posterior-small} 
+  \includegraphics<1>[height=5.5cm]{graphics/fitting-posterior-small}
  \caption{Posterior Draws of $\gamma_1$ with N=50, J=5 and 300 simulations}
   \end{figure}
   %\vfill
@@ -156,20 +195,20 @@
 
 
 \begin{frame}{Posterior Distribution with a bad prior }
-  \Large{	
+  \Large{
   \begin{figure}
   \centering
-  \includegraphics<1>[height=5.5cm]{graphics/nonfitting-posterior} 
+  \includegraphics<1>[height=5.5cm]{graphics/nonfitting-posterior}
  \caption{Posterior Draws of $\gamma_1$ with N=200, J=10 and 300 simulations}
   \end{figure}
   }
 \end{frame}
 
 \begin{frame}{Posterior Distribution for a bad, but weak prior }
-  \Large{	
+  \Large{
   \begin{figure}
   \centering
-  \includegraphics<1>[height=5.5cm]{graphics/partfitting-posterior} 
+  \includegraphics<1>[height=5.5cm]{graphics/partfitting-posterior}
  \caption{Posterior Draws of $\gamma_1$ with N=200, J=10 and 150 simulations}
   \end{figure}
   }
@@ -180,8 +219,8 @@
   \Large{
   \begin{figure}
   \centering
-  \includegraphics<1>[height=5.5cm]{graphics/uni-posterior} 
-\caption{Posterior Draws of $\gamma_1$ with N=200, J=10 and 300 simulations}  
+  \includegraphics<1>[height=5.5cm]{graphics/uni-posterior}
+\caption{Posterior Draws of $\gamma_1$ with N=200, J=10 and 300 simulations}
 \end{figure}
   }
 \end{frame}
@@ -190,13 +229,12 @@
 \begin{frame}{Increase sample size dramatically}
   \Large{
   %\vfill
-	
+
   \begin{figure}
   \centering
-  \includegraphics<1>[height=5.5cm]{graphics/posterior-big} 
+  \includegraphics<1>[height=5.5cm]{graphics/posterior-big}
  \caption{Single posterior draw for model with wrong prior and N=500, J=50}
 
   \end{figure}
   }
 \end{frame}
-

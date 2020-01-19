@@ -5,60 +5,50 @@
 	\begin{itemize}
 		\item[] \emphcol{Description:} General Certificate of Secondary Education (GCSE) exam scores of 1,905 students from 73 schools in England on a science subject
 		\item[] \emphcol{Variables of interest:} school identifier, student identifier, gender, total score on written paper and total score of course work.
-				
-	\end{itemize}		
+
+	\end{itemize}
 	}
 \end{frame}
 
 
-\begin{frame}{ML and Bayesian Approach Comparison}
+\begin{frame}{ML and Bayesian Approach: Comparison}
 	\Large{
 		\emphcol{The model:} Varying intercept and slope model with a single predictor
 		\begin{align}
-		y_{ij} = \alpha_j + \beta_j x_{ij} +\epsilon_{ij},
+			y_{ij} &= \alpha_j + \beta_j x_{ij} +\epsilon_{ij},\\[0.5em]
+			\alpha_j &= \mu_\alpha + u_j,\\[0.5em]
+			\beta_j &= \mu_\beta + v_j,\\[0.5em]
+			y_{ij} &= \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij}
 		\end{align}
-		
-		\begin{align}
-		\alpha_j = \mu_\alpha + u_j,
-		\end{align}
-
-		\begin{align}
-		\beta_j = \mu_\beta + v_j,
-		\end{align}	
-		
-		\begin{align}
-		y_{ij} = \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij}
-		\end{align}	
-		
 	}
 \end{frame}
 
-\begin{frame}{ML and Bayesian Approach Comparison}
+\begin{frame}{ML and Bayesian Approach: Comparison}
 	\Large{
-		\emphcol{Maximum Likelihood (ML) Estimation} 
+		\emphcol{Maximum Likelihood (ML) Estimation}
 		\begin{itemize}
-		\item[] \emphcol{Package:} \textit{lmer()}
+		\item[] \emphcol{Package:} \textit{lmer}
 		\item[] \emphcol{The \textit{lmer} Package:} combines of ML estimation of model parameters and empirical Bayes (EB) predictions of the varying intercepts and/or slopes resulting in the Best Linear Unbiased Predictions (BLUPs) of the model parameters.
-		\item[] \emphcol{Why \textit{lmer()}??} allows for comparison between parameter estimates
-		\end{itemize}		
+		\item[] \emphcol{Why lmer??} allows for comparison between parameter estimates
+		\end{itemize}
 	}
 \end{frame}
 
-\begin{frame}{ML and Bayesian Approach Comparison}
+\begin{frame}{ML and Bayesian Approach: Comparison}
 	\Large{
-		\emphcol{Bayesian Estimation:} 
+		\emphcol{Bayesian Estimation:}
 		\begin{itemize}
-			\item[] \emphcol{Package:} \textit{stan()}
+			\item[] \emphcol{Package:} \textit{stan}
 			\item[] \emphcol{Priors:} weekly informative normally distributed priors for hyperparameters
-			
-		\end{itemize}		
+
+		\end{itemize}
 	}
 \end{frame}
 
 \begin{frame}{ML and Bayesian Approach: Results}
 	\Large{
 			\begin{columns}
-								
+
 				\begin{column}{0.7\textwidth}
 					\begin{table}
 						\footnotesize
@@ -82,19 +72,20 @@
 							\hspace{3mm}Schools&73&73\\
 							\bottomrule
 						\end{tabular}
-					\end{table}    
+					\end{table}
 				\end{column}
-			
-			\begin{column}{0.48\textwidth}
+
+			\hspace{-20pt}
+			\begin{column}{0.5\textwidth}
 				\begin{itemize}
-					\item point estimates almost the same
-					\item Bayes standard deviations for random effects may be higher because ML does not take into account group level variance
-				\end{itemize}			
+					\item[\emphcol{(i.)}] point estimates almost the same
+					\item[\emphcol{(ii.)}] Bayes standard deviations for random effects may be higher because ML does not take into account group level variance
+				\end{itemize}
 			\end{column}
-		
+
 			\end{columns}
-			
-			
+
+
 	}
 
 \end{frame}
@@ -102,59 +93,59 @@
 \begin{frame}{Bayesian approach - further analysis}
 	\Large{
 		\vfill
-		\emphcol{Posterior distribution ranking:} 
+		\emphcol{Posterior distribution ranking:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=7cm]{graphics/ranking}
 		\end{figure}
 		\vfill
 	}
-\end{frame}	
+\end{frame}
 
 \begin{frame}{Bayesian approach - further analysis}
 	\Large{
 		\vfill
-		\emphcol{School specific regression lines and pooling:} 
+		\emphcol{School specific regression lines and pooling:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=7cm]{graphics/pooling}
 		\end{figure}
 		\vfill
 	}
-\end{frame}	
+\end{frame}
 
 \begin{frame}{Bayesian approach - further analysis}
 	\Large{
 		\vfill
-		\emphcol{Making comparisons between individual schools:} 
+		\emphcol{Making comparisons between individual schools:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=7cm]{graphics/differences}
 		\end{figure}
 		\vfill
 	}
-\end{frame}	
+\end{frame}
 
 \begin{frame}{Bayesian approach - further analysis}
 	\Large{
 		\vfill
-		\emphcol{Convergence:} 
+		\emphcol{Convergence:}
 		\begin{figure}
 			\centering
-			\includegraphics<1>[height=7cm]{graphics/rhat}
+			\includegraphics<1>[height=5cm]{graphics/rhat}
 		\end{figure}
 		\vfill
 	}
-\end{frame}	
+\end{frame}
 
 \begin{frame}{Bayesian approach - further analysis}
 	\Large{
 		\vfill
-		\emphcol{Convergence:} 
+		\emphcol{Convergence:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=7cm]{graphics/ess}
 		\end{figure}
 		\vfill
 	}
-\end{frame}	
+\end{frame}
