@@ -44,7 +44,7 @@
     \quad\quad\quad\quad and $\sigma^2$ known\pause
     \item[] \emphcol{Likelihood:} $p(y \mid \mu) = \prod_i p(y_i \mid \mu)$\pause
     \item[] \emphcol{Prior:} $p(\mu)$\pause
-    \item[] \emphcol{Posterior:} $p(\mu \mid y)\pause \propto p(y \mid \mu) p(\mu)$\pause
+    \item[] \emphcol{Posterior:} $p(\mu \mid y) \propto p(y \mid \mu) p(\mu)$\pause
     \item[] \emphcol{Goal:} Infer distribution of $\mu \mid y$\pause\\
     \quad\quad\, Why?
   \end{itemize}
@@ -71,8 +71,8 @@
   \begin{align*}
     \action<+->{p(\mu \mid y) &\propto p(y \mid \mu) p(\mu)\\}
     \action<+->{&\propto \EXP{\frac{-n}{2\sigma^2}(\mu - \bar{y})^2} \EXP{\frac{-1}{2\sigma_0^2} (\mu - \mu_0)^2}\\}
-    \action<+->{&\propto \EXP{-\frac{1}{2 \sigma_\mu} (\mu - \bar{\mu}_n)^2}\\}
-    \action<+->{\implies \mu &\mid y \sim \normal{\bar{\mu}_n, \sigma_\mu}}
+    \action<+->{&\propto \EXP{-\frac{1}{2 \sigma_\mu} (\mu - \bar{\mu})^2}\\}
+    \action<+->{\implies \mu &\mid y \sim \normal{\bar{\mu}, \sigma_\mu^2}}
   \end{align*}
   }
 \end{frame}
@@ -80,9 +80,9 @@
 \begin{frame}{Conjugate Prior}
   \Large{
   \begin{align*}
-  \action<+->{\mu \mid y &\sim \normal{\bar{\mu}, \sigma_\mu} \,, \text{with}\\}
+  \action<+->{\mu \mid y &\sim \normal{\bar{\mu}, \sigma_\mu^2} \,, \text{with}\\}
   \action<+->{\sigma_\mu &= \left( \frac{1}{\sigma^2 / n} + \frac{1}{\sigma_0^2} \right)^{-1}\\}
-  \action<+->{\bar{\mu} &= \frac{1}{\sigma_\mu} \left(\frac{1}{\sigma^2 /n} \mathcolor{myred}{\bm{\bar{y}}} + \frac{1}{\sigma_0^2} \mathcolor{myred}{\bm{\mu_0}} \right)\\}
+  \action<+->{\bar{\mu} &= \sigma_\mu \left(\frac{1}{\sigma^2 /n} \mathcolor{myred}{\bm{\bar{y}}} + \frac{1}{\sigma_0^2} \mathcolor{myred}{\bm{\mu_0}} \right)\\}
   \action<+->{&= \alpha \mathcolor{myred}{\bm{\bar{y}}} + (1-\alpha) \mathcolor{myred}{\bm{\mu_0}}}
   \end{align*}
   }
@@ -91,7 +91,7 @@
 \begin{frame}
   \vfill
   \centering
-  \Large A normal model without features, really?\\
+  \Large A normal model with known variance and no features, really?\\
   \centering \includegraphics[height=1.5cm]{graphics/upside-down-face}
   \vfill
 \end{frame}
@@ -150,7 +150,9 @@
   \begin{figure}
   \centering
   \includegraphics<1>[height=6cm]{graphics/toy-mcmc}\pause
-  \includegraphics<2>[height=6cm]{graphics/toy-mcmc-with-samples}
+  \includegraphics<2>[height=6cm]{graphics/toy-mcmc-with-samples-1}\pause
+  \includegraphics<3>[height=6cm]{graphics/toy-mcmc-with-samples-2}\pause
+  \includegraphics<4>[height=6cm]{graphics/toy-mcmc-with-all-samples}
   \end{figure}
   \vfill
   }
