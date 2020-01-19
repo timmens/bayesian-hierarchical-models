@@ -16,10 +16,10 @@
     \begin{column}{0.4\textwidth}
       \Large{
        \begin{align*}
-          \action<+->{y &= \alpha + \beta_j x + \epsilon \,,\\
-          \epsilon &\sim \normal{1,1}\\[0.5em]}
+          \action<+->{y_i &= \alpha + \beta_{j[i]} x_i + \epsilon_i \,,\\
+          \epsilon &\sim \normal{0,1}\\[0.5em]}
           \action<+->{\beta_j &= \gamma_0 + \gamma_1 u_j + \eta_j \,,\\
-          \eta  &\sim \normal{1,1}}
+          \eta  &\sim \normal{0,1}}
        \end{align*}
       }
     \end{column}
@@ -31,18 +31,22 @@
     vector[N] y;
     vector[N] x;
     vector[N] u;
+    int<lower=0> J;
+    int<lower=0> N; 
     int<lower=1,upper=J>
-            school[N];
+            group[N];
     }
       \end{lstlisting}
   \end{onlyenv}
     \begin{onlyenv}<4>
       \begin{lstlisting}[language=Stan]
    parameter {
-   vector[J] eta_b;
+   real alpha;
    real gamma_0;
    real gamma_1;
+   vector[J] eta_b;
    real<lower=0> sigma_b;
+   real<lower=0> sigma_y;
    }
       \end{lstlisting}
   \end{onlyenv}
@@ -52,22 +56,22 @@
   for (i in 1:N) {
     beta[i] = gamma_0 +
          u[i] * gamma_1 +
-           eta[school[i]]
+           eta[group[i]]
 
-    y_hat[i] = a +
+    y_hat[i] = alpha +
         x[i] * beta[i];
   }
   y ~ normal(
-         y_hat, sigma_y
-       );
+        y_hat, sigma_y);
       \end{lstlisting}
   \end{onlyenv}
     \begin{onlyenv}<6>
       \begin{lstlisting}[language=Stan]
   # priors
-  gamma_0 ~ normal(0, 1);
+  gamma_0 ~ normal(1, 1);
   gamma_1 ~ normal(1, 1);
   eta ~ normal(0, sigma_b);
+  sigma_y ~ cauchy(0, 5);
   sigma_b ~ cauchy(0, 5);
       \end{lstlisting}
   \end{onlyenv}
@@ -77,7 +81,7 @@
 
 \end{frame}
 
-\begin{frame}{How can we sure that we sample from the right distribution? }
+\begin{frame}{How can we be sure that we sample from the right distribution? }
   \Large{
   \begin{figure}
   \centering
@@ -88,24 +92,6 @@
   }
 \end{frame}
 
-
-
-\begin{frame}{Monitoring Convergence}
-  \Large{
-
-  \begin{figure}
-  \centering
-  \includegraphics<1>[height=5.3 cm]{graphics/s-convergence} \pause
-  \includegraphics<2->[height=5.3 cm]{graphics/m-convergence}
-  \end{figure}
-
-  }
-  \begin{itemize}
-     \only<1>    { \item[] Quantify this approach}
-     \only<2-3> { \item[] \emphcol{Variance of a single chain:} $$ s_m^2= \frac{1}{N-1}\sum_{n=1}^{N} (\theta_m^{(n)}-\overline{\theta}_{m}^{(\bullet)} )^2$$ }\pause
- \item[] \emphcol{Average within chain variance:} $$W=\frac{1}{M} \sum_{m=1}^{M} s_m^2 $$
- \end{itemize}
-\end{frame}
 
 
 
@@ -119,18 +105,19 @@
   \end{figure}
   %\vfill
   }
-  \begin{itemize}
-     \only <1>    { \item[] Quantify this approach}
-     \only<2-3> { \item[] \emphcol{Variance of a single chain:} $$ s_m^2= \frac{1}{N-1}\sum_{n=1}^{N} (\theta_m^{(n)}-\overline{\theta}_{m}^{(\bullet)} )^2$$ }\pause
- \item[] \emphcol{Average within chain variance:} $$W=\frac{1}{M} \sum_{m=1}^{M} s_m^2 $$
- \end{itemize}
+ \only<3-4>{ \begin{itemize}
+     \only<3> { \item[] \emphcol{Variance of a single chain:} $$ s_m^2= \frac{1}{N-1}\sum_{n=1}^{N} (\theta_m^{(n)}-\overline{\theta}_{m} )^2$$ }
+ \only<4> { \item[] \emphcol{Average within chain variance:} $$W=\frac{1}{M} \sum_{m=1}^{M} s_m^2 $$ }
+
+\end{itemize}
+} 
 \end{frame}
 
 \begin{frame}{Brooks and Gelman convergence criterium}
   \Large{
 
   \begin{itemize}
-       \item[] \emphcol{Average Variance between chains:} $$ B/N=\frac{1}{M-1} \sum_{m=1}^{M} (\overline{\theta}_m^{(\bullet)}  - \overline{\theta}_{\bullet}^{(\bullet)} )^2 $$  \pause
+       \item[] \emphcol{Average Variance between chains:} $$ B/N=\frac{1}{M-1} \sum_{m=1}^{M} (\overline{\theta}_m  - \overline{\theta} )^2 $$  \pause
  \item[] \emphcol{Total Variance:} $$\widehat{\text{Var}}^+ (\theta \mid y)=\frac{N-1}{N}W+\frac{1}{N}B$$
 
 \end{itemize}
@@ -170,7 +157,7 @@
 
 
 
-\begin{frame}{Posterior Distribution with a good prior }
+\begin{frame}{Posterior Distribution - good prior }
   \Large{
   \begin{figure}
   \centering
@@ -194,7 +181,7 @@
 \end{frame}
 
 
-\begin{frame}{Posterior Distribution with a bad prior }
+\begin{frame}{Posterior Distribution - bad prior }
   \Large{
   \begin{figure}
   \centering
@@ -204,7 +191,7 @@
   }
 \end{frame}
 
-\begin{frame}{Posterior Distribution for a bad, but weak prior }
+\begin{frame}{Posterior Distribution - weak, bad prior }
   \Large{
   \begin{figure}
   \centering
