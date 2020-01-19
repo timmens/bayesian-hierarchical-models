@@ -79,13 +79,19 @@ if __name__ == "__main__":
 
     # save plot
     plt.savefig("../graphics/toy-mcmc.pdf", bbox_inches='tight', pad_inches=0, transparent=True)
+
+    # add first 10 Markov chain samples
+    plt.plot(mc_samples[:10,0],mc_samples[:10, 1], color='brown', marker='o', linewidth=2.25)
+    
+    # save plot
+    plt.savefig("../graphics/toy-mcmc-with-samples-1.pdf", bbox_inches='tight', pad_inches=0, transparent=True)
     
     
     # add first 70 Markov chain samples
-    plt.plot(mc_samples[:70,0],mc_samples[:70, 1], color='brown', marker='o', linewidth=2.25)
+    plt.plot(mc_samples[10:70,0],mc_samples[10:70, 1], color='brown', marker='o', linewidth=2.25)
     
     # save plot
-    plt.savefig("../graphics/toy-mcmc-with-samples.pdf", bbox_inches='tight', pad_inches=0, transparent=True)
+    plt.savefig("../graphics/toy-mcmc-with-samples-2.pdf", bbox_inches='tight', pad_inches=0, transparent=True)
 
     # add remaining Markov chain samples
     plt.plot(mc_samples[70:,0],mc_samples[70:, 1], color='brown', marker='o', linewidth=2.25)

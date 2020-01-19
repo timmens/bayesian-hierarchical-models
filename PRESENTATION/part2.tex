@@ -2,9 +2,9 @@
 
 \begin{frame}{Structure of HM - Setup}
   \Large{
-  \emphcol{Hierarchical Data:}
+  \emphcol{Hierarchical Data:}\pause
   \begin{itemize}
-    \item[] \emphcol{Individual Level:} $(y_i, x_i)$ for $i = 1,\mydots,n$
+    \item[] \emphcol{Individual Level:} $(y_i, x_i)$ for $i = 1,\mydots,n$\pause
     \item[] \emphcol{Group Level:} $u_j$ for $j = 1,\mydots,J$
   \end{itemize}\pause
   \emphcol{Example:}
@@ -25,7 +25,6 @@
   >=latex,
   on grid]
   \node[vertex] (phi) {$\phi$};
-  \node[rectangle, draw=black, minimum size=0.9cm,left=2cm of phi] (zeta) {$\zeta$};
   \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
   \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
   \node[below=1.5cm of phi] (dots1) {$\dots$};
@@ -37,7 +36,6 @@
   \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of yJ] (xJ) {$x(J)$};
   \node[below=3.5cm of phi] (dots1) {$\dots$};
   \draw[->]
-    (zeta) edge (phi)
     (phi) edge (theta1)
     (phi) edge (thetaJ)
     (u1) edge (theta1)
@@ -87,11 +85,4 @@
       \item[] \emphcol{Priors on:} $\gamma_0, \gamma, \epsilon_i, \eta_j$\pause
     \end{itemize}
   }
-\end{frame}
-
-\begin{frame}
-  \centering
-  \vfill
-  \large \url{http://mfviz.com/hierarchical-models/}
-  \vfill
 \end{frame}
