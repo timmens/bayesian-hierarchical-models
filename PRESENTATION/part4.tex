@@ -10,8 +10,27 @@
 	}
 \end{frame}
 
+\setbeamertemplate{footline}[frame number]{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+  \begin{frame}
+  \textcolor{myred}{\rule{\textwidth}{2pt}}
+  \vfill
+  \centering
+	\itshape \LARGE \textcolor{black}{ML and Bayesian Approach}\\
+  \itshape \Large \textcolor{black}{\textbf{\insertsectionhead}}
+  \vfill
+  \textcolor{myred}{\rule{\textwidth}{2pt}}
+  \end{frame}
+\addtocounter{framenumber}{-1}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \textcolor{myred}{\insertframenumber/\inserttotalframenumber}
+}
 
-\begin{frame}{ML and Bayesian Approach: Comparison}
+\begin{frame}{Comparison}
 	\Large{
 		\emphcol{The model:} Varying intercept and slope model with a single predictor
 		\begin{align}
@@ -23,7 +42,7 @@
 	}
 \end{frame}
 
-\begin{frame}{ML and Bayesian Approach: Comparison}
+\begin{frame}{Comparison}
 	\Large{
 		\emphcol{Maximum Likelihood (ML) Estimation}
 		\begin{itemize}
@@ -34,7 +53,7 @@
 	}
 \end{frame}
 
-\begin{frame}{ML and Bayesian Approach: Comparison}
+\begin{frame}{Comparison}
 	\Large{
 		\emphcol{Bayesian Estimation:}
 		\begin{itemize}
@@ -45,7 +64,7 @@
 	}
 \end{frame}
 
-\begin{frame}{ML and Bayesian Approach: Results}
+\begin{frame}{Results}
 	\Large{
 			\begin{columns}
 
@@ -90,10 +109,29 @@
 
 \end{frame}
 
-\begin{frame}{Bayesian approach - further analysis}
+\setbeamertemplate{footline}[frame number]{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+  \begin{frame}
+  \textcolor{myred}{\rule{\textwidth}{2pt}}
+  \vfill
+  \centering
+	\itshape \LARGE \textcolor{black}{Bayesian Approach: Further Analysis}\\
+  \itshape \Large \textcolor{black}{\textbf{\insertsectionhead}}
+  \vfill
+  \textcolor{myred}{\rule{\textwidth}{2pt}}
+  \end{frame}
+\addtocounter{framenumber}{-1}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \textcolor{myred}{\insertframenumber/\inserttotalframenumber}
+}
+
+\begin{frame}{Posterior distribution ranking:}
 	\Large{
 		\vfill
-		\emphcol{Posterior distribution ranking:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=7cm]{graphics/ranking}
@@ -102,10 +140,9 @@
 	}
 \end{frame}
 
-\begin{frame}{Bayesian approach - further analysis}
+\begin{frame}{School specific regression lines and pooling:}
 	\Large{
 		\vfill
-		\emphcol{School specific regression lines and pooling:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=7cm]{graphics/pooling}
@@ -114,10 +151,9 @@
 	}
 \end{frame}
 
-\begin{frame}{Bayesian approach - further analysis}
+\begin{frame}{Making comparisons between individual schools:}
 	\Large{
 		\vfill
-		\emphcol{Making comparisons between individual schools:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=7cm]{graphics/differences}
@@ -126,10 +162,9 @@
 	}
 \end{frame}
 
-\begin{frame}{Bayesian approach - further analysis}
+\begin{frame}{Convergence}
 	\Large{
 		\vfill
-		\emphcol{Convergence:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=5cm]{graphics/rhat}
@@ -138,10 +173,9 @@
 	}
 \end{frame}
 
-\begin{frame}{Bayesian approach - further analysis}
+\begin{frame}{Convergence}
 	\Large{
 		\vfill
-		\emphcol{Convergence:}
 		\begin{figure}
 			\centering
 			\includegraphics<1>[height=7cm]{graphics/ess}
