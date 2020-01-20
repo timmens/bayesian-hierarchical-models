@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Bayesian Thinking}{3}{0}{1}
+\beamer@sectionintoc {2}{Hierarchical Models}{35}{0}{2}
+\beamer@sectionintoc {3}{Monte Carlo Study}{51}{0}{3}
+\beamer@sectionintoc {4}{Application}{84}{0}{4}
