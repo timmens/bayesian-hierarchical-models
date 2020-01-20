@@ -34,10 +34,10 @@
 	\Large{
 		\emphcol{The model:} Varying intercept and slope model with a single predictor
 		\begin{align}
-			y_{ij} &= \alpha_j + \beta_j x_{ij} +\epsilon_{ij},\\[0.5em]
+			y_i &= \alpha_{j[i]} + \beta_{j[i]} x_i +\epsilon_i,\\[0.5em]
 			\alpha_j &= \mu_\alpha + u_j,\\[0.5em]
 			\beta_j &= \mu_\beta + v_j,\\[0.5em]
-			y_{ij} &= \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij}
+			y_i &= \mu_\alpha + \mu_\beta x_i + u_{j[i]} + v_{j[i]} x_i + \epsilon_i
 		\end{align}
 	}
 \end{frame}

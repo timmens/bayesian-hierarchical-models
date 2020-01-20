@@ -71,7 +71,7 @@
   \begin{align*}
     \action<+->{p(\mu \mid y) &\propto p(y \mid \mu) p(\mu)\\}
     \action<+->{&\propto \EXP{\frac{-n}{2\sigma^2}(\mu - \bar{y})^2} \EXP{\frac{-1}{2\sigma_0^2} (\mu - \mu_0)^2}\\}
-    \action<+->{&\propto \EXP{-\frac{1}{2 \sigma_\mu} (\mu - \bar{\mu})^2}\\}
+    \action<+->{&\propto \EXP{-\frac{1}{2 \sigma_\mu^2} (\mu - \bar{\mu})^2}\\}
     \action<+->{\implies \mu &\mid y \sim \normal{\bar{\mu}, \sigma_\mu^2}}
   \end{align*}
   }
@@ -81,8 +81,8 @@
   \Large{
   \begin{align*}
   \action<+->{\mu \mid y &\sim \normal{\bar{\mu}, \sigma_\mu^2} \,, \text{with}\\}
-  \action<+->{\sigma_\mu &= \left( \frac{1}{\sigma^2 / n} + \frac{1}{\sigma_0^2} \right)^{-1}\\}
-  \action<+->{\bar{\mu} &= \sigma_\mu \left(\frac{1}{\sigma^2 /n} \mathcolor{myred}{\bm{\bar{y}}} + \frac{1}{\sigma_0^2} \mathcolor{myred}{\bm{\mu_0}} \right)\\}
+  \action<+->{\sigma_\mu^2 &= \left( \frac{1}{\sigma^2 / n} + \frac{1}{\sigma_0^2} \right)^{-1}\\}
+  \action<+->{\bar{\mu} &= \sigma_\mu^2 \left(\frac{1}{\sigma^2 /n} \mathcolor{myred}{\bm{\bar{y}}} + \frac{1}{\sigma_0^2} \mathcolor{myred}{\bm{\mu_0}} \right)\\}
   \action<+->{&= \alpha \mathcolor{myred}{\bm{\bar{y}}} + (1-\alpha) \mathcolor{myred}{\bm{\mu_0}}}
   \end{align*}
   }
