@@ -21,24 +21,27 @@
 \usepackage{nicefrac}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
-\usepackage{hyperref}
 \usepackage[font=it]{caption}
+\usepackage[affil-it]{authblk}
+\usepackage{xfrac}
 
 \counterwithin{figure}{section}
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning}
 
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+
 %Definitions, Propositions, Lemmata and Theorems
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
+\newtheorem{definition}{Definition}
 \newtheorem{assumption}{Assumption}
 \newtheorem*{unnumdef}{Definition}
 
 \theoremstyle{plain}
-\newtheorem{proposition}[definition]{Proposition}
-\newtheorem{theorem}[definition]{Theorem}
-\newtheorem{lemma}[definition]{Lemma}
-\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
 
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
@@ -56,7 +59,10 @@
 \newcommand{\nrmat}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}} %arbitrary matrix
 \newcommand{\sqmat}[1]{\ensuremath{\begin{bmatrix}#1\end{bmatrix}}} %arbitrary matrix
 \newcommand{\Exp}[1]{{\mathbb{E}} \left[ \, #1 \, \right]}
+\newcommand{\Expwrt}[2]{\mathbb{E}_{#1} \left[ \, #2 \, \right]}
 \newcommand{\CondExp}[3]{\mathbb{E}_{#1} \left[ \, #2 \mid #3 \, \right]}
+\newcommand{\var}[1]{\text{Var} \left( #1 \right)}
+\newcommand{\varwrt}[2]{\text{Var}_{#1} \left( #2 \right)}
 \newcommand{\Cov}[1]{\text{Cov}\left(\, #1 \, \right)}
 \newcommand{\normal}[1]{\mathcal{N}\left(#1\right)}
 \newcommand{\zero}{\mathbf{0}}
@@ -70,7 +76,6 @@
 \newcommand{\argmax}[1]{\mathop{\text{\normalfont argmax}}_{#1}}
 \newcommand{\XtXinv}{(X^\tr X)^{-1}}
 \newcommand{\sigmahat}{\hat{\sigma}}
-\newcommand{\var}[1]{\text{Var} \left( #1 \right)}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\sgn}{\,\text{sgn}}
 \newcommand{\mydots}{\makebox[1em][c]{.\hfil.\hfil.}}
@@ -79,6 +84,6 @@
 \newcommand{\NormalscaledInvChi}[1]{\normalfont \text{normal-scaled-Inv-}\chi^2\left(#1\right)}
 \newcommand{\vol}[1]{\text{vol}\left(#1\right)}
 \newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\newcommand\ddsfrac[2]{\sfrac{\displaystyle #1}{\displaystyle #2}}
 
 % document settings

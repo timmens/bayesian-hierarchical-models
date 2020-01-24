@@ -27,7 +27,7 @@ For everything that follows let us therefore make the omnipresent assumption tha
 \subsection{Schools of Thought}
 Next we discuss how the Bayesian and the classical mindset differ. In particular we focus on the predominant way of thinking for most of statistical history, \textit{frequentist statistics}. We do not aim at an exhaustive overview here nor do we presume that the individual statistician belongs to one and only one of the following categories.
 
-\textbf{Frequentist.} The frequentist approach assumes that the true data generating process is completely specified by an unkown but fixed quantity $\theta_0 \in \Theta$.
+\paragraph{Frequentist.} The frequentist approach assumes that the true data generating process is completely specified by an unkown but fixed quantity $\theta_0 \in \Theta$.
 For a sensible comparison we focus on approaches where the \emph{likelihood function} $p(z; \theta)$ is defined either explicitly or implicitly during the modeling process, as for example in maximum-likelihood estimation.
 The main challenges include finding a (point) estimator for $\theta_0$, quantifying the uncertainty of the estimate and testing hypothesis.
 One fundamental idea which stretches over all these topics is the interpretation of probability as the limit of an infinite sequence of relative frequencies ---hence the name.
@@ -41,7 +41,7 @@ All hypothesis are either true or false and therefore have probabilities of one 
 A hypothesis $H_0$ is rejected if conditional on $H_0$ being true the probability of observing the data in the given sample is lower than some threshold, i.e. $P(\text{data} \mid H_0) < \alpha$.
 Note that this statement does not tell us anything about $H_0$ directly, but only about the data at hand.
 
-\textbf{Bayesian.} The Bayesian approach also assumes that there may be a true data generating process specified by some (maybe fixed) quantity $\theta_0 \in \Theta$.
+\paragraph{Bayesian.} The Bayesian approach also assumes that there may be a true data generating process specified by some (maybe fixed) quantity $\theta_0 \in \Theta$.
 The main difference is their understanding of probability as a subjective quantification of uncertainty.
 In this view one is not limited to assigning non trivial probability statements only to objects that appear random in sequential experiments.
 We can see the direct utility of this liberation by considering a special case of Bayes theorem
@@ -97,7 +97,7 @@ We start our first Bayesian analysis by considering a prior which contains virtu
 This results in an analysis being mainly, if not completely, driven by the likelihood.
 A common assumption is independence of the individual priors, that is $p(\theta) = p(\mu, \sigma^2) = p(\mu) p(\sigma^2)$.
 A natural choice of declaring full ignorance of prior information is to assign a prior over the complete domain of the random parameter. For our case this mean $p(\mu) \propto 1$.
-We note that this does not define proper proability distribution, which will not matter in this case but can lead to problems in others \textcolor{red}{(Will I find a nice paper which describes this?)}.
+We note that this does not define a proper proability distribution, which will not matter in this case but can lead to problems in others; see for example section 4.2 in \citet{kass1996}.
 Since the variance is restricted to be positive we impose a uniform prior on the log-transform thereof: $p(\log \sigma) \propto 1$.
 Using that $x \mapsto \text{exp}^2(x)$ is one-to-one we can apply standard methods, which yield the density of the transformed variable
 \begin{align}
@@ -255,7 +255,7 @@ As before, our goal lies in analyzing the posterior distribution given by $p(\th
 Unlike before however, we now consider cases where the posterior is highly complex or even non-existent in analytical form, which happens for example when the likelihood contribution stems from an algorithmic computational model.
 
 Say we are somehow able to draw independent samples $\theta_1, \mydots, \theta_n$ from $p(\theta \mid z)$.
-By independence we get the well known result $\frac{1}{n} \sum_i h(\theta_i) \overset{d}{\longrightarrow} \mathcal{N} \left( \Exp{h(\theta) \mid z}, \var{h(\theta) \mid z} / \sqrt{n} \right)$, under mild conditions on $h$ and $p(\theta \mid z)$.
+By independence we get the well known result $\frac{1}{\sqrt{n}} \sum_i h(\theta_i) \overset{d}{\longrightarrow} \mathcal{N} \left( \Exp{h(\theta) \mid z}, \var{h(\theta) \mid z} \right)$, under mild conditions on $h$ and $p(\theta \mid z)$.
 As we are able to formulate many quantities of interest using expectations ---probability statements can be written as expectations--- and as we can approximate percentiles from a (large) sample, we should be able to adequately summarize the posterior distribution if we are able to draw (independent) samples from it.
 
 In the subsequent paragraphs we will discuss efficient methods to sample from the posterior, even if we cannot compute the integration constant $\int p(z \mid \theta) p(\theta) \mathrm{d}\theta$.
@@ -264,56 +264,60 @@ With this in mind, we follow the creational process of these methods and first s
 Then we present the \emph{Metropolis-Hastings algorithm}, which creates samples that fulfill the above criteria.
 At last we talk about cases in which the Metropolis-Hastings algorithm fails and what can be done instead.
 
-\subsubsection*{Markov Chain Monte Carlo}
-
+\paragraph{Markov Chain Monte Carlo.}
 Say we are able to construct a \emph{Markov chain} with unique invariant distribution equal to the posterior distribution we want to sample from.
 Given we know the transition kernel, Markov chains are very easy to simulate.
 Hence, we could start a chain, let it run \emph{long enough} and at some point consider all subsequent realizations as draws from the posterior; this is the core idea of MCMC ---we defer questions regarding the creation of transition kernels which result in specific invariant distributions until next paragraph.
 In practice we never know for sure when a chain is run \emph{long enough}.
 In part 3 we present some measures that help during the application.
-Here we do what statisticians do best: obsess over central limit theorems.
-Under mild conditions we can get something similar to a law of large numbers for Markov chains (see e.g. \citet{roberts2004}, fact 5).
+Under mild conditions we can get something similar to a law of large numbers for Markov chains (see e.g. \citet{roberts2004}, Fact 5).
 This tells us that if we run the chain forever, our average will eventually converge to the number we seek.
 However, forever is a very long time.
 That is why we focus on assumptions which admit a central limit theorem with the usual $\sqrt{n}$ convergence rate, as it allows us to make more rigorous statements about our confidence in the whereabouts of the estimator for large but finite samples.
 
-
 \begin{remark}
   As is often the case, there are many different sets of assumptions that allow for a CLT.
-  The following theorem presents two sets of assumptions which allow for the desired result.
+  The following theorem presents a particular set of assumptions which will be seen to have favorable properties when also considering the creation process.
   We remark that we will \emph{not} formally introduce all concepts and will provide only a heuristic explaination of the assumptions.
   This is due to the fact that Markov chain theory on general state spaces requires a good understanding of measure theory which we do not want to assume as a prerequisite.
-  The interested reader is refered to \citet{meynandtweedie09}.
-  %A \emph{Markov chain} on the \emph{state space} $\Theta$ is a sequence of random variables $\{X_t : t \geqslant 0\}$ which assume values in $\Theta$ and fulfill the Markov property, that is
-  %\begin{align}
-  %P(X_{t+1} \in A \mid X_0 = x_0,\mydots,X_t=x_t) = P(X_{t+1} \in A \mid X_t=x_t) \,,
-  %\label{eq:markov_property}
-  %\end{align}
-  %for all $t \geqslant 0$ and for all measurable $A \subset \Theta$. We consider time-homogenous chains for which (\ref{eq:markov_property}) does not depend on $t$.
-  %In this case we can characterize the chain by its \emph{transition kernel} $\mathbb{P}$ with $P(X_{t+1} \in A \mid X_t = x) = \mathbb{P}(x, A)$ for all $t \geqslant 0, x \in \Theta$ and for all measurable $A \subset \Theta$.
-  %That means $\mathbb{P}(x, A)$ gives the probability of the chain falling into $A$ given it starts at point $x$ in the previous period. Note that if we work on a subset of $\reals^d$ the \emph{Radon-Nikodym derivate} with respect to \emph{Lebesgue measure} is the probility density function $\pi$ corresponding to $\mathbb{P}$.
+  The interested reader is refered to \citet{roberts2004} for a survey on recent advances with application to MCMC and to \citet{meynandtweedie09} for a comprehensive treatment of Markov chain theory.
 \end{remark}
 
-
-\begin{theorem}{(A Central Limit Theorem for Markov Chains).}
-  Let $\{X_t: t \geqslant 0 \}$ be a positive Harris Markov chain with invariant distribution $\pi$.
-  Let $h$ be measurable with $\int h^2 \mathrm{d}\pi < \infty$.
-  Assume either of the following holds:
-  \begin{enumerate}
-    \item $\{X_t: t \geqslant 0\}$ is uniformly ergodic,
-    \item $\{X_t: t \geqslant 0\}$ is $\pi$-reversible and geometrically ergodic.
-  \end{enumerate}
-  Then, there exists a constant $\sigma^2(h) < \infty$ such that
+\begin{theorem}{(A Central Limit Theorem for Markov Chains).}\label{thm:mcclt}
+  Let $\{X_n \}$ be a (discrete time) Markov chain and $\pi$ a probability distribution on the same space.
+  Consider some measurable function $h$ with $\Expwrt{\pi}{h^2} < \infty$.
+  Define $\sigma^2(h) := \varwrt{\pi}{h}\tau := \varwrt{\pi}{h} \sum_{k \in \mathrm{Z}} \text{Corr}\left(h(X_0), h(X_k)\right)$.\footnote{In the original paper by \citet{roberts2004} the statement of this theorem differs in that they write $\tau = \sum_{k \in \mathrm{Z}} \text{Corr}\left(X_0, X_k\right)$.
+  We believe that this is an error as \citet{haggstrom2007} state in their comparison of different ways of writing the asymptotic variance that $\sigma^2(h) = \sum_{k \in \mathrm{Z}} \Cov{h(X_0), h(X_k)}$.
+  Now if we use that $X_0 \sim \pi$ we get $\sigma^2(h) = \sum_{k \in \mathrm{Z}} \Cov{h(X_0), h(X_k)}= \var{h(X_0)} + \sum_{k \neq 0} \Cov{h(X_0), h(X_k)} = \varwrt{\pi}{h}(1 + \sum_{k \neq 0} \Cov{h(X_0), h(X_k)}) / \var{h(X_0)} =\varwrt{\pi}{h}(1 + \sum_{k \neq 0} \text{Corr}{(h(X_0), h(X_k))}) = \varwrt{\pi}{h} \sum_{k\in\mathrm{Z}} \text{Corr}{(h(X_0), h(X_k))}$.}
+  Assume the Markov chain is $\phi$-irreducible, aperiodic, reversible with respect to $\pi$ and that $\sigma^2(h) < \infty$. Then $\pi$ is the stationary for the chain and
   \begin{align}
-    \sqrt{t}\left(\frac{1}{t}\sum_t h(X_t) - \int h \mathrm{d}\pi \right) \overset{d}{\longrightarrow} \normal{0, \sigma^2(h)} \,.
+    \sqrt{n}\left(\frac{1}{n}\sum_{i=1}^n h(X_i) - \Expwrt{\pi}{h} \right) \overset{d}{\longrightarrow} \normal{0, \sigma^2(h)} \,.
   \end{align}
 \end{theorem}
 \begin{proof}
-  See \citet{cogburn1972} for 1 and \citet{roberts1997} for 2.
+  See \citet{roberts2004} Proposition 1 for the first claim and Theorem 27 for the second; see \citet{kipnis1986} for a complete proof of the second claim.
 \end{proof}
-\textcolor{red}{Extend paragraph with heuristic explaination of assumption.}
 
-\subsubsection*{Metropolis-Hastings Algorithm}
+\noindent
+We end this paragraph by discussing the assumptions of Theorem \ref{thm:mcclt} on an intuitive level.
+
+\textbf{\emph{$\phi$-irreducibility}} assumes that we can find a measure $\phi$ so that no matter where the chain starts, we eventually reach every region of the state space which has positive measure with respect to $\phi$.
+In the next paragraph we will see that we can make sure that this condition is satisfied by construction such that the chain is $\pi$-irreducible.
+
+\textbf{\emph{Aperiodicity}} assumes that we cannot find disjoint regions on which the chain jumps from one region to another in a cyclical predictable fashion.
+It seems intuitive that such a behavior will prevent the chain of actually converging to its stationary distribution.
+
+\textbf{\emph{Reversibility with respect to $\pi$}} is a technical assumption which is best explained by its implications.
+In particular, it implies that the Markov chain has $\pi$ as its stationary distribution (which is unique by the other assumption).
+Again, later we will see that we can construct a chain which fulfills this condition with $\pi$ being equal to the posterior distribution.
+
+At last, how do we interpret the \textbf{\emph{finite variance}} assumption?
+As we assume square integrability of $h$ we get that $\sigma^2(h)$ is finite if and only if the integrated correlation time $\tau$ is finite.
+This happens if $\text{Corr}(h(X_0), h(X_k))$ goes fast enough to zero.
+We then get the usual large sample variance approximation of the unnormalized sample mean: $\sigma^2(h) / n = \varwrt{\pi}{h} / ({}^n/{}_\tau)$.
+In this sense we might say that ${}^n/{}_\tau$ denotes the \emph{effective sample size}, which corrects for the fact that we are not drawing independent samples and therefore need more samples to yield the same amount of information as in the independent case.
+
+\paragraph{Metropolis-Hastings Algorithm.}
 From the above we know that given a Markov chain with invariant distribution equal to the posterior distribution $p(\theta \mid z)$, we can treat the realizations of the chain as samples from the posterior, under some regularity conditions.
 Here we consider one method which implicitly defines such a chain, namely the Metropolis-Hastings algorithm (\citet{Metropolis1953}, \citet{hastings70}).
 For other approaches and more involved algorithms see for example \citet{roberts2004} or \citet{liang10}.
@@ -324,9 +328,9 @@ For other approaches and more involved algorithms see for example \citet{roberts
   \Require $(\pi, q, T) =$ (target density, proposal density, number of samples to draw)
 \State initialize $x_0$ with an arbitrary point from the support of $q$
 \For{$t = 0,\mydots,T-1$}
-  \State sample a canditate: $y \sim q(\cdot \mid x_t)$
-  \State compute the acceptance probability: $\alpha(x_t, y) \gets \min\left\{ \ddfrac{\pi(y)}{\pi(x_t)} \ddfrac{q(y \mid x_t)}{q(x_t \mid y)}, 1\right\}$
-  \State update the chain: $x_{t+1} \gets \begin{cases} y &\mbox{,with probability } \alpha(x_t, y)\\ x_t &\mbox{,with remaining probability} \end{cases}$
+  \State sample a candidate: $y \sim q(\cdot \mid x_t)$
+  \State compute the acceptance probability: $\mathcal{A} \gets \min\left\{ \ddfrac{\pi(y)}{\pi(x_t)} \ddfrac{q(y \mid x_t)}{q(x_t \mid y)}, 1\right\}$
+  \State update the chain: $x_{t+1} \gets \begin{cases} y &\mbox{,with probability } \mathcal{A}\\ x_t &\mbox{,with remaining probability} \end{cases}$
 \EndFor{}
 \State \textbf{return} $\{x_t : t = 1,\mydots,T\}$
 \end{algorithmic}
@@ -342,13 +346,14 @@ Therefore in practice we choose $T = B + T^*$ and drop the first $B$ samples, wh
 See \citet{sherlock2010} for a recent survey on random walk proposals.
 
 The simplicity of the algorithm is remarkable, but the main question of concern is if the resulting Markov chain inherits favorable properties.
-\textcolor{red}{Need to list what properties can be derived in general and what can only be derived for specific proposal densities.}
+And indeed this is the case.
+The algorithm creates by construction Markov chains which are reversible with respect to $\pi$ and aperiodic, and if additionally the proposal density is positiv and continuous and $\pi$ is finite then the chain is $\pi$-irreducible; see for example \citet{roberts2004}.
 
 The ability to sample draws in complex settings using the Metropolis-Hastings algorithm (and other Markov chain Monte Carlo methods for that matter) made Bayesian statistics applicable for real problems.
 Still, \citet{Au2001EstimationOS} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \citet{zuev08} provide a geometric intution.
 The following paragraph illustrates one of the problems of working in higher dimensions.
 
-\subsubsection*{Volume in Higher Dimensions}
+\paragraph{Volume in Higher Dimensions}
 Classical MCMC methods can have too slow convergence rates; In higher dimensions this might be due to probability mass being distributed very far from where it is expected (\citet{betancourt2017convergence}).
 In this paragraph we motivate this phenomenon and in the following we present methods which utilize it.
 
@@ -382,9 +387,8 @@ This idea is formalized by the \emph{Gaussian Annulus Theorem} (\citet{blum2017f
 We have seen some unintuitive behavior in higher dimensions which might explain why regular methods do not work or only work very slowly.
 The next paragraph presents one method which utilizes this behavior to efficiently produce samples.
 
-\subsubsection*{Hamiltonian Monte Carlo}
-
-We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo} (HMC), a innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \citet{duane87}.
+\paragraph{Hamiltonian Monte Carlo.}
+We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo} (HMC), an innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \citet{duane87}.
 There are of course multiple MCMC algorithms which work in higher dimensions with many more being actively developed.
 Here we focus on HMC as it is the main algorithm used in the probabilistic programming language STAN (\citet{standev2018stancore}), which we will be using in our Monte Carlo study and application part.
 
