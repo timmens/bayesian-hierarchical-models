@@ -308,14 +308,14 @@ In the next paragraph we will see that we can make sure that this condition is s
 It seems intuitive that such a behavior will prevent the chain of actually converging to its stationary distribution.
 
 \textbf{\emph{Reversibility with respect to $\pi$}} is a technical assumption which is best explained by its implications.
-In particular, it implies that the Markov chain has $\pi$ as its stationary distribution (which is unique by the other assumption).
+In particular, it implies that the Markov chain has $\pi$ as its stationary distribution (which is unique by the other assumptions).
 Again, later we will see that we can construct a chain which fulfills this condition with $\pi$ being equal to the posterior distribution.
 
 At last, how do we interpret the \textbf{\emph{finite variance}} assumption?
 As we assume square integrability of $h$ we get that $\sigma^2(h)$ is finite if and only if the integrated correlation time $\tau$ is finite.
 This happens if $\text{Corr}(h(X_0), h(X_k))$ goes fast enough to zero.
 We then get the usual large sample variance approximation of the unnormalized sample mean: $\sigma^2(h) / n = \varwrt{\pi}{h} / ({}^n/{}_\tau)$.
-In this sense we might say that ${}^n/{}_\tau$ denotes the \emph{effective sample size}, which corrects for the fact that we are not drawing independent samples and therefore need more samples to yield the same amount of information as in the independent case.
+In this sense we might say that ${}^n/{}_\tau$ denotes the \emph{effective sample size}, which corrects for the fact that we are not drawing independent samples and therefore (in most cases) need more samples to yield the same amount of information as in the independent case.
 
 \paragraph{Metropolis-Hastings Algorithm.}
 From the above we know that given a Markov chain with invariant distribution equal to the posterior distribution $p(\theta \mid z)$, we can treat the realizations of the chain as samples from the posterior, under some regularity conditions.
