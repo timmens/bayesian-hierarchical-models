@@ -1,61 +1,93 @@
-\appendix
+%\appendix
 \section{Appendix}
 
 \subsection{Tables and Figures}
 
-\subsection{Code}
+\begin{proof}[Derivation of Results in Table \ref{tab:comp_uniform_bay_ml}.]
+  We know that for the problem at hand the standard maximum likelihood estimators
+  and their variances are given by
+  \begin{align}
+    \hat{\mu}_{ML} &= \frac{1}{n} \sum_i y_i = \bar{y}\,\\
+    \hat{\sigma}_{ML}^2 &= \frac{1}{n} \sum_i (y_i - \bar{y})^2 = \frac{n-1}{n} s^2\,\\
+    \mathrm{I}(\mu, \sigma)^{-1} &= \sqmat{\sigma^2 / n & 0\\0&\sigma^2/(2n)} \,.
+  \end{align}
+  The Bayesian counterpart to the ML-Estimator is the \emph{maximum a posteriori estimate},
+\end{proof}
+
+\begin{proof}[Derivation of Results in Table \ref{tab:comp_conjugate_bay_ml}.]
+
+\end{proof}
+
+\begin{proof}[Derivation of Results in Table \ref{tab:vol_high_dim}]
+See file \lstinline{volume.py}{} in the online appendix.
+\end{proof}
 
 \subsection{Proofs}
-\textbf{Uninformative prior}
-Thus the marginal posterior of $\sigma^2$ can be obtained by integrating the joint posterior
-over $\theta$. Let $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denote the sample
-variance and note that it is easy to show to
-$\theta \mid \sigma^2, y \sim \normal{\bar{y}, \sigma^2/n}$ (see appendix for a proof).
-Then,
-\begin{align}
-  p(\sigma^2 \mid y) &\propto \int p(\theta, \sigma^2 \mid y) \mathrm{d} \theta\\
-  &\propto \int \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \int \EXP{\frac{1}{2\sigma^2/n}(\bar{y} - \theta)^2} \mathrm{d} \theta\\
-  &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \sqrt{2 \pi \sigma^2 / n} \\
-  &\propto (\sigma^2)^{-(n+1)/2} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \,.
-\end{align}
-Hence, $\sigma^2 \mid y \sim \text{scaled-Inv-} \chi^2(n-1, s^2)$.
+\begin{remark}
+The proofs presented here follow \citet{gelmanbda04}; however, they are written in more detail and with more intermediate steps.
+\end{remark}
 
-To finish our analysis we integrate the joint posterior over $\sigma^2$ to get
-the marginal posterior of $\theta$. We evaluate the integral by substitution using
-$z = \frac{a}{2 \sigma^2}$ with $a = (n-1)s + n(\theta - \bar{y})$.\footnote{\textcolor{red}{See appendix for explicit derivation}}
-Then,
-\begin{align}
-  p(\theta \mid y) &= \int_{(0, \infty)} p(\theta, \sigma^2 \mid y) \mathrm{d}\sigma^2\\
-  &\propto \sigma^{-(n+2)} \int_{(0, \infty)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \theta)^2]} \mathrm{d} \sigma^2\\
-  &\propto a^{-n/2} \int_{(0, \infty)} z^{(n-2)/2}\EXP{-z} \mathrm{d}z\\
-  &\propto a^{-n/2}\\
-  &= [(n-1)s + n(\theta - \bar{y})]^{-n/2}\\
-  &\propto \left[1 + \frac{(\theta - \bar{y})^2}{(n-1) s^2 / n}\right]^{-n/2} \,
-\end{align}
-which concludes our first analysis implying that $\theta \mid y \sim t_{n-1}(\bar{y}, \sigma^2/n)$.
+\begin{proof}[Proof of Proposition \ref{prop:posterior_uniform}.]
+  Consider first the object $\mu \mid \sigma^2, y$.
+  We get
+  \begin{align*}
+    p(\mu \mid \sigma^2, y) \propto p(y \mid \mu, \sigma^2) p(\mu \mid \sigma^2) \propto p(y \mid \mu, \sigma^2) \,,
+  \end{align*}
+  where the last step follows as the priors are assumed to be independent.
+  Note then
+  \begin{align*}
+    p(\mu \mid \sigma^2, y) &\propto \EXP{-\frac{1}{\sigma^2}\sum_i (y_i - \mu)^2} = \EXP{-\frac{n}{\sigma^2} \frac{1}{n}\sum_i (y_i^2 - 2y_i \mu + \mu^2)}\\
+    &=\EXP{-\frac{n}{\sigma^2} (\bar{y^2} - 2 \bar{y} \mu + \mu^2)} \propto
+    \EXP{-\frac{1}{\sigma^2 / n} (\mu - \bar{y})^2} \,,
+  \end{align*}
+  where $\bar{y^2} = \frac{1}{n}\sum_i y_i^2$ and the last step is only proportional as we switch $\bar{y^2}$ for $\bar{y}^2$.
+  Note that proportionality here is with respect to $\mu$.
+  We thus get $\mu \mid \sigma^2, y \sim \normal{\bar{y}, \sigma^2/n}$ as our first intermediate result.
 
+  Consider now $\sigma \mid y$.
+  As we already derived the joint posterior we can compute the marginal posterior of $\sigma^2$ by integrating out $\mu$.
+  Note that $\sum_i (y_i - \mu)^2 = [(n-1)s^2 + n(\bar{y} - \mu)^2]$, where $s^2$ denotes the (unbiased) sample variance. Hence
+  \begin{align*}
+    p(\sigma^2 \mid y) &\propto \int p(\mu, \sigma^2 \mid y) \mathrm{d} \mu\\
+    &\propto \int \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2} \mathrm{d} \mu\\
+    &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2} \mathrm{d} \mu\\
+    &= \sigma^{-(n+2)} \int \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\bar{y} - \mu)^2]} \mathrm{d} \mu\\
+    &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \int \EXP{\frac{1}{2\sigma^2/n}(\mu - \bar{y})^2} \mathrm{d} \mu\\
+    &= \sigma^{-(n+2)} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \sqrt{2 \pi \sigma^2 / n} \\
+    &\propto (\sigma^2)^{-(n+1)/2} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2]} \,,
+  \end{align*}
+  where the second to last step follows simply by considering the constant of integration of the normal distribution of $\mu \mid \sigma^2, y$.
+  Note that here we consider proportionality with respect to $\sigma^2$.
+  By inspection we see that $\sigma^2 \mid y \sim \text{scaled-Inv-} \chi^2(n-1, s^2)$, which proves our first claim.
 
+  To finish the proof we integrate the joint posterior over $\sigma^2$ to get the marginal posterior of $\mu$.
+  We evaluate the integral by substitution using
+  $z = \sfrac{a}{2 \sigma^2}$ with $a = (n-1)s^2 + n(\mu - \bar{y})^2$.
 
+  Then,
+  \begin{align*}
+    p(\mu \mid y) &= \int_{(0, \infty)} p(\mu, \sigma^2 \mid y) \mathrm{d}\sigma^2\\
+    &\propto  \int_{(0, \infty)} (\sigma^2)^{-(n+2)/2} \EXP{-\frac{1}{2\sigma^2}[(n-1) s^2 + n(\mu - \bar{y})^2]} \mathrm{d} \sigma^2\\
+    &\propto \int_{(0, \infty)} (\sigma^2)^{-(n+2)/2}\EXP{-z} [(\sigma^2)^2 / a] \mathrm{d}z\\
+    &= \int_{(0, \infty)} (\sigma^2)^{-(n-2)/2} / a \EXP{-z} \mathrm{d}z\\
+    &= a^{-n/2}\int_{(0, \infty)} z^{(n-2)/2}\EXP{-z} \mathrm{d}z\\
+    &= a^{-n/2} \, \Gamma(n/2)\\
+    &\propto a^{-n/2}\\
+    &= [(n-1)s^2 + n(\mu - \bar{y})^2]^{-n/2}\\
+    &\propto \left[1 + \frac{1}{n-1} \frac{(\mu - \bar{y})^2}{s^2 / n}\right]^{-n/2} \,
+  \end{align*}
+  where $\Gamma$ denotes the gamma function (which is finite on the positive real numbers).
+  This concludes our first analysis by implying that $\mu \mid y \sim t_{n-1}(\bar{y}, s^2/n)$,
+\end{proof}
 
-We know that for the problem at hand the standard maximum likelihood estimators
-and their variances are given by\footnote{\textcolor{red}{See appendix for proof.}}
-\begin{align}
-  \hat{\theta}_{ML} &= \frac{1}{n} \sum_i y_i = \bar{y}\,\\
-  \hat{\sigma}_{ML}^2 &= \frac{1}{n} \sum_i (y_i - \bar{y})^2 = \frac{n-1}{n} s^2\,\\
-  \mathrm{I}(\theta, \sigma)^{-1} &= \sqmat{\sigma^2 / n & 0\\0&\sigma^2/(2n)} \,.
-\end{align}
-The Bayesian counterpart to the ML-Estimator is the \emph{maximum a posteriori estimate},
-or in short \emph{MAP}. For $\theta \mid y$ we derived a noncentral Student's t-distribution
-with mean $\bar{y}$ and variance $\sigma^2/n$. Since this distribution is unimodal and
-symmetric the MAP estimate is simply the mean. We note that it is equivalent to
-the ML estimate on both the point estimate and included variance. For $\sigma^2$
-the results look slightly different. The mode and the mean of $\sigma^2 \mid y$
-are given by $\frac{n-1}{n+1} s^2$ and $\frac{n-1}{n-3} s^2$, respectively.
-Still we see a very close resemblance of the Bayesian estimator to the ML estimator.
-One could say that this is a property which is desirable for Bayesian estimators
-using uninformative priors. One obvious advantage of the Bayesian approach is the
-ease with which we can compute arbitrary probabilities using the posterior density.
-\textbf{Conjugate prior}
+\begin{proof}[Proof of Proposition \ref{prop:posterior_conjugate}.]
+
+\end{proof}
+
+\begin{proof}[Proof of Proposition \ref{prop:marginal_posterior}.]
+
+\end{proof}
+
+\begin{proof}[Proof of Proposition \ref{prop:hierarchical_posterior}.]
+
+\end{proof}
