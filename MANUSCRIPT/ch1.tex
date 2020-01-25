@@ -121,7 +121,7 @@ From here we can derive the marginals by integrating out the respective other pa
     \mu \mid y &\sim t_{n-1}(\bar{y}, s^2/n) \,,\\
     \sigma^2 \mid y &\sim \scaledInvChi{n-1, s^2} \,,
   \end{align}
-  where $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denotes the sample variance and $\bar{y} = \frac{1}{n} \sum_i y_i$ the sample mean.
+  where $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denotes the (unbiased) sample variance and $\bar{y} = \frac{1}{n} \sum_i y_i$ the sample mean.
 \end{proposition}
 \begin{proof}
 See appendix.
@@ -161,9 +161,10 @@ Conjugate priors were of particular importance in the early stages of Bayesian s
 
 Consider again the likelihood but written to demonstrate its dependence on $\mu$ and $\sigma^2$
 \begin{align}
-  p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{n/2} \EXP{-\frac{1}{2\sigma^2} n\left[ (\mu - \bar{y})^2 + (\bar{y^2} - \bar{y})^2 \right]} \,.
+  p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{n/2} \EXP{-\frac{1}{2\sigma^2} \left[ n(\mu - \bar{y})^2 + (n-1)s^2 \right]} \,,
   \label{eq:likelihood2}
 \end{align}
+where $s^2$ again denotes the (unbiased) sample variance.
 We want to construct a two dimensional prior for $(\mu, \sigma^2)$.
 A theme to which we will be coming back is that modeling higher dimensional parameters by modeling many lower dimensional (sub)parameters using conditioning is often easier than modeling the complete distribution.
 Here we utilize the equality $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2)$.
@@ -177,8 +178,10 @@ Following \citet{gelmanbda04} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi
 
 Multiplying the likelihood with our constructed prior we get the joint posterior (up to an integration constant)
 \begin{align}
-  p(\mu, \sigma^2 \mid y) \propto& (\sigma^2)^{-\frac{3 + n + \nu_0}{2}} \times\\
-  & \times \EXP{-\frac{1}{2 \sigma^2} \left[ (\mu - \bar{y})^2 + (\bar{y^2} - \bar{y})^2 + \nu_0\sigma_0^2 + \kappa_0(\mu - \mu_0)^2 \right]} \,.
+  \begin{split}
+  p(\mu, \sigma^2 \mid y) \propto& (\sigma^2)^{-\frac{3 + \nu_0 + n}{2}} \times\\
+  & \times \EXP{-\frac{1}{2 \sigma^2} \left[\nu_0\sigma_0^2 + \kappa_0(\mu - \mu_0)^2 + (n-1)s^2 + n(\bar{y} - \mu)^2 \right]} \,.
+  \end{split}
   \label{eq:conjugate_posterior}
 \end{align}
 

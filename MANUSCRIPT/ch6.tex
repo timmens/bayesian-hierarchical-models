@@ -1,4 +1,3 @@
-%\appendix
 \section{Appendix}
 
 \subsection{Tables and Figures}
@@ -24,7 +23,7 @@ See file \lstinline{volume.py}{} in the online appendix.
 
 \subsection{Proofs}
 \begin{remark}
-The proofs presented here follow \citet{gelmanbda04}; however, they are written in more detail and with more intermediate steps.
+The proofs presented here follow \citet{gelmanbda04}; however, we contribute detailed remarks.
 \end{remark}
 
 \begin{proof}[Proof of Proposition \ref{prop:posterior_uniform}.]
@@ -77,11 +76,44 @@ The proofs presented here follow \citet{gelmanbda04}; however, they are written 
     &\propto \left[1 + \frac{1}{n-1} \frac{(\mu - \bar{y})^2}{s^2 / n}\right]^{-n/2} \,
   \end{align*}
   where $\Gamma$ denotes the gamma function (which is finite on the positive real numbers).
-  This concludes our first analysis by implying that $\mu \mid y \sim t_{n-1}(\bar{y}, s^2/n)$,
+  This concludes the proof by implying that $\mu \mid y \sim t_{n-1}(\bar{y}, s^2/n)$,
 \end{proof}
 
-\begin{proof}[Proof of Proposition \ref{prop:posterior_conjugate}.]
 
+\begin{proof}[Proof of Proposition \ref{prop:posterior_conjugate}.]
+Let us first state equation \ref{eq:conjugate_posterior} and the premise again.
+We have to show that
+\begin{align*}
+  p(\mu, \sigma^2 \mid y) \propto& (\sigma^2)^{-\frac{3 + \nu_0 + n}{2}} \times\\
+  & \times \EXP{-\frac{1}{2 \sigma^2} \left[\nu_0\sigma_0^2 + \kappa_0(\mu - \mu_0)^2 + (n-1)s^2 + n(\bar{y} - \mu)^2 \right]}
+\end{align*}
+is $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$ with $\nu_n = \nu_0 + n$, $\kappa_n = \kappa_0 + n$, $\mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y}$, $\sigma_n^2 = \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_0 n}{\kappa_0 + n} (\bar{y} - \mu_0)^2\right] /\nu_n$.
+By definition of the normal-scaled-inverse-$\chi^2$ distribution $\nu_n = \nu_0 + n$ follows trivially.
+Let us therefore consider the term in square brackets in the exponential.
+We have to show that
+\begin{align*}
+  \left[\nu_0\sigma_0^2 + \kappa_0(\mu - \mu_0)^2 + (n-1)s^2 + n(\bar{y} - \mu)^2 \right] = \nu_n \sigma_n^2 + \kappa_n (\mu - \mu_n)^2 \,.
+\end{align*}
+Plugging in for $\sigma_n^2$ we get for the right-hand side
+\begin{align*}
+  \nu_n \sigma_n^2 + \kappa_n (\mu - \mu_n)^2 = \nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_0 n}{\kappa_0 + n} (\bar{y} - \mu_0)^2 + \kappa_n (\mu- \mu_n)^2 \,.
+\end{align*}
+Therefore we only need to check
+\begin{align*}
+  \kappa_0(\mu - \mu_0)^2 + n(\bar{y} - \mu)^2 = \frac{\kappa_0 n}{\kappa_0 + n} (\bar{y} - \mu_0)^2 + \kappa_n (\mu- \mu_n)^2 \,.
+\end{align*}
+Expanding the right-hand side we get
+\begin{align*}
+\frac{\kappa_0 n}{\kappa_0 + n} &(\bar{y} - \mu_0)^2 + \kappa_n (\mu- \mu_n)^2\\
+&=\frac{\kappa_0 n}{\kappa_n}\left[\bar{y}^2 - 2\bar{y}\mu_0 + \mu_0^2 \right] + \kappa_n \left[\mu^2 - 2\mu\mu_n + \mu_n^2 \right]\\
+&=\frac{\kappa_0 n}{\kappa_n}\left[\bar{y}^2 - 2\bar{y}\mu_0 + \mu_0^2 \right] + \kappa_n \left[\mu^2 - 2\mu\frac{\kappa_0}{\kappa_n}\mu_0 - 2\mu\frac{n}{\kappa_n}\bar{y} + \frac{\kappa_0^2}{\kappa_n^2}\mu_0^2 + \frac{n^2}{\kappa_n^2} \bar{y}^2 + 2\frac{\kappa_0}{\kappa_n} \frac{n}{\kappa_n}\mu_0\bar{y} \right]\\
+&=\frac{\kappa_0 n}{\kappa_n}\left[\bar{y}^2 - 2\bar{y}\mu_0 + \mu_0^2 \right] + \kappa_n \mu^2 - 2\mu \kappa_0 \mu_0 - 2\mu n\bar{y} + \frac{\kappa_0^2}{\kappa_n}\mu_0^2 + \frac{n^2}{\kappa_n} \bar{y}^2 + 2 \kappa_0 n \mu_0 \bar{y} / \kappa_n\\
+&= \left(\kappa_0 \mu^2 -2\mu \kappa_0 \mu_0 \right) + \left(n \mu^2 - 2 n \mu \bar{y} \right) + \frac{\kappa_0 n}{\kappa_n}\bar{y}^2 + \frac{\kappa_0 n}{\kappa_n}\mu_0^2 + \frac{\kappa_0^2}{\kappa_n} \mu_0^2 + \frac{n^2}{\kappa_n} \bar{y}^2\\
+&= \left(\kappa_0 \mu^2 -2\mu \kappa_0 \mu_0 \right) + \left(n \mu^2 - 2 n \mu \bar{y} \right) + \bar{y}^2 \left(\frac{\kappa_0 n}{\kappa_n} + \frac{n^2}{\kappa_n}\right) + \mu_0^2\left(\frac{\kappa_0 n}{\kappa_n} + \frac{\kappa_0^2}{\kappa_n}\right)\\
+&= \left(\kappa_0 \mu^2 -2\mu \kappa_0 \mu_0 + \kappa_0 \mu_0^2 \right) + \left(n \mu^2 - 2 n \mu \bar{y} + n \bar{y}^2\right)\\
+&=\kappa_0(\mu - \mu_0)^2 + n(\bar{y} - \mu)^2 \,,
+\end{align*}
+which was what we wanted.
 \end{proof}
 
 \begin{proof}[Proof of Proposition \ref{prop:marginal_posterior}.]
