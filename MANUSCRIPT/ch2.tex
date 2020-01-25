@@ -142,7 +142,7 @@ In this case we can use the topological structure of the conditional dependencie
 In more complex settings we might be unable to derive the densities with the appropriate conditioning set for forward sampling ---In these cases one can often apply \emph{Gibbs sampling} (see \citet{geman1984}) or if needed \emph{Metropolis-within-Gibbs sampling} (see \citet{gilks1995}).
 We conclude this section by showing that the joint posterior and its factors are all proper given that we assume a flat prior for $p(\mu \mid \tau)$.
 
-\begin{proposition}
+\begin{proposition}\label{prop:hierarchical_posterior}
     Under the above setup and the additional assumption $p(\mu \mid \tau) \propto 1$ we get
     \begin{align}
       p(\theta \mid \mu, \tau, y) =  \prod_j \normal{\theta_j \mid \bar{\theta}_j, V_j} \,,  \quad

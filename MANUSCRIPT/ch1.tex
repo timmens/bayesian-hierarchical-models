@@ -115,7 +115,7 @@ Using the above we can apply Bayes theorem to yield
 \end{align}
 From here we can derive the marginals by integrating out the respective other parameter. This is formalized in the following two proposition.
 
-\begin{proposition}
+\begin{proposition}\label{prop:posterior_uniform}
   Under the uniform prior from above we find
   \begin{align}
     \mu \mid y &\sim t_{n-1}(\bar{y}, s^2/n) \,,\\
@@ -128,7 +128,7 @@ See appendix.
 \end{proof}
 
 Having derived the marginal posterior distributions, we can compare the results to their maximum likelihood (ML) counterpart.
-Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$ are point estimates, we consider the similar \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$, as well as the posterior mean and variance. All results are summarized in table \ref{table:comp_uniform_bay_ml}.
+Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$ are point estimates, we consider the similar \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$, as well as the posterior mean and variance. All results are summarized in table \ref{tab:comp_uniform_bay_ml}.
 
 \begin{table}[ht]
 \centering
@@ -142,7 +142,7 @@ Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$
  \end{tabular}
  }
 \caption{\small {Comparison of Bayesian estimates using an uninformative prior and ML estimates. See appendix for a detailed derivation.}}
-\label{table:comp_uniform_bay_ml}
+\label{tab:comp_uniform_bay_ml}
 \end{table}
 
 
@@ -197,7 +197,7 @@ Multiplying the likelihood with our constructed prior we get the joint posterior
 Since the prior and the posterior are both normal scaled inverse $\chi^2$ distributed, we can speak of a conjugate prior.
 Using the intermediate finding from proposition \ref{prop:posterior_conjugate} we can derive the main result of this section.
 
-\begin{proposition}
+\begin{proposition}\label{prop:marginal_posterior}
   The marginal posterior distributions are given by
   \begin{align*}
     \mu \mid y &\sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)\\
@@ -221,7 +221,7 @@ Using the intermediate finding from proposition \ref{prop:posterior_conjugate} w
  \end{tabular}
  }
 \caption{{\small Comparison of Bayesian estimates using a conjugate prios and ML estimates.}}
-\label{table:comp_conjugate_bay_ml}
+\label{tab:comp_conjugate_bay_ml}
 \end{table}
 
 
@@ -234,7 +234,7 @@ As the sample size $n$ grows the information contained in the likelihood should 
 We observe this phenomena as the approximate asymptotic behavior of the posterior resembles that of the maximum likelihood estimator.
 First, as $n$ tends to infinity $\nu_n = \nu_0 + n$ tends to infinity and the t distribution becomes indistinguishable from a normal.
 Second, as $n$ grows the posterior mean is dominated by $\bar{y}$. And at last, for large $n$ the posterior variance is accurately approximated by $\sigma^2 / n$.
-We refrain from an analogous analysis for $\sigma^2$ and only note that similar results hold, as can be seen in table \ref{table:comp_conjugate_bay_ml}.
+We refrain from an analogous analysis for $\sigma^2$ and only note that similar results hold, as can be seen in table \ref{tab:comp_conjugate_bay_ml}.
 
 What is gained from using an informative prior here?
 Using the conjugate prior from above we have four hyperparameters at hand to model our prior knowledge about the parameters.
