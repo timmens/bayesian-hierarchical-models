@@ -117,7 +117,48 @@ which was what we wanted.
 \end{proof}
 
 \begin{proof}[Proof of Proposition \ref{prop:marginal_posterior}.]
+We continue to use the notation of the previous proof.
+As in the proof of proposition \ref{prop:posterior_uniform} we first compute the distribution of $\mu \mid \sigma^2, y$ and then derive the posterior of $\sigma^2$ by integrating $\mu$ out.
+Note that we actually defined $\mu \mid \sigma^2 \sim \normal{\mu_0, \sigma^2/\kappa_0}$.
+Hence,
+\begin{align*}
+  p(\mu \mid \sigma^2, y) &\propto p(y \mid \mu, \sigma^2) p(\mu \mid \sigma^2)\\
+  &\propto \EXP{-\frac{1}{2\sigma^2/n} (\mu - \bar{y})^2} \EXP{-\frac{1}{2\sigma^2/\kappa_0}(\mu - \mu_0)^2}\\
+  &= \EXP{-\frac{1}{2\sigma^2}\left[n(\mu - \bar{y})^2 + \kappa_0(\mu - \mu_0)^2 \right]}\\
+  &= \EXP{-\frac{1}{2\sigma^2}\left[\mu^2(\kappa_0 + n) - 2\mu(\kappa_0\mu_0 + n\bar{y}) + (\mydots) \right]}\\
+  &= \EXP{-\frac{1}{2\sigma^2 / \kappa_n}\left[\mu^2 - 2\mu(\kappa_0\mu_0 + n\bar{y})/\kappa_n + (\mydots)/\kappa_n \right]}\\
+  &= \EXP{-\frac{1}{2\sigma^2 / \kappa_n}\left(\mu - \mu_n^2\right) + (\mydots)}\\
+  &\propto \EXP{-\frac{1}{2\sigma^2 / \kappa_n}\left(\mu - \mu_n^2\right)} \,,
+\end{align*}
+which implies that $\mu \mid \sigma^2, y \sim \normal{\mu_n, \sigma^2 / \kappa_n}$, where we used $(\mydots)$ to denote constants independent of $\mu$.
 
+Now we can use this result as
+\begin{align*}
+  p(\sigma^2 \mid y) &= \int p(y, \sigma^2 \mid y) \mathrm{d}\mu\\
+  &\propto \int (\sigma^2)^{-\frac{3 + \nu_n}{2}} \EXP{\frac{1}{2\sigma^2} \left[\nu_n \sigma_n^2 + \kappa_n(\mu_n - \mu)^2 \right]}\mathrm{d}\mu\\
+  &\propto (\sigma^2)^{-\frac{3 + \nu_n}{2}} \int \EXP{\frac{1}{2\sigma^2} \nu_n \sigma_n^2}\EXP{\frac{1}{2\sigma^2 / \kappa_n} (\mu_n - \mu)^2 }\mathrm{d}\mu\\
+  &\propto (\sigma^2)^{-\frac{3 + \nu_n}{2}}\EXP{\frac{1}{2\sigma^2} \nu_n \sigma_n^2} \int \EXP{\frac{1}{2\sigma^2 / \kappa_n} (\mu_n - \mu)^2 }\mathrm{d}\mu\\
+  &\propto (\sigma^2)^{-\frac{3 + \nu_n}{2}}\EXP{\frac{1}{2\sigma^2} \nu_n \sigma_n^2} \sqrt{2 \pi \sigma^2 / \kappa_n}\\
+  &\propto (\sigma^2)^{-(1 + \frac{\nu_n}{2})} \EXP{-\frac{1}{2\sigma^2}\nu_n\sigma_n^2}\,,
+\end{align*}
+from which we can conclude that $\sigma^2 \mid y \sim \scaledInvChi{\nu_n, \sigma_n^2}$.
+
+We end the proof by deriving the marginal posterior of $\mu$ using an analogous approach as in the proof of Proposition \ref{prop:posterior_uniform}.
+Define $a := \left[\nu_n\sigma_n^2 + \kappa_n(\mu_n - \mu)^2 \right]$. We solve for the posterior by integrating $\sigma^2$ out using the substitution $z = \frac{a}{2\sigma^2}$. Then
+\begin{align*}
+  p(\mu \mid y) &= \int_{(0, \infty)} p(\mu, \sigma^2 \mid y) \mathrm{d}\sigma^2\\
+  &\propto \int_{(0, \infty)}(\sigma^2)^{-\frac{3 + \nu_n}{2}} \EXP{\frac{1}{2\sigma^2} \left[\nu_n \sigma_n^2 + \kappa_n(\mu_n - \mu)^2 \right]}\mathrm{d}\sigma^2\\
+  &\propto \int_{(0, \infty)}(\sigma^2)^{-\frac{3 + \nu_n}{2}} \EXP{\frac{a}{2\sigma^2}}\mathrm{d}\sigma^2\\
+  &\propto \int_{(0, \infty)}(a / 2z)^{-\frac{3 + \nu_n}{2}} \EXP{-z} \frac{a}{2 z^2} \mathrm{d}z\\
+  &\propto \int_{(0, \infty)}a^{-\frac{3 + \nu_n}{2}}a z^{\frac{3 + \nu_n}{2}}z^{-2} \EXP{-z} \mathrm{d}z\\
+  &= a^{-\frac{1 + \nu_n}{2}} \int_{(0, \infty)} z^{\frac{\nu_n - 1}{2}} \EXP{-z} \mathrm{d}z\\
+  &= a^{-\frac{1 + \nu_n}{2}} \Gamma(\frac{\nu_n + 1}{2})\\
+  &\propto a^{-\frac{1 + \nu_n}{2}}\\
+  &= \left[\nu_n \sigma_n^2 + \kappa_n(\mu_n - \mu)^2 \right]^{-\frac{1 + \nu_n}{2}}\\
+  &= \left[\nu_n \sigma_n^2\left(1 + \frac{1}{\nu_n}\frac{(\mu_n - \mu)^2}{\sigma_n^2 / \kappa_n}\right) \right]^{-\frac{1 + \nu_n}{2}}\\
+  &\propto \left[1 + \frac{1}{\nu_n}\frac{(\mu_n - \mu)^2}{\sigma_n^2 / \kappa_n} \right]^{-\frac{1 + \nu_n}{2}} \,,
+\end{align*}
+which concludes the proof by implying that $\mu \mid y \sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)$.
 \end{proof}
 
 \begin{proof}[Proof of Proposition \ref{prop:hierarchical_posterior}.]
