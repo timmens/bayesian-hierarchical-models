@@ -126,36 +126,43 @@ Not only do these graphical representations help with understanding the structur
 \caption{A generic two-level Bayesian hierarchical model depicted as a directed acyclical graph modeling generic observations $y(j)$ in groups $j = 1,\mydots, J$. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
 \end{figure}
 
-\subsection{Solving for the Posterior}
+\subsection{Solving for the Posterior}\label{sec:hierachical_solving}
 In this section we present the complexities of deriving the (marginal) posterior in hierarchical models by considering the steps necessary to fully solve an example model.
-We will not embark on this in as much detail as in the non-hierarchical case, as this should only provide an idea how hierarchical models can be estimated.
+We will not embark on this in as much detail as in the non-hierarchical case, as this should only provide an idea on how hierarchical models can be estimated.
 
 Say we observe $i=1,\mydots,n$ individuals which fall in $j=1,\mydots,J$ groups with groupsize $n_j$.
 Assume $y_i \mid \theta_{j[i]} \sim \normal{\theta_{j[i]}, \sigma^2}$ with known variance $\sigma^2$ and that $\theta_j \overset{\text{iid}}{\sim} \normal{\mu, \tau^2}$.
 Let us write $\bar{y}$ for the sample mean of all observations and $\bar{y}_j$ for the sample mean in group $j$.
 Then we get $\bar{y}_j \mid \theta_j \sim \normal{\theta_j, \sigma_j^2}$ with $\sigma_j^2 := \sigma^2 / n_j$.
 
-We can write the joint posterior as $p(\theta, \mu, \tau \mid y) = p(\theta \mid \mu, \tau, y) p(\mu \mid \tau, y) p(\tau \mid y)$.
+We can write the joint posterior as $p(\theta, \mu, \tau^2 \mid y) = p(\theta \mid \mu, \tau^2, y) p(\mu \mid \tau^2, y) p(\tau^2 \mid y)$.
 In fact, even for this simple setup the posterior has no known form, so we have to return to sampling methods.
 Say we are able to derive the factored distributions (on the right side) to the extent that we are able to draw samples, via e.g. the Metropolis-Hastings algorithm.
-In this case we can use the topological structure of the conditional dependencies in the model to apply \emph{forward sampling}, that is, first draw $\tau^0 \sim p(\tau \mid y)$, then draw $\mu^0 \sim p(\mu \mid \tau=\tau^0, y)$ and at last draw $\theta^0 \sim p(\theta \mid \mu=\mu^0, \tau=\tau^0, y)$, which concludes one draw from the posterior.
+In this case we can use the topological structure of the conditional dependencies in the model to apply \emph{forward sampling}, that is, first draw $\tau^0 \sim p(\tau^2 \mid y)$, then draw $\mu^0 \sim p(\mu \mid \tau^2=\tau^0, y)$ and at last draw $\theta^0 \sim p(\theta \mid \mu=\mu^0, \tau^2=\tau^0, y)$, which concludes one draw from the posterior (see figure \ref{fig:example_model} in the appendix).
 In more complex settings we might be unable to derive the densities with the appropriate conditioning set for forward sampling ---In these cases one can often apply \emph{Gibbs sampling} (see \citet{geman1984}) or if needed \emph{Metropolis-within-Gibbs sampling} (see \citet{gilks1995}).
-We conclude this section by showing that the joint posterior and its factors are all proper given that we assume a flat prior for $p(\mu \mid \tau)$.
+We conclude this section by providing a result stating that the joint posterior and its factors are all proper given that we assume a flat prior for $p(\mu \mid \tau^2)$.
 
 \begin{proposition}\label{prop:hierarchical_posterior}
-    Under the above setup and the additional assumption $p(\mu \mid \tau) \propto 1$ we get
-    \begin{align}
-      p(\theta \mid \mu, \tau, y) =  \prod_j \normal{\theta_j \mid \bar{\theta}_j, V_j} \,,  \quad
-      \mu \mid \tau, y \sim \normal{\bar{\mu}, V_\mu}\,\text{and} \quad
-      p(\tau \mid y) \,\, \text{is proper} \,,
-    \end{align}
-    with $V_\mu^{-1} = \sum_j \frac{1}{\sigma_j^2 + \tau^2}, V_j^{-1}=\frac{1}{\sigma_j^2} + \frac{1}{\tau^2}, \bar{\theta}_j=V_j(\frac{1}{\sigma_j^2} \bar{y}_j + \frac{1}{\tau^2}\mu)$ and $\bar{\mu} = V_j \sum_j \frac{1}{\sigma_j^2 + \tau^2} \bar{y}_j$.
+    Under the above setup, and the additional assumption that $p(\mu \mid \tau^2) \propto 1$ and $p(\tau^2)$ is a proper probability distribution, we get
+    \begin{center}
+      \begin{enumerate}[i.)]
+        \item $p(\theta \mid \mu, \tau^2, y) =  \prod_j p(\theta_j \mid \mu, \tau^2, y)$, with $\theta_j \mid \mu, \tau^2, y \sim \normal{\mu_j, \tau_j^2}$
+        \item $\mu \mid \tau^2, y \sim \normal{\bar{\mu}, \sigma_\mu^2}$
+        \item $p(\tau \mid y)$ is proper,
+      \end{enumerate}
+    \end{center}
+    where $\sigma_\mu^{-2} = \sum_j \frac{1}{\sigma_j^2 + \tau^2}\,,\,\, \tau_j^{-2}=\frac{1}{\sigma_j^2} + \frac{1}{\tau^2}\,,\,\, \mu_j=\tau_j^2(\frac{1}{\sigma_j^2} \bar{y}_j + \frac{1}{\tau^2}\mu)$ and $\bar{\mu} = \tau_j^2 \sum_j \frac{1}{\sigma_j^2 + \tau^2} \bar{y}_j$.
 \end{proposition}
+\textcolor{red}{\hrule}
 \begin{proof}
 See appendix.
 \end{proof}
+\textcolor{red}{\hrule}
 
-We refrain from a similar analysis of the results as was done before in the non-hierarchical case and only recommend the interested reader to perform one themself as analytical Bayesian results can reward the effort with hidden beauties.
+We refrain from a similar analysis of the results as was done before in the non-hierarchical case and only recommend the interested reader to perform one themself as an understanding of analytical Bayesian results can be especially rewarding.
+To end this section we remark that in this model we have to apply sampling methods as well; however, if we find a way to sample exactly from $p(\tau \mid y)$ we will be able to draw exact samples from the posterior.
+This is of course more accurate than using the MCMC methods introduced above.
+Unfortunately in more complex models this is not possible in the general case.
 
 \subsection{Hierarchical Linear Models}
 The following subsection presents hierarchical linear models, an important subclass of the general multi-level model.

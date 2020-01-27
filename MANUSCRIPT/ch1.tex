@@ -1,73 +1,66 @@
 \section{Bayesian Thinking and Estimation}
-In this section we will introduce the core topics of Bayesian data analysis, and whenever possible compare proposed methods and results to their frequentist counterpart.
-As we will see, Bayesian statistics differs from mainstream statistics on a fundamental level; Thus, we have to start there.
+In this section we introduce the core topics of Bayesian statistics and, whenever possible, compare proposed methods and results to their classicist counterpart.
+As we will see, Bayesian statistics differs from mainstream statistics on a fundamental level; thus, we start there.
 
-Before beginning let us talk shortly about our notation.
-We try to use a standard notation whenever possible, nonetheless, we make one exception in that we write $p(X)$ for the probability density function of the random variable $X$, where $X$ might be scalar-valued or vector-valued.
-In cases where this leads to confusion we introduce a subscript as $p_X(\cdot)$.
+Before beginning let us shortly introduce our notation.
+We try to use standard notation wherever possible, nonetheless we make one exception in that we write $p(Z)$ for the probability density function of the random variable $Z$, where $Z$ might be scalar-valued or vector-valued.
+If it is clear from the context we will also write $p(z)$ for the density of $Z$ evaluated at $z$.
 
 \subsection{Probabilistic Modeling}
-Before going further, let us first formalize our notion of stochastic modeling.
-Imagine being interested in some \textit{phenomena}, for example the effect of bigger class sizes on school children performance.
-Most phenomena cannot be observed directly and only manifest themself through some latent variable system.
-We can still hope to learn about the phenomena by studying the observational process around it.
-Clearly the way in which a phenomena reveals itself is dependent on its environment;
-The observed effects for school-children in sub-saharan africa might look very different to the ones in central europe.
-To derive sensible results from our analysis we need to postulate the existence of a \textit{true data generating process}, which captures the way in which the observational process adheres to the effects of the phenomena of interest given its environment.
-We define this object as a probability distribution $p_0$ on the observational space $\mathbb{Z}$.
-In this step we move from a model to a probabilistic model, in that we allow our system of interest to be influenced by randomness and not only be characterized by a deterministic process.
-In practice $p_0$ is rarely known, therefore the challenge lies in recovering a distribution using the observed data which is as close as possible to $p_0$.
-This is usually done by assuming that the true data generating process falls in some class of models, for example a linear model with normal errors.
-Formally, we restrict our attention to a subset of potential observational processes $\mathbb{M}$ over the whole space of distributions on $\mathbb{Z}$.
-The beauty of using a model class approach in the construction of $\mathbb{M}$ is that for each distribution $p \in \mathbb{M}$, we can find a parameterization $\theta$ in the configuration space $\Theta$; For example, the class of multivariate normal distributions is parameterized by its mean and covariance $(\mu, \Sigma) = \theta \in \Theta$.
-The goal of all subsequent statistical analysis is then to utilize the observed data to determine the regions in $\Theta$ which are most consistent with $p_0$ and simultaneously to capture our uncertainty about these statements.
-If $p_0 \in \mathbb{M}$ we can find a parameterization $\theta_0$ which corresponds to the true data generating process; naturally we seek estimators that determine regions close to $\theta_0$. If, however, $p_0 \not\in \mathbb{M}$ we enter the world of model misspecification which leads to all sorts of problems.
-For everything that follows let us therefore make the omnipresent assumption that $p_0 \in \mathbb{M}$.
+We begin by introducing a formal notion of stochastic modeling and continue with a taxonomic description of different schools of thoughts.
 
-\subsection{Schools of Thought}
-Next we discuss how the Bayesian and the classical mindset differ. In particular we focus on the predominant way of thinking for most of statistical history, \textit{frequentist statistics}. We do not aim at an exhaustive overview here nor do we presume that the individual statistician belongs to one and only one of the following categories.
+Say we observe data $\mathcal{D} = \{(y_i, x_i) : i=1,\mydots,n\}$ for which we have some intuition about the relationship between $X$ and $Y$ ---this intuition might come from (economic) theory for example.
+We formalize this by writing the data generating process as a (possibly algorithmic) mathematical model $Y = \mathcal{M}(X; \theta)$, where $\theta$ denotes the model parameters.
+In many settings, however, we are unable to describe the relationship perfectly or the outcome depends on non-observed variables.
+We deal with this complication by extending the model to account for an explicitly modeled error term, so that $Y = \mathcal{M}(X; \epsilon, \theta)$, where $\epsilon$ is the error term.
 
-\paragraph{Frequentist.} The frequentist approach assumes that the true data generating process is completely specified by an unkown but fixed quantity $\theta_0 \in \Theta$.
-For a sensible comparison we focus on approaches where the \emph{likelihood function} $p(z; \theta)$ is defined either explicitly or implicitly during the modeling process, as for example in maximum-likelihood estimation.
-The main challenges include finding a (point) estimator for $\theta_0$, quantifying the uncertainty of the estimate and testing hypothesis.
-One fundamental idea which stretches over all these topics is the interpretation of probability as the limit of an infinite sequence of relative frequencies ---hence the name.
-That is, the probability of an event happening is just the limit of the frequency of that event happening over infinitely many independent experiments.
-What are the implications of this understanding of probability?
-Many interesting questions do not provide us with a thought experiment in which we can consider an ever increasing sequence of experiments.
-In these cases using probability is either trivial or lacking an indisputable interpretation.
-As we use the mathematical rigor of probability theory in our formal derivations, we will obtain (mathematically) correct results; however, the interpretation of these results might be highly unintuitive ---a known example is provided by the interpreation of confidence intervals; is the true value contained in the given confidence interval? We do not know, but were we to repeat the analysis with newly drawn data infinitely often, the true value would be in the interval 95\% of the time.
-Since $\theta_0$ is fixed all probability statements regarding this object are trivial, that is, either one or zero. This propagates to the problem of hypothesis testing.
-All hypothesis are either true or false and therefore have probabilities of one or zero.
-A hypothesis $H_0$ is rejected if conditional on $H_0$ being true the probability of observing the data in the given sample is lower than some threshold, i.e. $P(\text{data} \mid H_0) < \alpha$.
-Note that this statement does not tell us anything about $H_0$ directly, but only about the data at hand.
+In the rest of this paper we assume that we know the parametric structure of $\mathcal{M}$ and that our goal lies in learning about the parameters after observing the data $\mathcal{D}$.
+An important aspect here is to postulate the existence of a \textit{true data generating process}, which we do by assuming that there is some (fixed) $\theta_0$, in the parameter space $\Theta$, so that $Y = \mathcal{M}(X; \epsilon, \theta_0)$ describes reality sufficiently accurate and better than for any other parameter.
+The subsequent goal is then to recover the value of $\theta_0$.
+Note that for everything that follows we need to assume that our \emph{true model} actually describes reality accurately; if not we enter the realm of model misspecification which can render any analysis useless.
 
-\paragraph{Bayesian.} The Bayesian approach also assumes that there may be a true data generating process specified by some (maybe fixed) quantity $\theta_0 \in \Theta$.
-The main difference is their understanding of probability as a subjective quantification of uncertainty.
-In this view one is not limited to assigning non trivial probability statements only to objects that appear random in sequential experiments.
-We can see the direct utility of this liberation by considering a special case of Bayes theorem
-\begin{align}
-  p(\theta \mid \text{data}) = \frac{p(\text{data} \mid \theta) p(\theta)}{p(\text{data})} \propto p(\text{data} \mid \theta) p(\theta) \,,
-\end{align}
-which reads
-\begin{align}
-  posterior = \frac{likelihood \times prior}{evidence} \propto likelihood \times prior \,.
-\end{align}
-In the frequentist setting this is of no use, since the statement $p(\theta)$ is nonsensical ---remember that probabilistic statements about fixed quantities are meaningless from a frequentist perspective.
-This already outlines the main criticism of Bayesian analysis: Where does the prior $p(\theta)$ come from?
-With the scientific goal of objectivity in mind, many feel uneasy with results being dependent on a subjective choice of a prior.
-In what follows we will embark on the Bayesian idea without providing much more fundamental criticism; nonetheless, when adequate we will consider the influence of different priors on the posterior.
-To end this comparison, what then are the main tasks associated with a Bayesian analysis?
-These can be categorized by (i) obtaining the posterior distribution (or something equivalent) and (ii) communicating the information held in the posterior.
-The first consists of defining the likelihood and (additionally to the frequentist approach) constructing a prior distribution and afterwards combining those to compute the posterior.
-This computation can sometimes be achieved analytically, but in most cases one has to rely on algorithms to obtain samples of the posterior.
-The second part consists of plotting the marginal posterior distributions, computing expectations of the form $\Exp{h(\theta) \mid \text{data}}$ and testing hypothesis.
-All of the above can be done independent of the posterior being available analytically or through samples.
-A clear difference can be seen when considering hypothesis testing.
-Sacrificing \textit{objectivity} allows us to answer the questions we usually want to ask:
-\begin{align}
-  P(H_0: \theta \in S \mid \text{data}) = \int_{\theta \in S} p(\theta \mid \text{data}) \mathrm{d}\theta \,.
-\end{align}
-In the subsequent paragraphs we will be mostly occupied with the first category, computing the posterior, with occasional remarks on the second; in particular, the approximation of expectations.
+Next we compare two different schools of thought present in the statistical domain, which consider the estimation of $\theta_0$ and the quantification of our uncertainty in the estimate.
+
+\paragraph{Frequentist.}
+In the literature the so called frequentist methods constitute the most widely used approaches.
+A particular method ---which we choose here as it lends itself nicely to a comparison--- is the maximum likelihood approach.
+There we use the distributional assumptions on our model to construct the likelihood function $\mathcal{L}(\theta; \mathcal{D}) = p(\mathcal{D}; \theta)$, which is simply the joint density of the data evaluated at the observed data points for varying parameter $\theta$.
+We can then find an estimator $\hat{\theta}$ for $\theta_0$ as the maximizer of this function, i.e. $\hat{\theta} \in \argmax{\theta \in \Theta} \mathcal{L}(\theta; \mathcal{D})$.
+There has been published an extensive amount of research on the properties of this estimator, for example on sufficient conditions for the uniqueness of the maximization or large-sample normal approximations.
+In particular, under some regularity conditions we can find a matrix $\widehat{V}$ so that $\sqrt{n}\widehat{V}^{-1/2}(\hat{\theta} - \theta_0) \overset{d}{\longrightarrow} \normal{0, I}$.
+This we can use to quantify our uncertainty on $\hat{\theta}$ by computing standard errors and confidence intervals, as well as using the normal result to formulate tests.
+
+One fundamental idea which stretches over all methods in the frequentist world is the interpretation of probability as the limit of an infinite sequence of relative frequencies of events---hence the name.
+Probability then just counts how many times an event happened or not; for example if we toss a (fair) coin an infinite number of times the relative frequency of heads converges to the probability of heads.
+We do expect the outcome of such an experiment to vary, however, one thing we do not assume to vary is the true parameter.
+For instance, we might interpret the probability of a coin landing on heads as the true model parameter.
+In this sense it would then be absurd to let this object vary from experiment to experiment.
+Therefore any hypothesis on $\theta_0$ is either true or false.
+And it is this binarity which makes hypothesis testing (interpretation of confidence intervals) so awkward in the frequentist setting.
+By testing some hypothesis $H_0: \theta_0 = \theta^*$ we do not directly compute the probability of the hypothesis being true --hypothesis are either false or true--- but we compute if the observed data $\mathcal{D}$ is more likely to have orginated under the null hypothesis or the alternative.
+
+\paragraph{Bayesian.}
+The main difference of the Bayesian mindset is the understanding of probability as a subjective quantification of uncertainty.
+We may still believe that $\theta_0$ is fixed, however, in the Bayesian paradigm we build our uncertainty about the true location of the parameter into the model by allowing for probability distributions to be defined on $\Theta$ ---which, as we saw above, is nonsensical in a frequentist worldview.
+We can see the direct utility of this liberation by considering Bayes theorem applied to densities
+\vspace{-12pt}
+\begin{flalign*}
+  && p(\theta \mid \mathcal{D}) &= \frac{p(\mathcal{D} \mid \theta) p(\theta)}{p(\mathcal{D})} \propto p(\mathcal{D} \mid \theta) p(\theta) \,,\tag{Bayes' theorem}&\\[0.7em] \text{which reads} &&
+  posterior &= \frac{likelihood \times prior}{evidence} \propto likelihood \times prior \,.
+\end{flalign*}
+The posterior distribution is the object of interest for any subsequent Bayesian analysis, it describes the distribution of the parameter of interest given the observed data $\mathcal{D}$.
+From a naive standpoint this is too good to be true.
+And in fact it is.
+To give Bayes' theorem any meaning we have to define the prior $p(\theta)$, a probability distribution of the model parameter on $\Theta$.
+The prior can be used to incorporate knowledge about the parameter into the analysis which existed prior to observing the data.
+But this can be highly subjective and can lead to \emph{two} different researchers having \emph{two} different priors which would result in \emph{two} different posteriors.
+This is where the main criticism of Bayesian statistics is focused on: where does the prior distribution come from?
+With the scientific goal of objectivity in mind, many feel at unease having results dependent on subjective choices of the prior.
+In what follows we will embark on the Bayesian idea without providing much more fundamental criticism, nonetheless, when adequate we will consider the influence of different priors on the posterior.
+
+In comparison to the maximum likelihood approach, in a Bayesian analysis there is no need for one specific point estimator or confidence interval.
+The result of such an analysis is a complete probability distribution so we can compute, in principle, any quantity we like.
+Being clear on all prior assumptions and giving up (some) \emph{objectivity} we gain the possibility to formulate answers to more natural questions, as for example: $\prob{\theta \in \Theta_0 \mid \mathcal{D}} = \int_{\Theta_0} p(\theta \mid \mathcal{D}) \mathrm{d}\theta$.
 
 \subsection{Solving for the posterior analytically}
 In this subsection we present the analytical derivation of the posterior distribution of mean and variance parameters in a univariate normal model for two priors.
@@ -365,10 +358,10 @@ We consider two questions.
 First, how does the ratio $\nicefrac{\vol{B_d}}{\vol{C_d}}$ change as $d$ increases.
 And second, how does the ratio of probability mass distributed by a standard gaussian on these regions change as $d$ increases.
 Since closed form expressions of volumina of geometrical objects exist the first questions needs little work.
-Similary we can easily compute $P(X \in C_d) = \left[\Phi(1) - \Phi(-1)\right]^d$, where $\Phi$ denotes the one-dimensional gaussian cumulative distribution function.
-However, to compute $P(X \in B_d)$ we need to integrate over the unit ball with respect to a gaussian distribution, which is non-trivial.
+Similary we can easily compute $\prob{X \in C_d} = \left[\Phi(1) - \Phi(-1)\right]^d$, where $\Phi$ denotes the one-dimensional gaussian cumulative distribution function.
+However, to compute $\prob{X \in B_d}$ we need to integrate over the unit ball with respect to a gaussian distribution, which is non-trivial.
 For this reason we decide to report an upper bound, as this is sufficient for our motivation.
-In particular we compute $\overline{P(X \in B_d)} := \sup_{\bm{x} \in B_d} \phi(\bm{x}) \vol{B_d} = \sup_{\bm{x} \in B_d} \phi(\bm{x}) \int_{B_d}1 \mathrm{d}\bm{x} \geqslant \int_{B_d} \phi(\bm{x}) \mathrm{d}\bm{x} = P(X \in B_d)$.
+In particular we compute $\overline{\prob{X \in B_d}} := \sup_{\bm{x} \in B_d} \phi(\bm{x}) \vol{B_d} = \sup_{\bm{x} \in B_d} \phi(\bm{x}) \int_{B_d}1 \mathrm{d}\bm{x} \geqslant \int_{B_d} \phi(\bm{x}) \mathrm{d}\bm{x} = \prob{X \in B_d}$.
 The results of these computations are depicted in table \ref{tab:vol_high_dim}.
 We note that both ratios tend to zero very fast as $d$ increases.
 With this phenomenon in mind one has to be cautious when working in high-dimensional spaces, since the regions of interest, that is the regions containing non-negligible probability mass, might not be located where our low-dimensional intution says.
@@ -381,7 +374,7 @@ This idea is formalized by the \emph{Gaussian Annulus Theorem} (\citet{blum2017f
  $d$ & 1 & 2 & 3 & 5 & 7 & 10 & 15\\
  \hline
  ${\vol{B_d}} / {\vol{C_d}}$ & 1.00000 & 0.78540 & 0.52360 & 0.16449 & 0.03691 & 0.00249 & 0.00001\\
- ${\overline{P(X \in B_d)}} / {P(X \in C_d)}$ & 1.16874 & 1.07281 & 0.83589 & 0.35870 & 0.10995 & 0.01184 & 0.00012
+ $\overline{\prob{X \in B_d}} / {\prob{X \in C_d}}$ & 1.16874 & 1.07281 & 0.83589 & 0.35870 & 0.10995 & 0.01184 & 0.00012
  \end{tabular}
  \caption{Comparison of volume ratio of unit ball and cube, and probability ratio of gaussian falling in unit ball and cube for varying dimension $d$. Numbers are rounded to five decimal places.}
 \label{tab:vol_high_dim}
