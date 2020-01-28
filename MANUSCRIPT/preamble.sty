@@ -24,6 +24,7 @@
 \usepackage[font=it]{caption}
 \usepackage[affil-it]{authblk}
 \usepackage{xfrac}
+\usepackage{titlesec}
 
 \lstset{
     frameround=fttt,
@@ -38,6 +39,12 @@
 \counterwithin{figure}{section}
 \usetikzlibrary{arrows}
 \usetikzlibrary{positioning}
+
+\setlength{\textfloatsep}{5pt}
+\titlespacing*{\section}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\paragraph}{0pt}{0.5\baselineskip}{0.5\baselineskip}
 
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 

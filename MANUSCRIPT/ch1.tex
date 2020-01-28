@@ -63,65 +63,41 @@ The result of such an analysis is a complete probability distribution so we can 
 Being clear on all prior assumptions and giving up (some) \emph{objectivity} we gain the possibility to formulate answers to more natural questions, as for example: $\prob{\theta \in \Theta_0 \mid \mathcal{D}} = \int_{\Theta_0} p(\theta \mid \mathcal{D}) \mathrm{d}\theta$.
 
 \subsection{Solving for the posterior analytically}
-In this subsection we present the analytical derivation of the posterior distribution of mean and variance parameters in a univariate normal model for two priors.
-We will compare the results to the appropriate classical method, namely maximum likelihood.
+In this subsection we present an analytical derivation of the posterior distribution of mean and variance parameters in a univariate normal model for two priors.
+We will compare the results to the maximum likelihood estimator.
+As it will be of major importance in the subsequent sections, we have included the definition of the scaled inverse $\chi^2$ probability distribution in the appendix (see definition \ref{def:scaledInverseChi}).
 
-In both cases, let us assume that we observe an iid sample $y = (y_1, \mydots, y_n)$
-with $y_i \sim \normal{\mu, \sigma^2}$.
+Let us assume that we observe a sample $y = (y_1, \mydots, y_n)$
+with $y_i \mid \theta \overset{\text{iid}}{\sim} \normal{\mu, \sigma^2}$, where $\theta = (\mu, \sigma^2)$.
 Our interest lies in solving for the marginal posteriors $p(\mu \mid y)$ and $p(\sigma^2 \mid y)$.
 
-To be precise, in a full bayesian analysis we assume $\theta = (\mu, \sigma^2)$ to be a random quantity, thus the correct statement should be $y_i \mid \theta \sim \normal{\mu, \sigma^2}$.
-In situations where this conditional dependence is clear many writers will use the first notation.
-Here we try to be as pedantic as possible to avoid any confusion and will therefore stick to the second notation.
-
-As it will be of major importance in the subsequent sections we remind the reader of some probability distributions uncommon in the non-Bayesian world.
-
-\begin{definition}{(Scaled inverse $\chi^2$ distribution).}
-  Let $\nu > 0$ and $\tau^2 > 0$ be parameters representing degrees of freedom and scale, respectively. The family of \emph{scaled inverse $\chi^2$ distributions} is characterized by its probability density function, namely
-  \begin{align}
-    p(x) \propto x^{-(1 + \nu / 2)} \EXP{\frac{-\nu \tau^2}{2 x}} \quad \text{for} \, x \in (0, \infty) \,,
-  \end{align}
-  where the constant of integration is ignored for clarity.
-  We write $X \sim \scaledInvChi{\nu, \tau^2}$ to denote that the random variable $X$ follows a scaled inverse $\chi^2$ distribution with parameters $\nu$ and $\tau^2$.
-\end{definition}
-
-\subsubsection*{Uninformative Prior}
-We start our first Bayesian analysis by considering a prior which contains virtually no information.
-This results in an analysis being mainly, if not completely, driven by the likelihood.
-A common assumption is independence of the individual priors, that is $p(\theta) = p(\mu, \sigma^2) = p(\mu) p(\sigma^2)$.
-A natural choice of declaring full ignorance of prior information is to assign a prior over the complete domain of the random parameter. For our case this mean $p(\mu) \propto 1$.
+\paragraph{Noninformative Prior.}
+We start our analysis with a common prior choice in settings where we have little prior information and sufficent data.
+In these cases we can use noninformative priors to model complete ignorance of any prior information; in particular, here we use \emph{flat priors}, which assign equal weight to every region in the parameter space.
+Let us go with the common assumption that $\mu$ and $\sigma^2$ are independent a priori.
+Mathematically we can write a flat prior as $p(\mu) \propto 1$.
 We note that this does not define a proper proability distribution, which will not matter in this case but can lead to problems in others; see for example section 4.2 in \citet{kass1996}.
-Since the variance is restricted to be positive we impose a uniform prior on the log-transform thereof: $p(\log \sigma) \propto 1$.
-Using that $x \mapsto \text{exp}^2(x)$ is one-to-one we can apply standard methods, which yield the density of the transformed variable
-\begin{align}
-  p(\mu, \sigma^2) \propto (\sigma^2)^{-1} \,.
-\end{align}
-As usual the likelihood is given by
-\begin{align}
-  p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{-n/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2} \,,
-\end{align}
-where we dropped all proportionality constants.
-Using the above we can apply Bayes theorem to yield
-\begin{align}
-  p(\mu, \sigma^2 \mid y) &\propto p(y \mid \mu, \sigma^2) p(\mu, \sigma^2)\\
-  &\propto (\sigma^2)^{-(n+2)/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2} \,.
-\end{align}
-From here we can derive the marginals by integrating out the respective other parameter. This is formalized in the following two proposition.
+Since the variance is restricted to be positive we impose a flat prior on the log-transform thereof, i.e. $p(\log \sigma) \propto 1$.
+Using that $x \mapsto \text{exp}^2(x)$ is one-to-one we get the density of the transformed variable $p(\mu, \sigma^2) = p(\mu)p(\sigma^2) \propto p(\sigma^2) \propto (\sigma^2)^{-1}$.
+
+The likelihood is given by $p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{-n/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2}$, where we dropped all proportionality constants.
+Using the above we can apply Bayes theorem to yield $p(\mu, \sigma^2 \mid y) \propto p(y \mid \mu, \sigma^2) p(\mu, \sigma^2) \propto (\sigma^2)^{-(n+2)/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2}$.
+Integrating over the respective parameter yields the marginal posteriors.
 
 \begin{proposition}\label{prop:posterior_uniform}
   Under the uniform prior from above we find
-  \begin{align}
-    \mu \mid y &\sim t_{n-1}(\bar{y}, s^2/n) \,,\\
-    \sigma^2 \mid y &\sim \scaledInvChi{n-1, s^2} \,,
-  \end{align}
+  \begin{align*}
+    \mu \mid y \sim t_{n-1}(\bar{y}, s^2/n) \,, \quad \sigma^2 \mid y \sim \scaledInvChi{n-1, s^2} \,,
+  \end{align*}
   where $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denotes the (unbiased) sample variance and $\bar{y} = \frac{1}{n} \sum_i y_i$ the sample mean.
 \end{proposition}
 \begin{proof}
 See appendix.
 \end{proof}
 
-Having derived the marginal posterior distributions, we can compare the results to their maximum likelihood (ML) counterpart.
-Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$ are point estimates, we consider the similar \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$, as well as the posterior mean and variance. All results are summarized in table \ref{tab:comp_uniform_bay_ml}.
+We compare the marginal posteriors to their maximum likelihood counterpart by reporting summary statistics of the distribution.
+Namely we focus on the mean and variance of the posterior, as well as the \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$.
+We summarize all results in table \ref{tab:comp_uniform_bay_ml} but withold from a discussion as we consider the results in the next paragraph in more detail.
 
 \begin{table}[ht]
 \centering
@@ -134,55 +110,42 @@ Since the ML estimates $\left(\argmax{\theta \in \Theta}p(y \mid \theta)\right)$
  $\sigma^2$ & $\frac{n-1}{n} s^2$ & $2 \sigma^4 /n$ & $\frac{n-1}{n+1} s^2$ & $\frac{n-1}{n-3} s^2$ & $\frac{2 (n-1)^2}{(n-3)^2 (n-5)} s^4$\\
  \end{tabular}
  }
-\caption{\small {Comparison of Bayesian estimates using an uninformative prior and ML estimates. See appendix for a detailed derivation.}}
+\caption{\small {Comparison of Bayesian estimates using a noninformative prior and ML estimates. See appendix for a detailed derivation.}}
 \label{tab:comp_uniform_bay_ml}
 \end{table}
 
 
-\subsubsection*{Conjugate Prior}
-We have seen that using an uninformative prior leads to results that are very similar to the ones obtained by a ML approach.
-In case information on the parameters is available prior to observing the data we can utilize this fact by properly modeling the prior distribution.
-Since we are interested in analytical results in this section,b we cannot mix any prior with any likelihood, as the product might not be of known form.
-This leads us to the class of \emph{conjugate priors}.
+\paragraph{Conjugate Prior.}
+From table \ref{tab:comp_uniform_bay_ml} we see that a flat prior (here) leads to very similar results as a maximum likelihood approach.
+In case substantial information on the parameters is available a priori, we can model this information properly to gain more stable results.
+However, not every product of prior and likelihood results in a sensible posterior.
+As we are interested in analytical results in this section we seek priors that guarantee posteriors of known form.
+The class of \emph{conjugate priors} plays an important part in Bayesian statistics as they are able to prodive such assurance (see definition \ref{def:conjugate_prior} in the appendix).
 
-\begin{definition}{(Conjugate prior).}
-Let the likelihood $p(y \mid \theta)$ be given and assume that the prior distribution $p(\theta)$ is a member of some family $\mathcal{F}$ of probability distributions.
-We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \mid y)$ is also a member of $\mathcal{F}$.
-\end{definition}
-
-Conjugate priors were of particular importance in the early stages of Bayesian statistics since these give the practitioner certainty that the posterior follows a distribution which is known and computable. Moreover, nowadays we still see conjugate priors in use as they allow for a full or partial analytical derivation, which increases the accuracy of results or shortens the runtime of programs. For more complex models however conjugate priors can become too restrictive. We discuss solutions to this problem in the next section.
-
-Consider again the likelihood but written to demonstrate its dependence on $\mu$ and $\sigma^2$
+Consider again the likelihood but written dependent on the sufficient statistics $\bar{y}$ and $s^2$
 \begin{align}
   p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{n/2} \EXP{-\frac{1}{2\sigma^2} \left[ n(\mu - \bar{y})^2 + (n-1)s^2 \right]} \,,
   \label{eq:likelihood2}
 \end{align}
 where $s^2$ again denotes the (unbiased) sample variance.
-We want to construct a two dimensional prior for $(\mu, \sigma^2)$.
-A theme to which we will be coming back is that modeling higher dimensional parameters by modeling many lower dimensional (sub)parameters using conditioning is often easier than modeling the complete distribution.
-Here we utilize the equality $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2)$.
-By looking at the likelihood (equation \ref{eq:likelihood2}) we note that in order to \emph{not} change the inherent structual dependence on the parameters, $\mu \mid \sigma^2$ has to be distributed according to $\normal{\mu_0, \sigma^2 / \kappa_0}$ with so called \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
-Similary, we note that an informative prior for $\sigma^2$ has to respect the structure in which $\sigma^2$ appears in the likelihood.
-We achieve this when $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$ with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
-Following \citet{gelmanbda04} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$ with corresponding density function
-\begin{align}
-  p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]} \,.
-\end{align}
 
-Multiplying the likelihood with our constructed prior we get the joint posterior (up to an integration constant)
+We want to construct a two dimensional conjugate prior for $(\mu, \sigma^2)$.
+Note that we have $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2)$.
+Looking at (\ref{eq:likelihood2}) we see that in order to \emph{not} change the inherent structural dependence on the parameters we must have $\mu \mid \sigma^2 \sim \normal{\mu_0, \sigma^2 / \kappa_0}$, with \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
+Similary, we observe that we must have $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$, with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
+This becomes apparent when considering the respective densities.
+Following \citet{gelmanbda04} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$ with corresponding density function $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]}$.
+
+Multiplying the likelihood with our constructed prior we get the joint posterior
 \begin{align}
-  \begin{split}
-  p(\mu, \sigma^2 \mid y) \propto& (\sigma^2)^{-\frac{3 + \nu_0 + n}{2}} \times\\
-  & \times \EXP{-\frac{1}{2 \sigma^2} \left[\nu_0\sigma_0^2 + \kappa_0(\mu - \mu_0)^2 + (n-1)s^2 + n(\bar{y} - \mu)^2 \right]} \,.
-  \end{split}
+  p(\mu, \sigma^2 \mid y) \propto& (\sigma^2)^{-\frac{3 + \nu_0 + n}{2}} \EXP{-\frac{1}{2 \sigma^2} \left[\nu_0\sigma_0^2 + \kappa_0(\mu - \mu_0)^2 + (n-1)s^2 + n(\bar{y} - \mu)^2 \right]} \,.
   \label{eq:conjugate_posterior}
 \end{align}
 
 \begin{proposition}
-  The posterior distribution of $(\mu, \sigma^2) \mid y$, as given by the conditional density in equation \ref{eq:conjugate_posterior}, is $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$ distributed, where
+  The (posterior) distribution of $(\mu, \sigma^2) \mid y$ , as given by the conditional density in (\ref{eq:conjugate_posterior}), is\\ $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$, where
   \begin{align*}
-    \nu_n &= \nu_0 + n \,; \quad \kappa_n = \kappa_0 + n \,; \quad \mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y} \,,\\
-    \sigma_n^2 &= \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_0 n}{\kappa_0 + n} (\bar{y} - \mu_0)^2\right] /\nu_n \,.
+    \nu_n = \nu_0 + n \,; \quad \kappa_n = \kappa_0 + n \,; \quad \mu_n =\frac{\kappa_0}{\kappa_n}\mu_0 + \frac{n}{\kappa_n}\bar{y} \,; \quad \sigma_n^2 = \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_0 n}{\kappa_n} (\bar{y} - \mu_0)^2\right] /\nu_n \,.
   \end{align*}
   \label{prop:posterior_conjugate}
 \end{proposition}
@@ -196,8 +159,7 @@ Using the intermediate finding from proposition \ref{prop:posterior_conjugate} w
 \begin{proposition}\label{prop:marginal_posterior}
   The marginal posterior distributions are given by
   \begin{align*}
-    \mu \mid y &\sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)\\
-    \sigma^2 \mid y &\sim \scaledInvChi{\nu_n, \sigma_n^2}\,,
+    \mu \mid y \sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)\,, \quad \sigma^2 \mid y \sim \scaledInvChi{\nu_n, \sigma_n^2}\,,
   \end{align*}
   where $\nu_n, \sigma_n^2, \mu_n$ and $\kappa_n$ are as in proposition \ref{prop:posterior_conjugate}.
 \end{proposition}
@@ -241,8 +203,6 @@ However, we have also seen that even for this \emph{very} simple model, the deri
 As we consider more complex models using more parameters we have to make more restrictive assumptions on the way we model our prior information, if an analytical analysis is even possible.
 For this reason among others, in the next section we present a method which trades off the clarity of an analytical result for the generality of being able to combine near arbitrary priors with complex, possibly high-dimensional likelihoods.
 
-
-\newpage
 \subsection{Sampling From The Posterior}
 In this section we consider approaches that allow us to characterize the posterior distribution in complex settings using sampling methods.
 
@@ -349,7 +309,7 @@ The ability to sample draws in complex settings using the Metropolis-Hastings al
 Still, \citet{Au2001EstimationOS} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \citet{zuev08} provide a geometric intution.
 The following paragraph illustrates one of the problems of working in higher dimensions.
 
-\paragraph{Volume in Higher Dimensions}
+\paragraph{Volume in Higher Dimensions.}
 Classical MCMC methods can have too slow convergence rates; In higher dimensions this might be due to probability mass being distributed very far from where it is expected (\citet{betancourt2017convergence}).
 In this paragraph we motivate this phenomenon and in the following we present methods which utilize it.
 
