@@ -14,17 +14,16 @@ We categorize models by the number of levels they incorporate and if they use \e
 In this paper we consider two-level models for nested data and refer again to \citet{GelmanHill2007} for a treatment of models with more levels and non-nested data.
 
 In practice we can store hierarchical data very efficiently using normalized relational dataframes. Let us continue the example of children in schools and assume we observe their results on a test, the parental income and the number of teachers per child in the school.
-Table \ref{tab:relational_table} portrays how multi-level data in this case could be stored.
+Figure \ref{fig:relational_table} portrays how multi-level data in this case could be stored.
 Having gained some intuition let us define our formal notation.
-\begin{table}[!ht]
+\begin{figure}[!ht]
 \begin{center}
 \begin{tabular}{l l l l}
 child & result & income & school\\
 \hline
 1 & 10 & 500 & 1\\
 2 & 9 & 450 & 1\\
-3 & 12 & 520 & 2\\
-4 & 10 & 490 & 1
+3 & 12 & 520 & 2
 \end{tabular}
 \quad
 \begin{tabular}{l l}
@@ -35,8 +34,8 @@ school & teacher\\
 \end{tabular}
 \end{center}
 \caption{Two tables containing fictional hierarchical data. Left: Data on the child-level, that is the test \emph{results}, parental \emph{income} and \emph{school} id. Right: Data on the school-level, in this case the number of \emph{teachers} per child.}
-\label{tab:relational_table}
-\end{table}
+\label{fig:relational_table}
+\end{figure}
 
 \noindent
 Assume we observe data on $i=1,\mydots,n$ units which are clustered among $j=1,\mydots,J$ groups.
@@ -71,7 +70,7 @@ As $\phi$ are themselves parameters for the parameter $\theta_j$, one often spea
   \node[vertex,right=of phi] (theta) {$\theta_{j[i]}$};
   \node[vertex,below right= 1cm and 2.5cm of theta] (y) {$y_i$};
   \node[rectangle, draw=black, minimum size=0.9cm,left= of phi] (zeta) {$\zeta$};
-  \node[rectangle, draw=black, minimum size=0.9cm,above=1.5cm of theta] (u) {$u_{j[i]}$};
+  \node[rectangle, draw=black, minimum size=0.9cm,above=1.5cm of y] (u) {$u_{j[i]}$};
   \node[rectangle, draw=black, minimum size=0.9cm, above right=1cm and 2.5cm of y] (x) {$x_i$};
   \draw[->]
     (phi) edge (theta)
@@ -81,50 +80,15 @@ As $\phi$ are themselves parameters for the parameter $\theta_j$, one often spea
     (x) edge (y);
 \end{tikzpicture}
 \end{center}
-\label{fig:general_sem}
 \caption{A generic two-level Bayesian hierarchical model depicted as a directed acyclical graph modeling a single generic observation. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
+\label{fig:general_sem}
 \end{figure}
 
 
 Figure \ref{fig:general_sem} illustrates the conditional dependence structure of modeling a generic observation $y_i$.
-In contrast, consider figure \ref{fig:group_sem} which illustrates the conditional dependence structure when modeling a generic observation $y(j)$ in group $j$.
+In contrast, figure \ref{fig:group_sem} in the appendix illustrates the conditional dependence structure when modeling a generic observation $y(j)$ in group $j$.
 We depict random quantities in circles and fixed quantities in squares.
 Not only do these graphical representations help with understanding the structure of the model but we will see that when solving for the posterior they give an immediate way to check which parameters are conditionally independent.
-
-\begin{figure}[ht]
-\begin{center}
-\begin{tikzpicture}%
-  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
-  node distance=2.5cm,
-  >=latex,
-  on grid]
-  \node[vertex] (phi) {$\phi$};
-  \node[rectangle, draw=black, minimum size=0.9cm,left=2cm of phi] (zeta) {$\zeta$};
-  \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
-  \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
-  \node[below=1.5cm of phi] (dots1) {$\dots$};
-  \node[rectangle, draw=black, minimum size=0.9cm, left=2cm of theta1] (u1) {$u_1$};
-  \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of thetaJ] (uJ) {$u_J$};
-  \node[vertex,below=2cm of theta1] (y1) {$y(1)$};
-  \node[vertex,below=2cm of thetaJ] (yJ) {$y(J)$};
-  \node[rectangle, draw=black, minimum size=0.9cm, left=2cm of y1] (x1) {$x(1)$};
-  \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of yJ] (xJ) {$x(J)$};
-  \node[below=3.5cm of phi] (dots1) {$\dots$};
-  \draw[->]
-    (zeta) edge (phi)
-    (phi) edge (theta1)
-    (phi) edge (thetaJ)
-    (u1) edge (theta1)
-    (uJ) edge (thetaJ)
-    (theta1) edge (y1)
-    (thetaJ) edge (yJ)
-    (x1) edge (y1)
-    (xJ) edge (yJ);
-\end{tikzpicture}
-\end{center}
-\label{fig:group_sem}
-\caption{A generic two-level Bayesian hierarchical model depicted as a directed acyclical graph modeling generic observations $y(j)$ in groups $j = 1,\mydots, J$. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
-\end{figure}
 
 \subsection{Solving for the Posterior}\label{sec:hierachical_solving}
 In this section we present the complexities of deriving the (marginal) posterior in hierarchical models by considering the steps necessary to fully solve an example model.

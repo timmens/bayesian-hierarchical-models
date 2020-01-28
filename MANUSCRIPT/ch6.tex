@@ -1,6 +1,88 @@
 \section{Appendix}
 
-\subsection{Tables and Figures}
+\subsection{Definitions}
+\begin{definition}{(Scaled inverse $\chi^2$ distribution).}\label{def:scaledInverseChi}
+  Let $\nu > 0$ and $\tau^2 > 0$ be parameters representing degrees of freedom and scale, respectively. The family of \emph{scaled inverse $\chi^2$ distributions} is characterized by its probability density function, namely
+  \begin{align*}
+    p(x) \propto x^{-(1 + \nu / 2)} \EXP{\frac{-\nu \tau^2}{2 x}} \quad \text{for} \, x \in (0, \infty) \,,
+  \end{align*}
+  where the constant of integration is ignored for clarity.
+  We write $X \sim \scaledInvChi{\nu, \tau^2}$ to denote that the random variable $X$ follows a scaled inverse $\chi^2$ distribution with parameters $\nu$ and $\tau^2$.
+\end{definition}
+
+\begin{definition}{(Conjugate prior).}\label{def:conjugate_prior}
+Let the likelihood $p(y \mid \theta)$ be given and assume that the prior distribution $p(\theta)$ is a member of some family $\mathcal{F}$ of probability distributions.
+We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \mid y)$ is also a member of $\mathcal{F}$.
+\end{definition}
+
+\subsection{Figures}
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}%
+  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
+  node distance=2.5cm,
+  >=latex,
+  on grid]
+  \node[vertex] (phi) {$\phi$};
+  \node[rectangle, draw=black, minimum size=0.9cm,left=2cm of phi] (zeta) {$\zeta$};
+  \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
+  \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
+  \node[below=1.5cm of phi] (dots1) {$\dots$};
+  \node[rectangle, draw=black, minimum size=0.9cm, left=2cm of theta1] (u1) {$u_1$};
+  \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of thetaJ] (uJ) {$u_J$};
+  \node[vertex,below=2cm of theta1] (y1) {$y(1)$};
+  \node[vertex,below=2cm of thetaJ] (yJ) {$y(J)$};
+  \node[rectangle, draw=black, minimum size=0.9cm, left=2cm of y1] (x1) {$x(1)$};
+  \node[rectangle, draw=black, minimum size=0.9cm, right=2cm of yJ] (xJ) {$x(J)$};
+  \node[below=3.5cm of phi] (dots1) {$\dots$};
+  \draw[->]
+    (zeta) edge (phi)
+    (phi) edge (theta1)
+    (phi) edge (thetaJ)
+    (u1) edge (theta1)
+    (uJ) edge (thetaJ)
+    (theta1) edge (y1)
+    (thetaJ) edge (yJ)
+    (x1) edge (y1)
+    (xJ) edge (yJ);
+\end{tikzpicture}
+\end{center}
+\caption{A generic two-level Bayesian hierarchical model depicted as a directed acyclical graph modeling generic observations $y(j)$ in groups $j = 1,\mydots, J$. Circled parameters denote random quantities while parameters contained in squares denote fixed quantities.}
+\label{fig:group_sem}
+\end{figure}
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}%
+  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
+  node distance=2.5cm,
+  >=latex,
+  on grid]
+  \node[vertex] (phi) {$\mu, \tau^2$};
+  \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
+  \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
+  \node[below=1.5cm of phi] (dots1) {$\dots$};
+  \node[vertex,below=2cm of theta1] (y1) {$y(1)$};
+  \node[vertex,below=2cm of thetaJ] (yJ) {$y(J)$};
+  \node[rectangle, draw=black, minimum size=0.8cm, below=2.5cm of phi] (sigma) {$\sigma^2$};
+  \node[below=3.5cm of phi] (dots1) {$\dots$};
+  \draw[->]
+    (phi) edge (theta1)
+    (phi) edge (thetaJ)
+    (theta1) edge (y1)
+    (thetaJ) edge (yJ)
+    (sigma) edge (y1)
+    (sigma) edge (yJ);
+\end{tikzpicture}
+\end{center}
+\label{fig:example_model}
+\caption{The directed acyclical graph representation of the model structure of the example model in subsection \ref{sec:hierachical_solving}. Random  and fixed quantities are depicted in circles and squares, respectively.}
+\end{figure}
+
+
+\subsection{Tables}
 
 \begin{proof}[Derivation of Results in Table \ref{tab:comp_uniform_bay_ml}.]
   We know that for the problem at hand the standard maximum likelihood estimators
@@ -152,7 +234,7 @@ Define $a := \left[\nu_n\sigma_n^2 + \kappa_n(\mu_n - \mu)^2 \right]$. We solve 
   &\propto \int_{(0, \infty)}(a / 2z)^{-\frac{3 + \nu_n}{2}} \EXP{-z} \frac{a}{2 z^2} \mathrm{d}z\\
   &\propto \int_{(0, \infty)}a^{-\frac{3 + \nu_n}{2}}a z^{\frac{3 + \nu_n}{2}}z^{-2} \EXP{-z} \mathrm{d}z\\
   &= a^{-\frac{1 + \nu_n}{2}} \int_{(0, \infty)} z^{\frac{\nu_n - 1}{2}} \EXP{-z} \mathrm{d}z\\
-  &= a^{-\frac{1 + \nu_n}{2}} \Gamma(\frac{\nu_n + 1}{2})\\
+  &= a^{-\frac{1 + \nu_n}{2}} \Gamma\left(\frac{\nu_n + 1}{2}\right)\\
   &\propto a^{-\frac{1 + \nu_n}{2}}\\
   &= \left[\nu_n \sigma_n^2 + \kappa_n(\mu_n - \mu)^2 \right]^{-\frac{1 + \nu_n}{2}}\\
   &= \left[\nu_n \sigma_n^2\left(1 + \frac{1}{\nu_n}\frac{(\mu_n - \mu)^2}{\sigma_n^2 / \kappa_n}\right) \right]^{-\frac{1 + \nu_n}{2}}\\
@@ -161,6 +243,68 @@ Define $a := \left[\nu_n\sigma_n^2 + \kappa_n(\mu_n - \mu)^2 \right]$. We solve 
 which concludes the proof by implying that $\mu \mid y \sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)$.
 \end{proof}
 
+\textcolor{red}{\hrule}
 \begin{proof}[Proof of Proposition \ref{prop:hierarchical_posterior}.]
+  Let us first consider the parameter definitions again for clarity.
+  We define
+  \begin{align*}
+    \sigma_\mu^{-2} = \sum_j \frac{1}{\sigma_j^2 + \tau^2}\,,\,\, \tau_j^{-2}=\frac{1}{\sigma_j^2} + \frac{1}{\tau^2}\,,\,\, \mu_j=\tau_j^2(\frac{1}{\sigma_j^2} \bar{y}_j + \frac{1}{\tau^2}\mu) \,,\,\, \bar{\mu} = \sigma_\mu^2 \sum_j \frac{1}{\sigma_j^2 + \tau^2} \bar{y}_j \,.
+  \end{align*}
+  \noindent
+  \textbf{\emph{i.)}} Note that $p(\theta \mid \mu, \tau^2, y) \propto p(y \mid \theta, \mu, \tau^2) p(\theta \mid \mu, \tau^2) = p(y \mid \theta) p(\theta \mid \mu, \tau^2)$, as conditional on $\theta$ the observations and hyperparameter are independent.
+  Now by construction we get $p(\theta \mid \mu, \tau^2) = \prod_j p(\theta_j \mid \mu, \tau^2)$.
+  Note that since we assume independence we clearly also get $p(\theta \mid \mu, \tau^2, y) = \prod_j p(\theta_j \mid \mu, \tau^2, y)$; however to get the distribution of $p(\theta_j \mid \mu, \tau^2, y)$ we split the likelihood into factors dependent only on $\theta_j$ and show that the product of the factors constitutes a normal density with the desired parameters.
+  So we have to show that $p(y \mid \theta)$, considered as a function of $\theta$, factors into $J$ factors each only dependent on $\theta_j$.
+  Denoting terms not dependent on the $\theta_j's$ by $(\mydots)$, we get
+  \begin{align*}
+    p(y \mid \theta) &= \prod_{i=1}^n p(y_i \mid \theta)=\prod_{i=1}^n p(y_i \mid \theta_{j[i]}) = \prod_{j=1}^J \prod_{i:j[i]=j} p(y_i \mid \theta_{j})\\
+    &= \prod_j (2 \pi \sigma^2)^{-n_j / 2} \EXP{-\frac{1}{2\sigma^2}\sum_{i:j[i]=j} (y_i - \theta_j)^2}\\
+    &\propto \prod_j \EXP{-\frac{1}{2\sigma^2} \left[n_j \theta_j^2 - n_j 2\theta_j\bar{y}_j + (\mydots)\right]}\\
+    &\propto \prod_j \EXP{-\frac{1}{2\sigma^2 / n_j} (\theta_j - \bar{y}_j)^2} \,.
+  \end{align*}
+  Hence,
+  \begin{align*}
+    p(\theta \mid \mu, \tau^2, y) &\propto p(y \mid \theta) p(\theta \mid \mu, \tau^2)\\
+    &\propto \prod_j \EXP{-\frac{1}{2\sigma^2 / n_j} (\theta_j - \bar{y}_j)^2} \prod_j p(\theta_j \mid \mu, \tau^2)\\
+    &\propto \prod_j \EXP{-\frac{1}{2\sigma^2 / n_j} (\theta_j - \bar{y}_j)^2} \EXP{-\frac{1}{2\tau^2}(\theta_j - \mu)^2}\\
+    &= \prod_j \EXP{-\frac{1}{2\sigma^2 / n_j} (\theta_j - \bar{y}_j)^2 -\frac{1}{2\tau^2}(\theta_j - \mu)^2}\\
+    &= \prod_j \EXP{-\frac{1}{2}\left[\left(\frac{1}{\sigma^2/n_j} + \frac{1}{\tau^2}\right)\theta_j^2 - 2\theta_j\left(\frac{1}{\sigma^2/n_j}\bar{y}_j + \frac{1}{\tau^2}\mu\right) + (\mydots) \right]}\\
+    &= \prod_j \EXP{-\frac{1}{2}\left[\tau_j^{-2} \theta_j^2 - 2\theta_j\mu_j\tau_j^{-2} + (\mydots) \right]}\\
+    &\propto \prod_j \EXP{-\frac{1}{2\tau_j^2} (\theta_j - \mu_j)^2} \,,
+  \end{align*}
+which gives $\theta_j \mid \mu, \tau^2, y \sim \normal{\mu_j, \tau_j^2}$.\\
+
+  \noindent
+  \textbf{\emph{ii.)}} Let us first prove an intermediate result, namely $\bar{y}_j \mid \mu, \tau^2 \sim \normal{\mu, \sigma_j^2 + \tau^2}$ for all $j$.
+  Note that we may write
+  \begin{align*}
+    p(\bar{y}_j \mid \mu, \tau^2) &= \int p(\bar{y}_j, \theta_j \mid \mu, \tau^2)\mathrm{d}\theta_j = \int p(\bar{y}_j \mid \theta_j) p(\theta_j \mid \mu, \tau^2)\mathrm{d}\theta_j \,.
+  \end{align*}
+  We know that $\bar{y}_j \mid \theta_j \sim \normal{\theta_j, \sigma_j^2}$ and $\theta_j \mid \mu, \tau^2 \sim \normal{\mu, \tau^2}$, which means that we can factor the term in the integral into an exponential containing a quadratic term in $\bar{y}_j$ (and not $\theta_j$) and an expontential containing a quadratic term in $\theta_j$.
+  The former term we may pull out of the intgral and the latter disappears into a constant (not depending on $\bar{y}_j$) as we integrate over $\theta_j$.
+  We omit a detailed derivation here and refer to \citet{gelmanbda04}.
+
+  Then using that for $j=1,\mydots,J$ the quantities $\bar{y}_j \mid \mu, \tau^2$ are independent, we can write
+  \begin{align*}
+    p(\mu, \tau^2 \mid y) \propto p(y \mid \mu, \tau^2) p(\mu, \tau) = \prod_j p(\bar{y}_j \mid \mu, \tau^2) p(\mu \mid \tau) p(\tau) \propto p(\tau) \prod_j p(\bar{y}_j \mid \mu, \tau^2) \,,
+  \end{align*}
+  where we use that $p(\mu \mid \tau) \propto 1$.
+  Note that we can also write $p(\mu, \tau \mid y) = p(\mu \mid \tau, y) p(\tau \mid y)$.
+  Therefore we get
+  \begin{align*}
+    p(\mu \mid \tau, y) p(\tau \mid y) \propto p(\tau) \prod_j p(\bar{y}_j \mid \mu, \tau^2) \,.
+  \end{align*}
+  Now if we consider the factors depending on $\mu$ more closely we see that (using equivalent transformations as above and plugging in the definitions)
+  \begin{align*}
+    \prod_j p(\bar{y}_j \mid \mu, \tau^2) &\propto \prod_j \EXP{-\frac{1}{2(\sigma_j^2 + \tau^2)}(\bar{y}_j - \mu)^2}\\
+    &=\EXP{-\frac{1}{2}\sum_j \frac{1}{\sigma_j^2 + \tau^2}(\bar{y}_j - \mu)^2}\\
+    &\propto \EXP{-\frac{1}{2 \sigma_\mu^2} (\mu - \bar{\mu})^2}
+  \end{align*}
+  where proportionality is with respect to $\mu$.
+  As we can factor $p(\mu \mid \tau^2, y)$ and as $\mu$ only appears as a quadratic in the exponential we may derive that $\mu \mid \tau^2, y \sim \normal{\bar{\mu}, \sigma_\mu^2}$, which was what we wanted.
+
+  \noindent
+  \textbf{\emph{iii.)}}
 
 \end{proof}
+\textcolor{red}{\hrule}
