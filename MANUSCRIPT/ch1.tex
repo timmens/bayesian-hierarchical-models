@@ -85,7 +85,7 @@ Using the above we can apply Bayes theorem to yield $p(\mu, \sigma^2 \mid y) \pr
 Integrating over the respective parameter yields the marginal posteriors.
 
 \begin{proposition}\label{prop:posterior_uniform}
-  Under the uniform prior from above we find
+  Under the above setup and a flat prior on $\mu$ and $\log \sigma$ we find
   \begin{align*}
     \mu \mid y \sim t_{n-1}(\bar{y}, s^2/n) \,, \quad \sigma^2 \mid y \sim \scaledInvChi{n-1, s^2} \,,
   \end{align*}
@@ -97,7 +97,7 @@ See appendix.
 
 We compare the marginal posteriors to their maximum likelihood counterpart by reporting summary statistics of the distribution.
 Namely we focus on the mean and variance of the posterior, as well as the \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$.
-We summarize all results in table \ref{tab:comp_uniform_bay_ml} but withold from a discussion as we consider the results in the next paragraph in more detail.
+We summarize some results using Proposition \ref{prop:posterior_uniform} in table \ref{tab:comp_uniform_bay_ml} but withold from a discussion as we consider the results in the next paragraph in more detail.
 
 \begin{table}[ht]
 \centering
@@ -110,13 +110,12 @@ We summarize all results in table \ref{tab:comp_uniform_bay_ml} but withold from
  $\sigma^2$ & $\frac{n-1}{n} s^2$ & $2 \sigma^4 /n$ & $\frac{n-1}{n+1} s^2$ & $\frac{n-1}{n-3} s^2$ & $\frac{2 (n-1)^2}{(n-3)^2 (n-5)} s^4$\\
  \end{tabular}
  }
-\caption{\small {Comparison of Bayesian estimates using a noninformative prior and ML estimates. See appendix for a detailed derivation.}}
+\caption{\small{Comparison of Bayesian estimates using a flat prior to ML estimates. See appendix for a derivation.}}
 \label{tab:comp_uniform_bay_ml}
 \end{table}
 
-
 \paragraph{Conjugate Prior.}
-From table \ref{tab:comp_uniform_bay_ml} we see that a flat prior (here) leads to very similar results as a maximum likelihood approach.
+From table \ref{tab:comp_uniform_bay_ml} we see that a flat prior (here) leads to similar results as a maximum likelihood approach.
 In case substantial information on the parameters is available a priori, we can model this information properly to gain more stable results.
 However, not every product of prior and likelihood results in a sensible posterior.
 As we are interested in analytical results in this section we seek priors that guarantee posteriors of known form.
@@ -129,12 +128,12 @@ Consider again the likelihood but written dependent on the sufficient statistics
 \end{align}
 where $s^2$ again denotes the (unbiased) sample variance.
 
-We want to construct a two dimensional conjugate prior for $(\mu, \sigma^2)$.
+We want to construct a two dimensional conjugate prior for $(\mu, \sigma^2)$ such that multiplying the prior by the likelihood does not change its structure.
 Note that we have $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2)$.
-Looking at (\ref{eq:likelihood2}) we see that in order to \emph{not} change the inherent structural dependence on the parameters we must have $\mu \mid \sigma^2 \sim \normal{\mu_0, \sigma^2 / \kappa_0}$, with \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
-Similary, we observe that we must have $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$, with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
+Looking at equation (\ref{eq:likelihood2}) we see that in order to \emph{not} change the inherent structural dependence on the parameters we must have $\mu \mid \sigma^2 \sim \normal{\mu_0, \sigma^2 / \kappa_0}$, with \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
+Similarly, we observe that we must have $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$, with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
 This becomes apparent when considering the respective densities.
-Following \citet{gelmanbda04} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$ with corresponding density function $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]}$.
+Following \citet{gelmanbda04} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$, with corresponding density function $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]}$, for the normal scaled inverse $\chi^2$ distribution.
 
 Multiplying the likelihood with our constructed prior we get the joint posterior
 \begin{align}
@@ -143,7 +142,7 @@ Multiplying the likelihood with our constructed prior we get the joint posterior
 \end{align}
 
 \begin{proposition}
-  The (posterior) distribution of $(\mu, \sigma^2) \mid y$ , as given by the conditional density in (\ref{eq:conjugate_posterior}), is\\ $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$, where
+  The (posterior) distribution of $(\mu, \sigma^2) \mid y$ , as given by the conditional density in equation (\ref{eq:conjugate_posterior}), is\\ $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$, where
   \begin{align*}
     \nu_n = \nu_0 + n \,; \quad \kappa_n = \kappa_0 + n \,; \quad \mu_n =\frac{\kappa_0}{\kappa_n}\mu_0 + \frac{n}{\kappa_n}\bar{y} \,; \quad \sigma_n^2 = \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_0 n}{\kappa_n} (\bar{y} - \mu_0)^2\right] /\nu_n \,.
   \end{align*}
@@ -153,7 +152,7 @@ Multiplying the likelihood with our constructed prior we get the joint posterior
   See appendix.
 \end{proof}
 
-Since the prior and the posterior are both normal scaled inverse $\chi^2$ distributed, we can speak of a conjugate prior.
+Since the prior and the posterior are both normal scaled inverse $\chi^2$ distributed, we indeed constructed a conjugate prior.
 Using the intermediate finding from proposition \ref{prop:posterior_conjugate} we can derive the main result of this section.
 
 \begin{proposition}\label{prop:marginal_posterior}
@@ -178,47 +177,48 @@ Using the intermediate finding from proposition \ref{prop:posterior_conjugate} w
  $\sigma^2$ & $\frac{n-1}{n}s^2$ & $2 \sigma^4 / n$ & $\frac{\nu_n}{\nu_n + 2} \sigma_n^2$ & $\frac{\nu_n}{\nu_n - 2} \sigma_n^2$ & $\frac{2 \nu_n^2}{(\nu_n - 2)^2(\nu_n - 4)} \sigma_n^4$
  \end{tabular}
  }
-\caption{{\small Comparison of Bayesian estimates using a conjugate prios and ML estimates.}}
+\caption{{\small Comparison of Bayesian estimates using a conjugate prior to ML estimates.}}
 \label{tab:comp_conjugate_bay_ml}
 \end{table}
 
 
-Let us first consider the parameter $\mu$.
-We note that the posterior mean (and MAP) is given by $\mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y}$, which forms a convex combination of the prior $\mu_0$ and the sample average $\bar{y}$, with weights given by the sample size and $\kappa_0$.
-For any fixed $n$ this pulls our estimate of the posterior mean away from $\bar{y}$ and closer to $\mu_0$ (and vice versa).
-Further, we can use the hyperparameter $\kappa_0$ to express our uncertainty in $\mu_0$ (or $\bar{y}$ for that matter).
-Rewritting the posterior variance using the \emph{Laundau notation} we get $\sigma_n^2 / \kappa_n = \frac{n-1}{\nu_n \kappa_n} s^2 + \mathcal{O}(\frac{1}{\nu_n\kappa_n}) = \frac{n}{(\nu_0 + n)(\kappa_0 + n)} s^2 + \mathcal{O}(1/n^2)$.
-As the sample size $n$ grows the information contained in the likelihood should dominate the prior.
-We observe this phenomena as the approximate asymptotic behavior of the posterior resembles that of the maximum likelihood estimator.
-First, as $n$ tends to infinity $\nu_n = \nu_0 + n$ tends to infinity and the t distribution becomes indistinguishable from a normal.
-Second, as $n$ grows the posterior mean is dominated by $\bar{y}$. And at last, for large $n$ the posterior variance is accurately approximated by $\sigma^2 / n$.
-We refrain from an analogous analysis for $\sigma^2$ and only note that similar results hold, as can be seen in table \ref{tab:comp_conjugate_bay_ml}.
+Next we consider the results of Proposition \ref{prop:posterior_conjugate}, of which some summary statistics are tabulated in table \ref{tab:comp_conjugate_bay_ml}.
+We focus on the analysis of the mean parameter $\mu$.
 
-What is gained from using an informative prior here?
-Using the conjugate prior from above we have four hyperparameters at hand to model our prior knowledge about the parameters.
-These can be used to represent very detailed to very vague information.
-In any case, we were able to see that as we collect more and more data, the likelihood dominates our results.
-A clear advantage of an analytical derivation is that we know exactly how the prior influences the posterior.
-However, we have also seen that even for this \emph{very} simple model, the derivation is far from obvious.
-As we consider more complex models using more parameters we have to make more restrictive assumptions on the way we model our prior information, if an analytical analysis is even possible.
-For this reason among others, in the next section we present a method which trades off the clarity of an analytical result for the generality of being able to combine near arbitrary priors with complex, possibly high-dimensional likelihoods.
+As the t-distribution is parameterized over its mean and variance (and degrees of freedom) we can directly read off the posterior mean as $\mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y}$ and the posterior variance as $\sigma_n^2 / \kappa_n$.
+We see that the posterior mean is simply a convex combination of the prior $\mu_0$ and the sample average $\bar{y}$, with weights determined by the sample size and $\kappa_0$.
+For any fixed $n$ this pulls our estimate of the posterior mean away from $\bar{y}$ and closer to $\mu_0$ (and vice versa), which can be helpful if we have insufficient data and believe that the parameter should be around $\mu_0$, where we express our degree of believe in the prior using the weight $\kappa_0$.
+As $n$ grows to infinity the information in the data overwhelms all prior information and the posterior mean is dominated by the sample mean.
+
+Similarly we can use the hyperparameters $\sigma_0^2, \nu_0$ and $\kappa_0$ to model our prior knowledge of the variance parameter, which propagates to the posterior variance of the mean parameter.
+Considering the variance of the posterior mean as a function in $n$ we can use the \emph{Landau notation} to write $\sigma_n^2 / \kappa_n =  \frac{n}{(\nu_0 + n)(\kappa_0 + n)} s^2 + \mathcal{O}(1/n^2)$, which resembles the usual $1/n$ convergence rate.
+
+As $v_n = v_0 + n$ tends to infinity the distribution of the posterior mean tends to a normal distribution with parameters behaving (asymptotically) similar to the maximum likelihood estimators.
+In this sense informative Bayesian priors can be appropriate if the data contains insufficient information \emph{and} we have reasonable knowledge a priori, where we use the prior to stabilize the results, but also if we consider large samples, where the prior is simply dominated by the likelihood.
+We refrain from an analogous analysis for $\sigma^2$ here and only note that similar results hold, as can be seen from table \ref{tab:comp_conjugate_bay_ml}.
+
+Above we considered a simple model, as this allowed us to derive the results analytically.
+Analytical results allow us to fully investigate the influence of the prior on our results.
+However, we also seen that Bayesian analyses are far from trivial and depent critically on the complexities of the model structure.
+If we want to consider more realistic models we have to make ever more restrictive assumptions to yield analytical results.
+For this reason among others, in the next section we discuss methods which trade off the clarity of an analytical result for the generality of being able to combine near arbitrary priors with complex, possibly high-dimensional likelihoods.
 
 \subsection{Sampling From The Posterior}
 In this section we consider approaches that allow us to characterize the posterior distribution in complex settings using sampling methods.
 
-For the rest of this section let us assume that we observe data $z \in \mathbb{Z}$ and can compute the likelihood $p(z \mid \theta)$ and prior $p(\theta)$ for $\theta \in \Theta$.
-As before, our goal lies in analyzing the posterior distribution given by $p(\theta \mid z) \propto p(z \mid \theta) p(\theta)$.
-Unlike before however, we now consider cases where the posterior is highly complex or even non-existent in analytical form, which happens for example when the likelihood contribution stems from an algorithmic computational model.
+For the rest of this section let us assume we observed data $\mathcal{D}$ for which we have a (possibly algorithmic) model in mind, which can be represented by the likelihood $p(\mathcal{D} \mid \theta)$.
+We also assume that a prior distribution $p(\theta)$ has been constructed, so that the posterior is again given by $p(\theta \mid \mathcal{D}) \propto p(\mathcal{D} \mid \theta) p(\theta)$.
+Unlike before however, we now consider more general settings in which we do not restrict $p(\theta \mid \mathcal{D})$ to be available in analytical form.
+This can occur in many settings, for example when using priors that do not mix well with the likelihood or more apparent when using computational models which produce evaluations based on algorithms.
 
-Say we are somehow able to draw independent samples $\theta_1, \mydots, \theta_n$ from $p(\theta \mid z)$.
-By independence we get the well known result $\frac{1}{\sqrt{n}} \sum_i h(\theta_i) \overset{d}{\longrightarrow} \mathcal{N} \left( \Exp{h(\theta) \mid z}, \var{h(\theta) \mid z} \right)$, under mild conditions on $h$ and $p(\theta \mid z)$.
-As we are able to formulate many quantities of interest using expectations ---probability statements can be written as expectations--- and as we can approximate percentiles from a (large) sample, we should be able to adequately summarize the posterior distribution if we are able to draw (independent) samples from it.
+To motivate the following, say we are able to draw independent samples $\theta^{(1)}, \mydots, \theta^{(n)}$ from $p(\theta \mid \mathcal{D})$.
+By the law of large numbers we get $\frac{1}{n} \sum_i h\left(\theta^{(i)}\right) \overset{a.s.}{\longrightarrow} \Exp{h(\theta) \mid \mathcal{D}}$, under some regularity conditions on $h$ and $p(\theta \mid \mathcal{D})$, with similar results holding for sample quantiles.
+Hence, if we want to learn something about $p(\theta \mid \mathcal{D})$ we can formulate our question using quantiles or general expectations and rely on the statements above.
 
-In the subsequent paragraphs we will discuss efficient methods to sample from the posterior, even if we cannot compute the integration constant $\int p(z \mid \theta) p(\theta) \mathrm{d}\theta$.
-We will see that these methods do \emph{not} produce independent but autocorrelated samples.
-With this in mind, we follow the creational process of these methods and first state the assumptions which have to be satisfied by the sampling process in order to yield good properties as for example a central limit theorem for dependent samples.
-Then we present the \emph{Metropolis-Hastings algorithm}, which creates samples that fulfill the above criteria.
-At last we talk about cases in which the Metropolis-Hastings algorithm fails and what can be done instead.
+In the subsequent paragraphs we discuss methods to sample from the posterior that work even if we cannot compute the integration constant $\int p(\mathcal{D} \mid \theta) p(\theta) \mathrm{d}\theta$.
+We will see that these methods do \emph{not} produce independent samples but instead create Markov chains whose realizations can be seen as autocorrelated samples.
+
+With this in mind, we first consider what properties these chains must fulfill in order to create equivalent results as discussed above for independent samples, before then stating an algorithm that accomplishes this.
 
 \paragraph{Markov Chain Monte Carlo.}
 Say we are able to construct a \emph{Markov chain} with unique invariant distribution equal to the posterior distribution we want to sample from.
@@ -309,60 +309,60 @@ The ability to sample draws in complex settings using the Metropolis-Hastings al
 Still, \citet{Au2001EstimationOS} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \citet{zuev08} provide a geometric intution.
 The following paragraph illustrates one of the problems of working in higher dimensions.
 
-\paragraph{Volume in Higher Dimensions.}
-Classical MCMC methods can have too slow convergence rates; In higher dimensions this might be due to probability mass being distributed very far from where it is expected (\citet{betancourt2017convergence}).
-In this paragraph we motivate this phenomenon and in the following we present methods which utilize it.
-
-Let $B_d$ denote the unit ball in $\reals^d$ and define $C_d$ as the smallest cube containing $B_d$.
-We consider two questions.
-First, how does the ratio $\nicefrac{\vol{B_d}}{\vol{C_d}}$ change as $d$ increases.
-And second, how does the ratio of probability mass distributed by a standard gaussian on these regions change as $d$ increases.
-Since closed form expressions of volumina of geometrical objects exist the first questions needs little work.
-Similary we can easily compute $\prob{X \in C_d} = \left[\Phi(1) - \Phi(-1)\right]^d$, where $\Phi$ denotes the one-dimensional gaussian cumulative distribution function.
-However, to compute $\prob{X \in B_d}$ we need to integrate over the unit ball with respect to a gaussian distribution, which is non-trivial.
-For this reason we decide to report an upper bound, as this is sufficient for our motivation.
-In particular we compute $\overline{\prob{X \in B_d}} := \sup_{\bm{x} \in B_d} \phi(\bm{x}) \vol{B_d} = \sup_{\bm{x} \in B_d} \phi(\bm{x}) \int_{B_d}1 \mathrm{d}\bm{x} \geqslant \int_{B_d} \phi(\bm{x}) \mathrm{d}\bm{x} = \prob{X \in B_d}$.
-The results of these computations are depicted in table \ref{tab:vol_high_dim}.
-We note that both ratios tend to zero very fast as $d$ increases.
-With this phenomenon in mind one has to be cautious when working in high-dimensional spaces, since the regions of interest, that is the regions containing non-negligible probability mass, might not be located where our low-dimensional intution says.
-This idea is formalized by the \emph{Gaussian Annulus Theorem} (\citet{blum2017foundations}; theorem 2.9) which states, inter alia, that most probability mass lies within an annulus centered at the origin with an average distance to the origin of $\sqrt{d}$.
-
-\begin{table}[ht]
-\def\arraystretch{1.3}
-\centering
- \begin{tabular}{c | c c c c c c c}
- $d$ & 1 & 2 & 3 & 5 & 7 & 10 & 15\\
- \hline
- ${\vol{B_d}} / {\vol{C_d}}$ & 1.00000 & 0.78540 & 0.52360 & 0.16449 & 0.03691 & 0.00249 & 0.00001\\
- $\overline{\prob{X \in B_d}} / {\prob{X \in C_d}}$ & 1.16874 & 1.07281 & 0.83589 & 0.35870 & 0.10995 & 0.01184 & 0.00012
- \end{tabular}
- \caption{Comparison of volume ratio of unit ball and cube, and probability ratio of gaussian falling in unit ball and cube for varying dimension $d$. Numbers are rounded to five decimal places.}
-\label{tab:vol_high_dim}
-\end{table}
-
-We have seen some unintuitive behavior in higher dimensions which might explain why regular methods do not work or only work very slowly.
-The next paragraph presents one method which utilizes this behavior to efficiently produce samples.
-
-\paragraph{Hamiltonian Monte Carlo.}
-We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo} (HMC), an innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \citet{duane87}.
-There are of course multiple MCMC algorithms which work in higher dimensions with many more being actively developed.
-Here we focus on HMC as it is the main algorithm used in the probabilistic programming language STAN (\citet{standev2018stancore}), which we will be using in our Monte Carlo study and application part.
-
-We note that it is impossible to provide a rigorous introduction to HMC here, which is why we will focus on the general intution and refer to a series of papers by Michael Betancourt and several coauthors on, the geometric foundations of HMC (\citet{betancourt2014geometric}); geometric ergodicity of HMC (\citet{livingstone2016geometric}) and HMC for hiearchical models (\citet{betancourt2013hamiltonian}).\footnote{Besides doing theoretical research on HMC, Michael Betancourt worked for STAN on integrating the HMC algorithm and runs an educational blog where he presents his research using modern tools, see \url{https://betanalpha.github.io/}.}
-
-One reason why ordinary MCMC methods might converge only very slowly in higher dimensions is that the proposal distribution used in the Metropolis-Hastings algorithm does not properly capture the geometry of the high-dimensional space which leads to many rejected proposals and therefore an inefficient exploration of the parameter space.
-The main idea of HMC is to extend the parameter space by constructing a specific vector field on it, which moves the chain from one proposed point to another in a way so that we consider points that lie in regions with high probability mass and we regulary jump to faw away points as to explore the space as quickly as possible.
-But how do we construct this vector field?
-Note that when considering differentiable posterior densities the gradient defines a vector field.
-However, this vector field points to the modes of the posterior and as we saw in the last paragraph, in higher dimensions we will find little to no probability mass near the modes.
-This is where Hamiltonian mechanics comes into play by providing a set of equations (Hamilton's equations) that describe the time-evolution of the interplay of kinetic and potential energy of a system.
-What this means for our case is best explained by imagining the mode as the center of gravity, with gravity pulling harder as we get closer to the mode ---this can be thought of as the gradient vector field.
-But as most probability mass is spread around an annulus around the mode we do not want to move closer to the center of gravity, we want to move around an orbit around the mode.
-The distance of the orbit to the mode and exact shape depent of course on the dimensionality and posterior distribution of the problem.
-Hamilton's equations provide us with a way to construct a vector field so that moving along the field drifts the Markov chain into this orbit.
-Once reached the chain explores the relevant space quickly.
-
-Why is the above important?
-Bayesian statistics and its application to real world problems has gained immense popularity with the invention of Markov chain Monte Carlo methods.
-It's naive application to general complex high-dimensional problems is not computationally feasible however.
-These problems are under active development and new approaches on the algorithmic and theoretical side, as the one presented above, prove fruitfull.
+%\paragraph{Volume in Higher Dimensions.}
+%Classical MCMC methods can have too slow convergence rates; In higher dimensions this might be due to probability mass being distributed very far from where it is expected (\citet{betancourt2017convergence}).
+%In this paragraph we motivate this phenomenon and in the following we present methods which utilize it.
+%
+%Let $B_d$ denote the unit ball in $\reals^d$ and define $C_d$ as the smallest cube containing $B_d$.
+%We consider two questions.
+%First, how does the ratio $\nicefrac{\vol{B_d}}{\vol{C_d}}$ change as $d$ increases.
+%And second, how does the ratio of probability mass distributed by a standard gaussian on these regions change as $d$ increases.
+%Since closed form expressions of volumina of geometrical objects exist the first questions needs little work.
+%Similarly we can easily compute $\prob{X \in C_d} = \left[\Phi(1) - \Phi(-1)\right]^d$, where $\Phi$ denotes the one-dimensional gaussian cumulative distribution function.
+%However, to compute $\prob{X \in B_d}$ we need to integrate over the unit ball with respect to a gaussian distribution, which is non-trivial.
+%For this reason we decide to report an upper bound, as this is sufficient for our motivation.
+%In particular we compute $\overline{\prob{X \in B_d}} := \sup_{\bm{x} \in B_d} \phi(\bm{x}) \vol{B_d} = \sup_{\bm{x} \in B_d} \phi(\bm{x}) \int_{B_d}1 \mathrm{d}\bm{x} \geqslant \int_{B_d} \phi(\bm{x}) \mathrm{d}\bm{x} = \prob{X \in B_d}$.
+%The results of these computations are depicted in table \ref{tab:vol_high_dim}.
+%We note that both ratios tend to zero very fast as $d$ increases.
+%With this phenomenon in mind one has to be cautious when working in high-dimensional spaces, since the regions of interest, that is the regions containing non-negligible probability mass, might not be located where our low-dimensional intution says.
+%This idea is formalized by the \emph{Gaussian Annulus Theorem} (\citet{blum2017foundations}; theorem 2.9) which states, inter alia, that most probability mass lies within an annulus centered at the origin with an average distance to the origin of $\sqrt{d}$.
+%
+%\begin{table}[ht]
+%\def\arraystretch{1.3}
+%\centering
+% \begin{tabular}{c | c c c c c c c}
+% $d$ & 1 & 2 & 3 & 5 & 7 & 10 & 15\\
+% \hline
+% ${\vol{B_d}} / {\vol{C_d}}$ & 1.00000 & 0.78540 & 0.52360 & 0.16449 & 0.03691 & 0.00249 & 0.00001\\
+% $\overline{\prob{X \in B_d}} / {\prob{X \in C_d}}$ & 1.16874 & 1.07281 & 0.83589 & 0.35870 & 0.10995 & 0.01184 & 0.00012
+% \end{tabular}
+% \caption{Comparison of volume ratio of unit ball and cube, and probability ratio of gaussian falling in unit ball and cube for varying dimension $d$. Numbers are rounded to five decimal places.}
+%\label{tab:vol_high_dim}
+%\end{table}
+%
+%We have seen some unintuitive behavior in higher dimensions which might explain why regular methods do not work or only work very slowly.
+%The next paragraph presents one method which utilizes this behavior to efficiently produce samples.
+%
+%\paragraph{Hamiltonian Monte Carlo.}
+%We conclude our digression on Bayesian thinking by presenting \emph{Hamiltonian Monte Carlo} (HMC), an innovative Markov chain Monte Carlo method from the statistical physics literature which works in higher dimensions  \citet{duane87}.
+%There are of course multiple MCMC algorithms which work in higher dimensions with many more being actively developed.
+%Here we focus on HMC as it is the main algorithm used in the probabilistic programming language STAN (\citet{standev2018stancore}), which we will be using in our Monte Carlo study and application part.
+%
+%We note that it is impossible to provide a rigorous introduction to HMC here, which is why we will focus on the general intution and refer to a series of papers by Michael Betancourt and several coauthors on, the geometric foundations of HMC (\citet{betancourt2014geometric}); geometric ergodicity of HMC (\citet{livingstone2016geometric}) and HMC for hiearchical models (\citet{betancourt2013hamiltonian}).\footnote{Besides doing theoretical research on HMC, Michael Betancourt worked for STAN on integrating the HMC algorithm and runs an educational blog where he presents his research using modern tools, see \url{https://betanalpha.github.io/}.}
+%
+%One reason why ordinary MCMC methods might converge only very slowly in higher dimensions is that the proposal distribution used in the Metropolis-Hastings algorithm does not properly capture the geometry of the high-dimensional space which leads to many rejected proposals and therefore an inefficient exploration of the parameter space.
+%The main idea of HMC is to extend the parameter space by constructing a specific vector field on it, which moves the chain from one proposed point to another in a way so that we consider points that lie in regions with high probability mass and we regulary jump to faw away points as to explore the space as quickly as possible.
+%But how do we construct this vector field?
+%Note that when considering differentiable posterior densities the gradient defines a vector field.
+%However, this vector field points to the modes of the posterior and as we saw in the last paragraph, in higher dimensions we will find little to no probability mass near the modes.
+%This is where Hamiltonian mechanics comes into play by providing a set of equations (Hamilton's equations) that describe the time-evolution of the interplay of kinetic and potential energy of a system.
+%What this means for our case is best explained by imagining the mode as the center of gravity, with gravity pulling harder as we get closer to the mode ---this can be thought of as the gradient vector field.
+%But as most probability mass is spread around an annulus around the mode we do not want to move closer to the center of gravity, we want to move around an orbit around the mode.
+%The distance of the orbit to the mode and exact shape depent of course on the dimensionality and posterior distribution of the problem.
+%Hamilton's equations provide us with a way to construct a vector field so that moving along the field drifts the Markov chain into this orbit.
+%Once reached the chain explores the relevant space quickly.
+%
+%Why is the above important?
+%Bayesian statistics and its application to real world problems has gained immense popularity with the invention of Markov chain Monte Carlo methods.
+%It's naive application to general complex high-dimensional problems is not computationally feasible however.
+%These problems are under active development and new approaches on the algorithmic and theoretical side, as the one presented above, prove fruitfull.
