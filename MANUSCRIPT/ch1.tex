@@ -10,8 +10,7 @@ If it is clear from the context we will also write $p(z)$ for the density of $Z$
 We begin by introducing a formal notion of stochastic modeling and continue with a taxonomic description of different schools of thoughts.
 
 Say we observe data $\mathcal{D} = \{(y_i, x_i) : i=1,\mydots,n\}$ for which we have some intuition about the relationship between $X$ and $Y$ ---this intuition might come from (economic) theory for example.
-We formalize this by writing the data generating process as a (possibly algorithmic) mathematical model $Y = \mathcal{M}(X; \theta)$, where $\theta$ denotes the model parameters.
-In many settings, however, we are unable to describe the relationship perfectly or the outcome depends on non-observed variables.
+We formalize this by writing the data generating process as a (possibly algorithmic) mathematical model $Y = \mathcal{M}(X; \epsilon, \theta)$, where $\theta$ denotes the model parameters and $\epsilon$ an explicitly modeled error term which corrects for our uncertainty in the model, e.g. in the case of non-observables.
 We deal with this complication by extending the model to account for an explicitly modeled error term, so that $Y = \mathcal{M}(X; \epsilon, \theta)$, where $\epsilon$ is the error term.
 
 In the rest of this paper we assume that we know the parametric structure of $\mathcal{M}$ and that our goal lies in learning about the parameters after observing the data $\mathcal{D}$.
@@ -199,7 +198,7 @@ We refrain from an analogous analysis for $\sigma^2$ here and only note that sim
 
 Above we considered a simple model, as this allowed us to derive the results analytically.
 Analytical results allow us to fully investigate the influence of the prior on our results.
-However, we also seen that Bayesian analyses are far from trivial and depent critically on the complexities of the model structure.
+However, we also seen that Bayesian analyses are far from trivial and depend critically on the complexities of the model structure.
 If we want to consider more realistic models we have to make ever more restrictive assumptions to yield analytical results.
 For this reason among others, in the next section we discuss methods which trade off the clarity of an analytical result for the generality of being able to combine near arbitrary priors with complex, possibly high-dimensional likelihoods.
 
@@ -215,28 +214,34 @@ To motivate the following, say we are able to draw independent samples $\theta^{
 By the law of large numbers we get $\frac{1}{n} \sum_i h\left(\theta^{(i)}\right) \overset{a.s.}{\longrightarrow} \Exp{h(\theta) \mid \mathcal{D}}$, under some regularity conditions on $h$ and $p(\theta \mid \mathcal{D})$, with similar results holding for sample quantiles.
 Hence, if we want to learn something about $p(\theta \mid \mathcal{D})$ we can formulate our question using quantiles or general expectations and rely on the statements above.
 
-In the subsequent paragraphs we discuss methods to sample from the posterior that work even if we cannot compute the integration constant $\int p(\mathcal{D} \mid \theta) p(\theta) \mathrm{d}\theta$.
-We will see that these methods do \emph{not} produce independent samples but instead create Markov chains whose realizations can be seen as autocorrelated samples.
+In the subsequent paragraphs we discuss methods to sample from the posterior that work under the general assumption that we can evaluate the posterior at arbitrary points up to an integration constant.
+We will see that these methods do \emph{not} produce independent samples but instead create \emph{Markov chains} whose realizations can be seen as autocorrelated samples.
 
-With this in mind, we first consider what properties these chains must fulfill in order to create equivalent results as discussed above for independent samples, before then stating an algorithm that accomplishes this.
+With this in mind, we first consider what properties these chains must fulfill in order to create equivalent results as discussed above for independent samples.
+We end this section by introducing an algorithm that accomplishes the above.
 
 \paragraph{Markov Chain Monte Carlo.}
-Say we are able to construct a \emph{Markov chain} with unique invariant distribution equal to the posterior distribution we want to sample from.
-Given we know the transition kernel, Markov chains are very easy to simulate.
-Hence, we could start a chain, let it run \emph{long enough} and at some point consider all subsequent realizations as draws from the posterior; this is the core idea of MCMC ---we defer questions regarding the creation of transition kernels which result in specific invariant distributions until next paragraph.
-In practice we never know for sure when a chain is run \emph{long enough}.
-In part 3 we present some measures that help during the application.
-Under mild conditions we can get something similar to a law of large numbers for Markov chains (see e.g. \citet{roberts2004}, Fact 5).
+Say we are able to construct a Markov chain with unique invariant distribution equal to the posterior distribution we want to sample from.
+Assume also that the distribution of the chain at time $n$ converges to this invariant distribution no matter where we initialize the chain.
+Then, in principle, we could run the chain \emph{long enough} until it converged to the invariant distribution and then consider all subsequent realizations as draws from the stationary distribution.
+This is the core idea of Markov chain Monte Carlo (MCMC).
+In practice, however, we do not know when a chain is run \emph{long enough}.
+In part 3 we present some measures that can be of help with this problem during the application.
+
+Under some regularity conditions, similar but not as strict as what will follow next, we get a law of large numbers for such Markov chains (see e.g. \citet{roberts2004}, Fact 5).
 This tells us that if we run the chain forever, our average will eventually converge to the number we seek.
-However, forever is a very long time.
-That is why we focus on assumptions which admit a central limit theorem with the usual $\sqrt{n}$ convergence rate, as it allows us to make more rigorous statements about our confidence in the whereabouts of the estimator for large but finite samples.
+However, forever is usually too long.
+That is why we focus on assumptions which admit a central limit theorem with the usual $\sqrt{n}$ convergence rate, as it allows for more rigorous statements about our confidence in the whereabouts of the estimator for large samples.
 
 \begin{remark}
-  As is often the case, there are many different sets of assumptions that allow for a CLT.
-  The following theorem presents a particular set of assumptions which will be seen to have favorable properties when also considering the creation process.
-  We remark that we will \emph{not} formally introduce all concepts and will provide only a heuristic explaination of the assumptions.
-  This is due to the fact that Markov chain theory on general state spaces requires a good understanding of measure theory which we do not want to assume as a prerequisite.
-  The interested reader is refered to \citet{roberts2004} for a survey on recent advances with application to MCMC and to \citet{meynandtweedie09} for a comprehensive treatment of Markov chain theory.
+  \emph{(i)} Having a central limit theorem in the background does \emph{not} imply that the asymptotic distribution provides a good approximation for finite samples.
+  We still do not know when the asymptotics `kicks in' (\citet{Jackman2009}).
+  But under assumptions that allow for a CLT we can be more confident in our results than under assumption that only allow of a LLN.
+  \emph{(ii)} As is often the case, there are many different sets of assumptions that allow for a CLT.
+  The following theorem presents a particular set of assumptions which will be seen to have favorable properties when also considering the creational process of the Markov chain.
+  We remark that we will \emph{not} formally introduce all concepts and will provide only a heuristic explaination.
+  This is due to the fact that Markov chain theory on general state spaces requires a good understanding of measure theory, which we do not want to assume as a prerequisite.
+  We refer to \citet{roberts2004} for a survey on recent advances with application to MCMC and \citet{meynandtweedie09} for a comprehensive treatment of Markov chain theory.
 \end{remark}
 
 \begin{theorem}{(A Central Limit Theorem for Markov Chains).}\label{thm:mcclt}
@@ -245,7 +250,7 @@ That is why we focus on assumptions which admit a central limit theorem with the
   Define $\sigma^2(h) := \varwrt{\pi}{h}\tau := \varwrt{\pi}{h} \sum_{k \in \mathrm{Z}} \text{Corr}\left(h(X_0), h(X_k)\right)$.\footnote{In the original paper by \citet{roberts2004} the statement of this theorem differs in that they write $\tau = \sum_{k \in \mathrm{Z}} \text{Corr}\left(X_0, X_k\right)$.
   We believe that this is an error as \citet{haggstrom2007} state in their comparison of different ways of writing the asymptotic variance that $\sigma^2(h) = \sum_{k \in \mathrm{Z}} \Cov{h(X_0), h(X_k)}$.
   Now if we use that $X_0 \sim \pi$ we get $\sigma^2(h) = \sum_{k \in \mathrm{Z}} \Cov{h(X_0), h(X_k)}= \var{h(X_0)} + \sum_{k \neq 0} \Cov{h(X_0), h(X_k)} = \varwrt{\pi}{h}(1 + \sum_{k \neq 0} \Cov{h(X_0), h(X_k)}) / \var{h(X_0)} =\varwrt{\pi}{h}(1 + \sum_{k \neq 0} \text{Corr}{(h(X_0), h(X_k))}) = \varwrt{\pi}{h} \sum_{k\in\mathrm{Z}} \text{Corr}{(h(X_0), h(X_k))}$.}
-  Assume the Markov chain is $\phi$-irreducible, aperiodic, reversible with respect to $\pi$ and that $\sigma^2(h) < \infty$. Then $\pi$ is the stationary for the chain and
+  Assume the Markov chain is $\phi$-irreducible, aperiodic, reversible with respect to $\pi$ and that $\sigma^2(h) < \infty$. Then $\pi$ is stationary for the chain and
   \begin{align}
     \sqrt{n}\left(\frac{1}{n}\sum_{i=1}^n h(X_i) - \Expwrt{\pi}{h} \right) \overset{d}{\longrightarrow} \normal{0, \sigma^2(h)} \,.
   \end{align}
@@ -257,26 +262,25 @@ That is why we focus on assumptions which admit a central limit theorem with the
 \noindent
 We end this paragraph by discussing the assumptions of Theorem \ref{thm:mcclt} on an intuitive level.
 
-\textbf{\emph{$\phi$-irreducibility}} assumes that we can find a measure $\phi$ so that no matter where the chain starts, we eventually reach every region of the state space which has positive measure with respect to $\phi$.
-In the next paragraph we will see that we can make sure that this condition is satisfied by construction such that the chain is $\pi$-irreducible.
+\textbf{$\phi$-irreducibility} assumes that we can find a measure $\phi$ such that no matter where the chain starts, we eventually reach every region of the state space which has positive measure with respect to $\phi$.
+In the next paragraph we will see that this condition can be satisfied by construction of the chain.
 
-\textbf{\emph{Aperiodicity}} assumes that we cannot find disjoint regions on which the chain jumps from one region to another in a cyclical predictable fashion.
-It seems intuitive that such a behavior will prevent the chain of actually converging to its stationary distribution.
+\textbf{Aperiodicity} assumes that we cannot find disjoint regions on which the chain jumps from one region to another in a cyclical predictable fashion.
+It seems intuitive that such a behavior will prevent the chain from actually converging to its stationary distribution.
 
-\textbf{\emph{Reversibility with respect to $\pi$}} is a technical assumption which is best explained by its implications.
+\textbf{Reversibility with respect to $\bm{\pi}$} is a technical assumption which is best explained by its implications.
 In particular, it implies that the Markov chain has $\pi$ as its stationary distribution (which is unique by the other assumptions).
-Again, later we will see that we can construct a chain which fulfills this condition with $\pi$ being equal to the posterior distribution.
+Again, in the next paragraph we will see that this condition can be satisfied by construction with $\pi$ being the posterior distribution from which we want to sample.
 
-At last, how do we interpret the \textbf{\emph{finite variance}} assumption?
-As we assume square integrability of $h$ we get that $\sigma^2(h)$ is finite if and only if the integrated correlation time $\tau$ is finite.
-This happens if $\text{Corr}(h(X_0), h(X_k))$ goes fast enough to zero.
-We then get the usual large sample variance approximation of the unnormalized sample mean: $\sigma^2(h) / n = \varwrt{\pi}{h} / ({}^n/{}_\tau)$.
+\textbf{Finite variance} ($\sigma^2(h) < \infty$) implies that the integrated correlation time $\tau$ must be finite, as we assumes square integrability of $h$.
+The integrated correlation time is finite if the correlation function decreases fast enough to zero.
+Heuristically speaking, for a CLT to work we need more information as would be available in a sample for which the integrated autocorrelation time is infinite.
+If it is however, we get the usual large sample variance approximation $\sigma^2(h) / n = \varwrt{\pi}{h} / ({}^n/{}_\tau)$.
 In this sense we might say that ${}^n/{}_\tau$ denotes the \emph{effective sample size}, which corrects for the fact that we are not drawing independent samples and therefore (in most cases) need more samples to yield the same amount of information as in the independent case.
 
 \paragraph{Metropolis-Hastings Algorithm.}
-From the above we know that given a Markov chain with invariant distribution equal to the posterior distribution $p(\theta \mid z)$, we can treat the realizations of the chain as samples from the posterior, under some regularity conditions.
-Here we consider one method which implicitly defines such a chain, namely the Metropolis-Hastings algorithm (\citet{Metropolis1953}, \citet{hastings70}).
-For other approaches and more involved algorithms see for example \citet{roberts2004} or \citet{liang10}.
+Here we consider one method which implicitly defines a Markov chain with the desired properties, namely the Metropolis-Hastings algorithm (\citet{Metropolis1953}, \citet{hastings70}).
+For other approaches and more involved algorithms see for example \citet{liang10}.
 
 \begin{algorithm}
 \caption{Metropolis-Hastings}\label{alg:metropolis-hastings}
@@ -294,20 +298,25 @@ For other approaches and more involved algorithms see for example \citet{roberts
 
 \noindent
 Algorithm \ref{alg:metropolis-hastings} displays the Metropolis-Hastings algorithm.
-Line 4 shows why we can use this algorithm with the unnormalized posterior, as the integration constant cancels out in the first fraction.
-For different settings different proposal distributions are appropriate.
-A common choice are so called \emph{random walk} proposals which add some random number to the current position of the chain; for example a gaussian random walk proposal is given by $q(\cdot \mid x_t) = \normal{\cdot \mid x_t, \sigma^2}$ or equivalently stated $y = x_t + \normal{0, \sigma^2}$.
-If the resulting chain has an unique invariant distribution we only know that after some time the chain starts behaving accordingly.
-Therefore in practice we choose $T = B + T^*$ and drop the first $B$ samples, where $B$, the so called \emph{burn-in} samples, is large and $T^*$ represents the actual size of samples we want to draw.
+The main idea is that we start with an initial value and iteratively propose new values of the chain, however, we do not accept every proposal, but we do so only with a certain probability, which can be thought of as high if the proposal has a high relative density compared to the last chain link.
+Here we also see why we do not care about any integration constant, as the target density only appears as a ratio.
+
+Cleary the results depend on the choice of proposal density.
+A common pick are so called \emph{random walk} proposals, which add some random number to the current position of the chain; for example a gaussian random walk proposal is given by $q(\cdot \mid x_t) = \normal{\cdot \mid x_t, \sigma^2}$ or equivalently stated $y = x_t + \normal{0, \sigma^2}$.
 See \citet{sherlock2010} for a recent survey on random walk proposals.
 
-The simplicity of the algorithm is remarkable, but the main question of concern is if the resulting Markov chain inherits favorable properties.
+The simplicity of the algorithm is remarkable, but the main question is if the resulting Markov chain inherits favorable properties.
 And indeed this is the case.
-The algorithm creates by construction Markov chains which are reversible with respect to $\pi$ and aperiodic, and if additionally the proposal density is positiv and continuous and $\pi$ is finite then the chain is $\pi$-irreducible; see for example \citet{roberts2004}.
+By construction the algorithm creates Markov chains which are reversible with respect to $\pi$ and aperiodic, and if additionally the proposal density is positive and continuous and $\pi$ is finite then the chain is $\pi$-irreducible; see for example \citet{roberts2004}.
+
+The above tells us that under minor regularity conditions a CLT holds for chains created using the Metropolis-Hastings algorithm.
+To avoid using samples that do not come from the stationary distribution, in practice we choose $T$ very large and discard the first few (\emph{burn-in}) samples.
 
 The ability to sample draws in complex settings using the Metropolis-Hastings algorithm (and other Markov chain Monte Carlo methods for that matter) made Bayesian statistics applicable for real problems.
 Still, \citet{Au2001EstimationOS} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \citet{zuev08} provide a geometric intution.
-The following paragraph illustrates one of the problems of working in higher dimensions.
+There have been published numerous novel methods which deal with dimensionality problems.
+A particular promising route seems to be \emph{Hamiltonian Monte Carlo} (\citet{duane87}), which is one of the algorithms used in the probabilistc programming language STAN (\citet{standev2018stancore}) with active research on theoretical properties, see for example \citet{betancourt2014geometric}.
+
 
 %\paragraph{Volume in Higher Dimensions.}
 %Classical MCMC methods can have too slow convergence rates; In higher dimensions this might be due to probability mass being distributed very far from where it is expected (\citet{betancourt2017convergence}).
@@ -358,7 +367,7 @@ The following paragraph illustrates one of the problems of working in higher dim
 %This is where Hamiltonian mechanics comes into play by providing a set of equations (Hamilton's equations) that describe the time-evolution of the interplay of kinetic and potential energy of a system.
 %What this means for our case is best explained by imagining the mode as the center of gravity, with gravity pulling harder as we get closer to the mode ---this can be thought of as the gradient vector field.
 %But as most probability mass is spread around an annulus around the mode we do not want to move closer to the center of gravity, we want to move around an orbit around the mode.
-%The distance of the orbit to the mode and exact shape depent of course on the dimensionality and posterior distribution of the problem.
+%The distance of the orbit to the mode and exact shape depend of course on the dimensionality and posterior distribution of the problem.
 %Hamilton's equations provide us with a way to construct a vector field so that moving along the field drifts the Markov chain into this orbit.
 %Once reached the chain explores the relevant space quickly.
 %
