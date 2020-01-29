@@ -1,3 +1,5 @@
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
 \section{Hierarchical Models}
 \label{sec:hierachical_modeling}
 In the following we consider hierarchical models and when they are applicable.
@@ -11,14 +13,13 @@ Hierarchical data is present if the data can be clustered on some level; e.g. ch
 From the examples we see that there must not be a clear \emph{hierarchy} defined on the data.
 This is why some authors nowadays prefer the more general terms \emph{multi-level data} and \emph{multi-level model}, see for instance \citet{GelmanHill2007}.
 
-We categorize models by the number of levels they incorporate and their use \emph{nested} or \emph{non-nested} data.
+We categorize hierarchical models by the number of levels they incorporate and their use of \emph{nested} or \emph{non-nested} data.
 In this paper we consider two-level models for nested data and refer (again) to \citet{GelmanHill2007} and \citet{snijders1999} for a treatment of more general settings.
 
-In practice we can store hierarchical data very efficiently using normalized relational dataframes.
+%In practice we can store hierarchical data very efficiently using normalized relational dataframes.
 Let us continue with the first example of children in schools.
 Assume we observe, say, test results, parental income and number of teachers per child per school.
 Figure \ref{fig:relational_table} portrays how multi-level data in this case could be stored.
-Having gained some intuition let us introduce formal notation.
 \begin{figure}[!ht]
 \begin{center}
 \begin{tabular}{l l l l}
@@ -40,29 +41,29 @@ school & teacher\\
 \label{fig:relational_table}
 \end{figure}
 
-\noindent
-Assume we observe data on $i=1,\mydots,n$ units which are clustered among $j=1,\mydots,J$ groups.
-Naturally we consider outcomes $y_i$ on the unit-level.
-Following the idea of different relations for different levels, we write $x_i$ for covariates that vary by unit and $u_j$ for covariates that only vary on the group-level.
+\vspace{-10pt}
+To introduce formal notation, assume we observe data on $i=1,\mydots,n$ individuals which are clustered among $j=1,\mydots,J$ groups.
+Naturally we consider outcomes $y_i$ on the individual-level.
+Following the idea of different relations for different levels, we write $x_i$ for covariates that vary by individual and $u_j$ for covariates that only vary by group-level.
 We link the two by writing $j[i]$ for the index of the group to which individual $i$ belongs, i.e. the full set of covariates from individual $i$ is given by $(x_i, u_{j[i]})$.
 How can we utilize this hierarchical structure?
 
-The main idea of hierarchical modeling is to build (simple) models on different levels, where the outcomes are modeled on the first (unit-)level and we connect the levels by modeling on all higher levels the parameters used in the previous level.
+The main idea of hierarchical modeling is to build (simple) models on different levels, where the outcomes are modeled on the individual-level and we connect the levels by modeling on all higher levels the parameters used in the previous level.
 Importantly, the level structure is given by the hierarchical structure of the data and we use features from level $\ell$ only in the modeling process of level $\ell$.
 
 For a general two-level case we may write a model as
 \begin{align}
-  y_i \mid \theta_{j[i]} &\sim p(y_i \mid x_i, \theta_{j[i]}) \,,\tag{Unit Level}\\
+  y_i \mid \theta_{j[i]} &\sim p(y_i \mid x_i, \theta_{j[i]}) \,,\tag{Individual Level}\\
   \theta_j \mid \phi &\sim p(\theta_j \mid u_j, \phi) \,,\tag{Group Level}\\
   \phi &\sim p(\phi \mid \zeta) \text{ with } \zeta \text{ fixed } \,, \tag{Prior}
 \end{align}
 where we suppress the dependence on $x_i$ and $u_j$.
-On the unit-level the outcomes $y_i$ are modeled depending on the unit-level features $x_i$ and parameters $\theta_{j[i]}$.
+On the individual-level the outcomes $y_i$ are modeled depending on the unit-level features $x_i$ and parameters $\theta_{j[i]}$.
 As in a classical Bayesian model we continue by modeling the parameters $\theta_j$, however, in contrast to section 2 we do not assume a prior distribution but we explicitly model the parameter on the group-level using the group-level features $u_j$.
 From a Bayesian viewpoint this can be seen as a generalization to prior modeling.
 Despite this Bayesian interpretation, the first two equations define a proper non-Bayesian hierarchical model.
 We will see that in the linear case these models are well known in the frequentist world as \emph{mixed effects models} or \emph{random coefficient models}.
-To produce a Bayesian model we assign a prior distribution on all (hyper)parameters $\phi$ that are not explicitly modeled.
+To produce a Bayesian model we assign a prior distribution on all (hyper)parameters that are not explicitly modeled (here $\phi$).
 
 \begin{figure}[!ht]
 \begin{center}

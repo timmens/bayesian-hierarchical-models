@@ -1,10 +1,10 @@
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
 \section{Bayesian Thinking and Estimation}
 \label{sec:bayesian_thinking}
 In this section we introduce the core topics of Bayesian statistics and, whenever possible, compare proposed methods and results to their classicist counterpart.
-As we will see, Bayesian statistics differs from mainstream statistics on a fundamental level; thus, we start there.
 
-Before beginning let us shortly introduce our notation.
-We try to use standard notation wherever possible, nonetheless we make one exception in that we write $p(Z)$ for the probability density function of the random variable $Z$, where $Z$ might be scalar-valued or vector-valued.
+We use standard notation wherever possible, nonetheless we make one exception in that we write $p(Z)$ for the probability density function of the random variable $Z$, where $Z$ might be scalar-valued or vector-valued.
 If it is clear from the context we will also write $p(z)$ for the density of $Z$ evaluated at $z$.
 
 \subsection{Probabilistic Modeling}
@@ -12,12 +12,11 @@ We begin by introducing a formal notion of stochastic modeling and continue with
 
 Say we observe data $\mathcal{D} = \{(y_i, x_i) : i=1,\mydots,n\}$ for which we have some intuition about the relationship between $X$ and $Y$ ---this intuition might come from (economic) theory for example.
 We formalize this by writing the data generating process as a (possibly algorithmic) mathematical model $Y = \mathcal{M}(X; \epsilon, \theta)$, where $\theta$ denotes the model parameters and $\epsilon$ an explicitly modeled error term which corrects for our uncertainty in the model, e.g. in the case of non-observables.
-We deal with this complication by extending the model to account for an explicitly modeled error term, so that $Y = \mathcal{M}(X; \epsilon, \theta)$, where $\epsilon$ is the error term.
 
 In the rest of this paper we assume that we know the parametric structure of $\mathcal{M}$ and that our goal lies in learning about the parameters after observing the data $\mathcal{D}$.
 An important aspect here is to postulate the existence of a \textit{true data generating process}, which we do by assuming that there is some (fixed) $\theta_0$, in the parameter space $\Theta$, so that $Y = \mathcal{M}(X; \epsilon, \theta_0)$ describes reality sufficiently accurate and better than for any other parameter.
-The subsequent goal is then to recover the value of $\theta_0$.
-Note that for everything that follows we need to assume that our \emph{true model} actually describes reality accurately; if not we enter the realm of model misspecification which can render any analysis useless.
+The subsequent goal is then to learn about $\theta_0$.
+%Note that for everything that follows we need to assume that our \emph{true model} actually describes reality accurately; if not we enter the realm of model misspecification which can render any analysis useless.
 
 Next we compare two different schools of thought present in the statistical domain, which consider the estimation of $\theta_0$ and the quantification of our uncertainty in the estimate.
 
@@ -27,31 +26,30 @@ A particular method ---which we choose here as it lends itself nicely to a compa
 There we use the distributional assumptions on our model to construct the likelihood function $\mathcal{L}(\theta; \mathcal{D}) = p(\mathcal{D}; \theta)$, which is simply the joint density of the data evaluated at the observed data points for varying parameter $\theta$.
 We can then find an estimator $\hat{\theta}$ for $\theta_0$ as the maximizer of this function, i.e. $\hat{\theta} \in \argmax{\theta \in \Theta} \mathcal{L}(\theta; \mathcal{D})$.
 There has been published an extensive amount of research on the properties of this estimator, for example on sufficient conditions for the uniqueness of the maximization or large-sample normal approximations.
-In particular, under some regularity conditions we can find a matrix $\widehat{V}$ so that $\sqrt{n}\widehat{V}^{-1/2}(\hat{\theta} - \theta_0) \overset{d}{\longrightarrow} \normal{0, I}$.
-This we can use to quantify our uncertainty on $\hat{\theta}$ by computing standard errors and confidence intervals, as well as using the normal result to formulate tests.
+In particular, under some regularity conditions we can find a matrix $\widehat{V}$ so that $\sqrt{n}\widehat{V}^{-1/2}(\hat{\theta} - \theta_0) \overset{d}{\longrightarrow} \normal{0, \mathrm{I}}$.
+This result we can use to quantify our uncertainty on $\hat{\theta}$ by computing standard errors and confidence intervals, as well as to formulate tests.
 
 One fundamental idea which stretches over all methods in the frequentist world is the interpretation of probability as the limit of an infinite sequence of relative frequencies of events---hence the name.
-Probability then just counts how many times an event happened or not; for example if we toss a (fair) coin an infinite number of times the relative frequency of heads converges to the probability of heads.
-We do expect the outcome of such an experiment to vary, however, one thing we do not assume to vary is the true parameter.
+Probability then just counts how many times an event happened or not; for example if we toss a coin an infinite number of times, the relative frequency of heads converges to the probability of heads.
+We do expect the outcome of an experiment (e.g. coin flip) to vary, however, we do not assume the true parameter to vary.
 For instance, we might interpret the probability of a coin landing on heads as the true model parameter.
-In this sense it would then be absurd to let this object vary from experiment to experiment.
-Therefore any hypothesis on $\theta_0$ is either true or false.
-And it is this binarity which makes hypothesis testing (interpretation of confidence intervals) so awkward in the frequentist setting.
-By testing some hypothesis $H_0: \theta_0 = \theta^*$ we do not directly compute the probability of the hypothesis being true --hypothesis are either false or true--- but we compute if the observed data $\mathcal{D}$ is more likely to have orginated under the null hypothesis or the alternative.
+In this sense, it would be absurd to let this object vary for different experiments.
+%Therefore any hypothesis on $\theta_0$ is either true or false.
+%And it is this binarity which makes hypothesis testing (interpretation of confidence intervals) awkward in the frequentist setting.
+%By testing some hypothesis $H_0: \theta_0 = \theta^*$ we do not directly compute the probability of the hypothesis being true --hypothesis are either false or true--- but we compute if the observed data $\mathcal{D}$ is more likely to have orginated under the null hypothesis or the alternative.
 
 \paragraph{Bayesian.}
 The main difference of the Bayesian mindset is the understanding of probability as a subjective quantification of uncertainty.
 We may still believe that $\theta_0$ is fixed, however, in the Bayesian paradigm we build our uncertainty about the true location of the parameter into the model by allowing for probability distributions to be defined on $\Theta$ ---which, as we saw above, is nonsensical in a frequentist worldview.
-We can see the direct utility of this liberation by considering Bayes theorem applied to densities
-\vspace{-12pt}
+We can see the direct utility of this liberation by considering Bayes theorem applied to densities on our model
 \begin{flalign*}
-  && p(\theta \mid \mathcal{D}) &= \frac{p(\mathcal{D} \mid \theta) p(\theta)}{p(\mathcal{D})} \propto p(\mathcal{D} \mid \theta) p(\theta) \,,\tag{Bayes' theorem}&\\[0.7em] \text{which reads} &&
+  && p(\theta \mid \mathcal{D}) &= \frac{p(\mathcal{D} \mid \theta) p(\theta)}{p(\mathcal{D})} \propto p(\mathcal{D} \mid \theta) p(\theta) \,,\tag{Bayes theorem}&\\[0.7em] \text{which reads} &&
   posterior &= \frac{likelihood \times prior}{evidence} \propto likelihood \times prior \,.
 \end{flalign*}
 The posterior distribution is the object of interest for any subsequent Bayesian analysis, it describes the distribution of the parameter of interest given the observed data $\mathcal{D}$.
 From a naive standpoint this is too good to be true.
 And in fact it is.
-To give Bayes' theorem any meaning we have to define the prior $p(\theta)$, a probability distribution of the model parameter on $\Theta$.
+To give Bayes theorem any meaning we have to define the prior $p(\theta)$, a probability distribution of the model parameter on $\Theta$.
 The prior can be used to incorporate knowledge about the parameter into the analysis which existed prior to observing the data.
 But this can be highly subjective and can lead to \emph{two} different researchers having \emph{two} different priors which would result in \emph{two} different posteriors.
 This is where the main criticism of Bayesian statistics is focused on: where does the prior distribution come from?
@@ -59,12 +57,12 @@ With the scientific goal of objectivity in mind, many feel at unease having resu
 In what follows we will embark on the Bayesian idea without providing much more fundamental criticism, nonetheless, when adequate we will consider the influence of different priors on the posterior.
 
 In comparison to the maximum likelihood approach, in a Bayesian analysis there is no need for one specific point estimator or confidence interval.
-The result of such an analysis is a complete probability distribution so we can compute, in principle, any quantity we like.
-Being clear on all prior assumptions and giving up (some) \emph{objectivity} we gain the possibility to formulate answers to more natural questions, as for example: $\prob{\theta \in \Theta_0 \mid \mathcal{D}} = \int_{\Theta_0} p(\theta \mid \mathcal{D}) \mathrm{d}\theta$.
+The result of such an analysis is a complete probability distribution from which we can compute, in principle, any quantity we like.
+%Being clear on all prior assumptions and giving up (some) \emph{objectivity} we gain the possibility to formulate answers to more natural questions, as for example: $\prob{\theta \in \Theta_0 \mid \mathcal{D}} = \int_{\Theta_0} p(\theta \mid \mathcal{D}) \mathrm{d}\theta$.
 
 \subsection{Solving for the posterior analytically}
 In this subsection we present an analytical derivation of the posterior distribution of mean and variance parameters in a univariate normal model for two priors.
-We will compare the results to the maximum likelihood estimator.
+We compare the results to the maximum likelihood estimator.
 As it will be of major importance in the subsequent sections, we have included the definition of the scaled inverse $\chi^2$ probability distribution in the appendix (see definition \ref{def:scaledInverseChi}).
 
 Let us assume that we observe a sample $y = (y_1, \mydots, y_n)$
@@ -80,24 +78,19 @@ We note that this does not define a proper proability distribution, which will n
 Since the variance is restricted to be positive we impose a flat prior on the log-transform thereof, i.e. $p(\log \sigma) \propto 1$.
 Using that $x \mapsto \text{exp}^2(x)$ is one-to-one we get the density of the transformed variable $p(\mu, \sigma^2) = p(\mu)p(\sigma^2) \propto p(\sigma^2) \propto (\sigma^2)^{-1}$.
 
-The likelihood is given by $p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{-n/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2}$, where we dropped all proportionality constants.
-Using the above we can apply Bayes theorem to yield $p(\mu, \sigma^2 \mid y) \propto p(y \mid \mu, \sigma^2) p(\mu, \sigma^2) \propto (\sigma^2)^{-(n+2)/2} \EXP{-\frac{1}{2\sigma^2}\sum_i (y_i - \mu)^2}$.
+The likelihood is given by $p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{-n/2} \EXP{-\sum_i (y_i - \mu)^2/2\sigma^2}$, where we dropped all proportionality constants.
+Using the above we can apply Bayes theorem to yield $p(\mu, \sigma^2 \mid y) \propto p(y \mid \mu, \sigma^2) p(\mu, \sigma^2) \propto (\sigma^2)^{-(n+2)/2} \EXP{-\sum_i (y_i - \mu)^2/2\sigma^2}$.
 Integrating over the respective parameter yields the marginal posteriors.
 
 \begin{proposition}\label{prop:posterior_uniform}
-  Under the above setup and a flat prior on $\mu$ and $\log \sigma$ we find
-  \begin{align*}
-    \mu \mid y \sim t_{n-1}(\bar{y}, s^2/n) \,, \quad \sigma^2 \mid y \sim \scaledInvChi{n-1, s^2} \,,
-  \end{align*}
-  where $s^2 = \frac{1}{n-1} \sum_i (y_i - \bar{y})^2$ denotes the (unbiased) sample variance and $\bar{y} = \frac{1}{n} \sum_i y_i$ the sample mean.
+  Under the above setup and a flat prior on $\mu$ and $\log \sigma$ we find $\mu \mid y \sim t_{n-1}(\bar{y}, s^2/n)$ and $\sigma^2 \mid y \sim \scaledInvChi{n-1, s^2}$, where $s^2 = \sum_i (y_i - \bar{y})^2 / (n-1)$ denotes the (unbiased) sample variance and $\bar{y} = \frac{1}{n} \sum_i y_i$ the sample mean, respectively.
 \end{proposition}
 \begin{proof}
 See appendix.
 \end{proof}
 
-We compare the marginal posteriors to their maximum likelihood counterpart by reporting summary statistics of the distribution.
-Namely we focus on the mean and variance of the posterior, as well as the \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$.
-We summarize some results using Proposition \ref{prop:posterior_uniform} in table \ref{tab:comp_uniform_bay_ml} but withold from a discussion as we consider the results in the next paragraph in more detail.
+We compare the marginal posteriors to their maximum likelihood counterpart by reporting summary statistics of the distributions in table \ref{tab:comp_uniform_bay_ml}.
+We focus on the mean and variance of the posterior, as well as the \emph{maximum a posteriori} (MAP) estimate $\left(\argmax{\theta \in \Theta} p(\theta \mid y)\right)$, but withhold from a discussion as we consider the more general results of the next paragraph in more detail.
 
 \begin{table}[ht]
 \centering
@@ -110,16 +103,16 @@ We summarize some results using Proposition \ref{prop:posterior_uniform} in tabl
  $\sigma^2$ & $\frac{n-1}{n} s^2$ & $2 \sigma^4 /n$ & $\frac{n-1}{n+1} s^2$ & $\frac{n-1}{n-3} s^2$ & $\frac{2 (n-1)^2}{(n-3)^2 (n-5)} s^4$\\
  \end{tabular}
  }
-\caption{\small{Comparison of Bayesian estimates using a flat prior to ML estimates. See appendix for a derivation.}}
+\caption{\small{Comparison of Bayesian estimates using a flat prior to ML estimates. See appendix for derivation.}}
 \label{tab:comp_uniform_bay_ml}
 \end{table}
 
+\vspace{-15pt}
 \paragraph{Conjugate Prior.}
-From table \ref{tab:comp_uniform_bay_ml} we see that a flat prior (here) leads to similar results as a maximum likelihood approach.
 In case substantial information on the parameters is available a priori, we can model this information properly to gain more stable results.
 However, not every product of prior and likelihood results in a sensible posterior.
 As we are interested in analytical results in this section we seek priors that guarantee posteriors of known form.
-The class of \emph{conjugate priors} plays an important part in Bayesian statistics as they are able to prodive such assurance (see definition \ref{def:conjugate_prior} in the appendix).
+The class of \emph{conjugate priors} (see definition \ref{def:conjugate_prior} in the appendix) plays an important part in Bayesian statistics as they are able to provide such assurance.
 
 Consider again the likelihood but written dependent on the sufficient statistics $\bar{y}$ and $s^2$
 \begin{align}
@@ -133,8 +126,7 @@ Note that we have $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2)$.
 Looking at equation (\ref{eq:likelihood2}) we see that in order to \emph{not} change the inherent structural dependence on the parameters we must have $\mu \mid \sigma^2 \sim \normal{\mu_0, \sigma^2 / \kappa_0}$, with \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
 Similarly, we observe that we must have $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$, with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
 This becomes apparent when considering the respective densities.
-Following \citet{gelmanbda04} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$, with corresponding density function $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]}$, for the normal scaled inverse $\chi^2$ distribution.
-
+Following \citet{gelmanbda04} we write $(\mu, \sigma^2) \sim \NormalscaledInvChi{\mu_0, \sigma_0^2 / \kappa_0; \nu_0, \sigma_0^2}$, with corresponding density function $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2) \propto (\sigma^2)^{\frac{3 + \nu_0}{2}} \EXP{-\frac{1}{2\sigma^2} \left[\nu_0 \sigma_0^2 + \kappa_0(\mu_0 - \mu)^2 \right]}$.
 Multiplying the likelihood with our constructed prior we get the joint posterior
 \begin{align}
   p(\mu, \sigma^2 \mid y) \propto& (\sigma^2)^{-\frac{3 + \nu_0 + n}{2}} \EXP{-\frac{1}{2 \sigma^2} \left[\nu_0\sigma_0^2 + \kappa_0(\mu - \mu_0)^2 + (n-1)s^2 + n(\bar{y} - \mu)^2 \right]} \,.
@@ -142,10 +134,8 @@ Multiplying the likelihood with our constructed prior we get the joint posterior
 \end{align}
 
 \begin{proposition}
-  The (posterior) distribution of $(\mu, \sigma^2) \mid y$ , as given by the conditional density in equation (\ref{eq:conjugate_posterior}), is\\ $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$, where
-  \begin{align*}
-    \nu_n = \nu_0 + n \,; \quad \kappa_n = \kappa_0 + n \,; \quad \mu_n =\frac{\kappa_0}{\kappa_n}\mu_0 + \frac{n}{\kappa_n}\bar{y} \,; \quad \sigma_n^2 = \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_0 n}{\kappa_n} (\bar{y} - \mu_0)^2\right] /\nu_n \,.
-  \end{align*}
+  The (posterior) distribution of $(\mu, \sigma^2) \mid y$ , as given by the conditional density in equation (\ref{eq:conjugate_posterior}), is $\NormalscaledInvChi{\mu_n, \sigma_n^2/\kappa_n; \nu_n, \sigma_n^2}$, where
+    $\nu_n = \nu_0 + n$, $\kappa_n = \kappa_0 + n$, $\mu_n =\frac{\kappa_0}{\kappa_n}\mu_0 + \frac{n}{\kappa_n}\bar{y}$ and $\sigma_n^2 = \left[\nu_0 \sigma_0^2 + (n-1)s^2 + \frac{\kappa_0 n}{\kappa_n} (\bar{y} - \mu_0)^2\right] /\nu_n$.
   \label{prop:posterior_conjugate}
 \end{proposition}
 \begin{proof}
@@ -156,11 +146,7 @@ Since the prior and the posterior are both normal scaled inverse $\chi^2$ distri
 Using the intermediate finding from proposition \ref{prop:posterior_conjugate} we can derive the main result of this section.
 
 \begin{proposition}\label{prop:marginal_posterior}
-  The marginal posterior distributions are given by
-  \begin{align*}
-    \mu \mid y \sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)\,, \quad \sigma^2 \mid y \sim \scaledInvChi{\nu_n, \sigma_n^2}\,,
-  \end{align*}
-  where $\nu_n, \sigma_n^2, \mu_n$ and $\kappa_n$ are as in proposition \ref{prop:posterior_conjugate}.
+  The marginal posterior distributions are given by $\mu \mid y \sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)$ and $\sigma^2 \mid y \sim \scaledInvChi{\nu_n, \sigma_n^2}$, where $\nu_n, \sigma_n^2, \mu_n$ and $\kappa_n$ are as in proposition \ref{prop:posterior_conjugate}.
 \end{proposition}
 \begin{proof}
   See appendix.
@@ -181,25 +167,25 @@ Using the intermediate finding from proposition \ref{prop:posterior_conjugate} w
 \label{tab:comp_conjugate_bay_ml}
 \end{table}
 
-
-Next we consider the results of Proposition \ref{prop:posterior_conjugate}, of which some summary statistics are tabulated in table \ref{tab:comp_conjugate_bay_ml}.
+Next we consider the results of Proposition \ref{prop:marginal_posterior}, of which some summary statistics are tabulated in table \ref{tab:comp_conjugate_bay_ml}.
 We focus on the analysis of the mean parameter $\mu$.
 
 As the t-distribution is parameterized over its mean and variance (and degrees of freedom) we can directly read off the posterior mean as $\mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y}$ and the posterior variance as $\sigma_n^2 / \kappa_n$.
 We see that the posterior mean is simply a convex combination of the prior $\mu_0$ and the sample average $\bar{y}$, with weights determined by the sample size and $\kappa_0$.
-For any fixed $n$ this pulls our estimate of the posterior mean away from $\bar{y}$ and closer to $\mu_0$ (and vice versa), which can be helpful if we have insufficient data and believe that the parameter should be around $\mu_0$, where we express our degree of believe in the prior using the weight $\kappa_0$.
+For any fixed $n$ this pulls our estimate of the posterior mean away from $\bar{y}$ and closer to $\mu_0$ (and vice versa), which can be helpful if we have insufficient data and believe that the parameter should be around $\mu_0$ ---we can use $\kappa_0$ then to express our degree of believe in the prior.
 As $n$ grows to infinity the information in the data overwhelms all prior information and the posterior mean is dominated by the sample mean.
 
 Similarly we can use the hyperparameters $\sigma_0^2, \nu_0$ and $\kappa_0$ to model our prior knowledge of the variance parameter, which propagates to the posterior variance of the mean parameter.
-Considering the variance of the posterior mean as a function in $n$ we can use the \emph{Landau notation} to write $\sigma_n^2 / \kappa_n =  \frac{n}{(\nu_0 + n)(\kappa_0 + n)} s^2 + \mathcal{O}(1/n^2)$, which resembles the usual $1/n$ convergence rate.
+Considering the variance of the posterior mean as a function in $n$ we can use the \emph{Landau notation} to write $\sigma_n^2 / \kappa_n =  \frac{n}{(\nu_0 + n)(\kappa_0 + n)} s^2 + \mathcal{O}(1/n^2) = \mathcal{O}(1/n)$, which resembles the usual $1/n$ convergence rate.
 
 As $v_n = v_0 + n$ tends to infinity the distribution of the posterior mean tends to a normal distribution with parameters behaving (asymptotically) similar to the maximum likelihood estimators.
-In this sense informative Bayesian priors can be appropriate if the data contains insufficient information \emph{and} we have reasonable knowledge a priori, where we use the prior to stabilize the results, but also if we consider large samples, where the prior is simply dominated by the likelihood.
+In this sense, informative Bayesian priors can be appropriate if the data contains insufficient information \emph{and} we have reasonable knowledge a priori, where we use the prior to stabilize the results.
+But they are also reasonable if we consider large samples, where the prior is simply dominated by the likelihood.
 We refrain from an analogous analysis for $\sigma^2$ here and only note that similar results hold, as can be seen from table \ref{tab:comp_conjugate_bay_ml}.
 
 Above we considered a simple model, as this allowed us to derive the results analytically.
-Analytical results allow us to fully investigate the influence of the prior on our results.
-However, we also seen that Bayesian analyses are far from trivial and depend critically on the complexities of the model structure.
+Closed form solutions allow us to fully investigate the influence of the prior on our results.
+However, we have also seen that Bayesian analyses are far from trivial and depend critically on the complexities of the model structure.
 If we want to consider more realistic models we have to make ever more restrictive assumptions to yield analytical results.
 For this reason among others, in the next section we discuss methods which trade off the clarity of an analytical result for the generality of being able to combine near arbitrary priors with complex, possibly high-dimensional likelihoods.
 
@@ -212,7 +198,7 @@ Unlike before however, we now consider more general settings in which we do not 
 This can occur in many settings, for example when using priors that do not mix well with the likelihood or more apparent when using computational models which produce likelihood evaluations based on algorithms.
 
 To motivate the following, say we are able to draw independent samples $\theta^{(1)}, \mydots, \theta^{(n)}$ from $p(\theta \mid \mathcal{D})$.
-By the law of large numbers we get $\frac{1}{n} \sum_i h\left(\theta^{(i)}\right) \overset{a.s.}{\longrightarrow} \Exp{h(\theta) \mid \mathcal{D}}$, under some regularity conditions on $h$ and $p(\theta \mid \mathcal{D})$, with similar results holding for sample quantiles.
+By the law of large numbers we get $1 / n \sum_i h\left(\theta^{(i)}\right) \overset{a.s.}{\longrightarrow} \Exp{h(\theta) \mid \mathcal{D}}$, under some regularity conditions on $h$ and $p(\theta \mid \mathcal{D})$, with similar results holding for sample quantiles.
 Hence, to learn something about $p(\theta \mid \mathcal{D})$ we can formulate questions using quantiles or general expectations and rely on the statements above.
 
 In the subsequent paragraphs we discuss methods to sample from the posterior that work under the general assumption that we can evaluate the posterior at arbitrary points up to an integration constant.
@@ -229,21 +215,21 @@ This is the core idea of Markov chain Monte Carlo (MCMC).
 In practice, however, we do not know when a chain is run \emph{long enough}.
 In part 3 we present some measures that can be of help with this problem during the application.
 
-Under some regularity conditions, similar but not as strict as what will follow next, we get a law of large numbers for such Markov chains (see e.g. \citet{roberts2004}, Fact 5).
+Under some regularity conditions, similar but not as strict as in Theorem \ref{thm:mcclt}, we get a law of large numbers for such Markov chains (see e.g. \citet{roberts2004}, Fact 5).
 This tells us that if we run the chain forever, our average will eventually converge to the number we seek.
 However, forever is usually too long.
 That is why we focus on assumptions which admit a central limit theorem with the usual $\sqrt{n}$ convergence rate, as it allows for more rigorous statements about our confidence in the whereabouts of the estimator for large samples.
 
-\begin{remark}
-  \emph{(i)} Having a central limit theorem in the background does \emph{not} imply that the asymptotic distribution provides a good approximation for finite samples.
-  We still do not know when the asymptotics `kicks in' (\citet{Jackman2009}).
-  But under assumptions that allow for a CLT we can be more confident in our results than under assumption that only allow of a LLN.
-  \emph{(ii)} As is often the case, there are many different sets of assumptions that allow for a CLT.
-  The following theorem presents a particular set of assumptions which will be seen to have favorable properties when also considering the creational process of the Markov chain.
-  We remark that we will \emph{not} formally introduce all concepts and will provide only a heuristic explaination.
-  This is due to the fact that Markov chain theory on general state spaces requires a good understanding of measure theory, which we do not want to assume as a prerequisite.
-  We refer to \citet{roberts2004} for a survey on recent advances with application to MCMC and \citet{meynandtweedie09} for a comprehensive treatment of Markov chain theory.
-\end{remark}
+%\begin{remark}
+%  \emph{(i)} Having a central limit theorem in the background does \emph{not} imply that the asymptotic distribution provides a good approximation for finite samples.
+%  We still do not know when the asymptotics `kicks in' (\citet{Jackman2009}).
+%  But under assumptions that allow for a CLT we can be more confident in our results than under assumption that only allow of a LLN.
+%  \emph{(ii)} As is often the case, there are many different sets of assumptions that allow for a CLT.
+%  The following theorem presents a particular set of assumptions which will be seen to have favorable properties when also considering the creational process of the Markov chain.
+%  We remark that we will \emph{not} formally introduce all concepts and will provide only a heuristic explaination.
+%  This is due to the fact that Markov chain theory on general state spaces requires a good understanding of measure theory, which we do not want to assume as a prerequisite.
+%  We refer to \citet{roberts2004} for a survey on recent advances with application to MCMC and \citet{meynandtweedie09} for a comprehensive treatment of Markov chain theory.
+%\end{remark}
 
 \begin{theorem}{(A Central Limit Theorem for Markov Chains).}\label{thm:mcclt}
   Let $\{X_n \}$ be a (discrete time) Markov chain and $\pi$ a probability distribution on the same space.
@@ -276,11 +262,11 @@ Again, in the next paragraph we will see that this condition can be satisfied by
 \textbf{Finite variance} ($\sigma^2(h) < \infty$) implies that the integrated correlation time $\tau$ must be finite, as we assumes square integrability of $h$.
 The integrated correlation time is finite if the correlation function decreases fast enough to zero.
 Heuristically speaking, for a CLT to work we need more information as would be available in a sample for which the integrated autocorrelation time is infinite.
-If it is however, we get the usual large sample variance approximation $\sigma^2(h) / n = \varwrt{\pi}{h} / ({}^n/{}_\tau)$.
-In this sense we might say that ${}^n/{}_\tau$ denotes the \emph{effective sample size}, which corrects for the fact that we are not drawing independent samples and therefore (in most cases) need more samples to yield the same amount of information as in the independent case.
+If it is however, we get the usual large sample variance approximation $\sigma^2(h) / n = \varwrt{\pi}{h} / (n/\tau)$.
+In this sense we might say that $n/\tau$ denotes the \emph{effective sample size}, which corrects for the fact that we are not drawing independent samples and therefore (in most cases) need more samples to yield the same amount of information as in the independent case.
 
 \paragraph{Metropolis-Hastings Algorithm.}
-Here we consider one method which implicitly defines a Markov chain with the desired properties, namely the Metropolis-Hastings algorithm (\citet{Metropolis1953}, \citet{hastings70}).
+Here we consider one method which implicitly defines a Markov chain with the desired properties, the Metropolis-Hastings algorithm (\citet{Metropolis1953}, \citet{hastings70}).
 For other approaches and more involved algorithms see for example \citet{liang10}.
 
 \begin{algorithm}
@@ -299,18 +285,17 @@ For other approaches and more involved algorithms see for example \citet{liang10
 
 \noindent
 Algorithm \ref{alg:metropolis-hastings} displays the Metropolis-Hastings algorithm.
-The main idea is that we start with an initial value and iteratively propose new values of the chain, however, we do not accept every proposal, but we do so only with a certain probability, which can be thought of as high if the proposal has a high relative density compared to the last chain link.
+The main idea is that we start with an initial value and iteratively propose new values of the chain, however, we do not accept every proposal, but we do so only with a certain probability ---this probability can be thought of as high if the proposal has a high relative density compared to the last chain link.
 Here we also see why we do not care about any integration constant, as the target density only appears as a ratio (line 4).
 
-Cleary the results depend on the choice of proposal density.
+Cleary the results depend on the choice of the proposal density.
 A common pick are so called \emph{random walk} proposals, which add some random number to the current position of the chain; for example a gaussian random walk proposal is given by $q(\cdot \mid x_t) = \normal{\cdot \mid x_t, \sigma^2}$ or equivalently stated $y = x_t + \normal{0, \sigma^2}$.
 See \citet{sherlock2010} for a recent survey on random walk proposals.
 
 The simplicity of the algorithm is remarkable, but the main question is if the resulting Markov chain inherits favorable properties.
 And indeed this is the case.
 By construction the algorithm creates Markov chains which are reversible with respect to $\pi$ and aperiodic, and if additionally the proposal density is positive and continuous and $\pi$ is finite then the chain is $\pi$-irreducible; see for example \citet{roberts2004}.
-
-The above tells us that under minor regularity conditions a CLT holds for chains created using the Metropolis-Hastings algorithm.
+This tells us that under minor regularity conditions a CLT holds for chains created using the Metropolis-Hastings algorithm.
 To avoid using samples that do not come from the stationary distribution, in practice we choose $T$ very large and discard the first few (\emph{burn-in}) samples.
 
 The ability to sample draws in complex settings using the Metropolis-Hastings algorithm (and other Markov chain Monte Carlo methods for that matter) made Bayesian statistics applicable for real problems.
