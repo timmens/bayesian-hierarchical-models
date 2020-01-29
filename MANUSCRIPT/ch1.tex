@@ -208,16 +208,16 @@ In this section we consider approaches that allow us to characterize the posteri
 For the rest of this section let us assume we observed data $\mathcal{D}$ for which we have a (possibly algorithmic) model in mind, which can be represented by the likelihood $p(\mathcal{D} \mid \theta)$.
 We also assume that a prior distribution $p(\theta)$ has been constructed, so that the posterior is again given by $p(\theta \mid \mathcal{D}) \propto p(\mathcal{D} \mid \theta) p(\theta)$.
 Unlike before however, we now consider more general settings in which we do not restrict $p(\theta \mid \mathcal{D})$ to be available in analytical form.
-This can occur in many settings, for example when using priors that do not mix well with the likelihood or more apparent when using computational models which produce evaluations based on algorithms.
+This can occur in many settings, for example when using priors that do not mix well with the likelihood or more apparent when using computational models which produce likelihood evaluations based on algorithms.
 
 To motivate the following, say we are able to draw independent samples $\theta^{(1)}, \mydots, \theta^{(n)}$ from $p(\theta \mid \mathcal{D})$.
 By the law of large numbers we get $\frac{1}{n} \sum_i h\left(\theta^{(i)}\right) \overset{a.s.}{\longrightarrow} \Exp{h(\theta) \mid \mathcal{D}}$, under some regularity conditions on $h$ and $p(\theta \mid \mathcal{D})$, with similar results holding for sample quantiles.
-Hence, if we want to learn something about $p(\theta \mid \mathcal{D})$ we can formulate our question using quantiles or general expectations and rely on the statements above.
+Hence, to learn something about $p(\theta \mid \mathcal{D})$ we can formulate questions using quantiles or general expectations and rely on the statements above.
 
 In the subsequent paragraphs we discuss methods to sample from the posterior that work under the general assumption that we can evaluate the posterior at arbitrary points up to an integration constant.
 We will see that these methods do \emph{not} produce independent samples but instead create \emph{Markov chains} whose realizations can be seen as autocorrelated samples.
 
-With this in mind, we first consider what properties these chains must fulfill in order to create equivalent results as discussed above for independent samples.
+With this in mind, we first consider what properties these chains must fulfill in order to create equivalent results as motivated above for independent samples.
 We end this section by introducing an algorithm that accomplishes the above.
 
 \paragraph{Markov Chain Monte Carlo.}
@@ -256,7 +256,7 @@ That is why we focus on assumptions which admit a central limit theorem with the
   \end{align}
 \end{theorem}
 \begin{proof}
-  See \citet{roberts2004} Proposition 1 for the first claim and Theorem 27 for the second; see \citet{kipnis1986} for a complete proof of the second claim.
+  See \citet{kipnis1986} for a complete proof of the second claim; see \citet{roberts2004} Proposition 1 for the first claim and Theorem 27 for the second.
 \end{proof}
 
 \noindent
@@ -299,7 +299,7 @@ For other approaches and more involved algorithms see for example \citet{liang10
 \noindent
 Algorithm \ref{alg:metropolis-hastings} displays the Metropolis-Hastings algorithm.
 The main idea is that we start with an initial value and iteratively propose new values of the chain, however, we do not accept every proposal, but we do so only with a certain probability, which can be thought of as high if the proposal has a high relative density compared to the last chain link.
-Here we also see why we do not care about any integration constant, as the target density only appears as a ratio.
+Here we also see why we do not care about any integration constant, as the target density only appears as a ratio (line 4).
 
 Cleary the results depend on the choice of proposal density.
 A common pick are so called \emph{random walk} proposals, which add some random number to the current position of the chain; for example a gaussian random walk proposal is given by $q(\cdot \mid x_t) = \normal{\cdot \mid x_t, \sigma^2}$ or equivalently stated $y = x_t + \normal{0, \sigma^2}$.
@@ -315,7 +315,7 @@ To avoid using samples that do not come from the stationary distribution, in pra
 The ability to sample draws in complex settings using the Metropolis-Hastings algorithm (and other Markov chain Monte Carlo methods for that matter) made Bayesian statistics applicable for real problems.
 Still, \citet{Au2001EstimationOS} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \citet{zuev08} provide a geometric intution.
 There have been published numerous novel methods which deal with dimensionality problems.
-A particular promising route seems to be \emph{Hamiltonian Monte Carlo} (\citet{duane87}), which is one of the algorithms used in the probabilistc programming language STAN (\citet{standev2018stancore}) with active research on theoretical properties, see for example \citet{betancourt2014geometric}.
+A particular promising route seems to be \emph{Hamiltonian Monte Carlo} (\citet{duane87}), which is one of the algorithms used in the probabilistc programming language STAN (\citet{standev2018stancore}) with ongoing research on theoretical properties, see for example \citet{betancourt2014geometric}.
 
 
 %\paragraph{Volume in Higher Dimensions.}
