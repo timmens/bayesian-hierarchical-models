@@ -83,23 +83,40 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \subsection{Tables}
 
 \begin{proof}[Derivation of Results in Table \ref{tab:comp_uniform_bay_ml}.]
-  We know that for the problem at hand the standard maximum likelihood estimators
-  and their variances are given by
-  \begin{align}
-    \hat{\mu}_{ML} &= \frac{1}{n} \sum_i y_i = \bar{y}\,\\
-    \hat{\sigma}_{ML}^2 &= \frac{1}{n} \sum_i (y_i - \bar{y})^2 = \frac{n-1}{n} s^2\,\\
-    \mathrm{I}(\mu, \sigma)^{-1} &= \sqmat{\sigma^2 / n & 0\\0&\sigma^2/(2n)} \,.
-  \end{align}
-  The Bayesian counterpart to the ML-Estimator is the \emph{maximum a posteriori estimate},
+  For the normal distributed data problem at hand the derivation of the maximum likelihood estimators, $\bar{y}$ for $\mu$ and $(n-1) s^2 / n$ for $\sigma^2$, is well known.
+  We note that the "ML Variance" denotes the theoretical variance of the estimators.
+  Further, the moments of the scaled inverse $\chi^2$ distributions are available in closed form.
+  In particular, if $X \sim \scaledInvChi{\nu, \tau^2}$, then $\Exp{X} = \nu \tau^2 / (\nu - 2)$ and $\var{X} = 2 \nu^2 \tau^4 / ((\nu - 2)^2 (\nu - 4))$.
+
+  Let us first consider the parameter $\mu$.
+  As the t-distribution is parameterized over its mean and variance we can simply read off these values.
+  Further, as the t-distribution is symmetric the MAP is equal to its mean.
+
+  Let us now consider the parameter $\sigma^2$.
+  Plugging in the respective parameters, we get
+  \begin{align*}
+    \Exp{\sigma^2 \mid y} = \frac{n - 1}{n - 3} \sigma^2
+  \end{align*}
+  directly, and
+  \begin{align*}
+    \var{\sigma^2 \mid y} = \frac{2 (n-1)^2}{(n-3)^2(n-5)} \sigma^4 \,.
+  \end{align*}
+  To get the MAP for $\sigma^2$ we need to maximize the posterior of $\sigma^2$.
+  Note that we can drop any integration constants, i.e. we need to solve
+  \begin{align*}
+    \maximize_{x > 0} \left\{x^{-(1 + \frac{n-1}{2})} \EXP{\frac{-(n-1) s^2}{2 x}}\right\} \,,
+  \end{align*}
+  where the term in curly brackets is just the posterior density of $\sigma^2$ evaluated at $x$.
+  Differentiating with respect to $x$ and setting this to zero yields the desired result.
 \end{proof}
 
 \begin{proof}[Derivation of Results in Table \ref{tab:comp_conjugate_bay_ml}.]
-
+  The proof from above applies here by mutatis mutandis.
 \end{proof}
 
-\begin{proof}[Derivation of Results in Table \ref{tab:vol_high_dim}]
-See file \lstinline{volume.py}{} in the online appendix.
-\end{proof}
+%\begin{proof}[Derivation of Results in Table \ref{tab:vol_high_dim}]
+%See file \lstinline{volume.py}{} in the online appendix.
+%\end{proof}
 
 \subsection{Proofs}
 \begin{remark}
