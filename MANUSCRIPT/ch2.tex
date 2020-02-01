@@ -44,7 +44,7 @@ school & teacher\\
 \vspace{-10pt}
 To introduce formal notation, assume we observe data on $i=1,\mydots,n$ individuals which are clustered among $j=1,\mydots,J$ groups.
 Naturally we consider outcomes $y_i$ on the individual-level.
-Following the idea of different relations for different levels, we write $x_i$ for covariates that vary by individual and $u_j$ for covariates that only vary by group-level.
+Following the idea of different relations for different levels, we write $x_i$ for covariates that vary by individual and $u_j$ for covariates that only vary by group.
 We link the two by writing $j[i]$ for the index of the group to which individual $i$ belongs, i.e. the full set of covariates from individual $i$ is given by $(x_i, u_{j[i]})$.
 How can we utilize this hierarchical structure?
 
@@ -60,7 +60,7 @@ For a general two-level case we may write a model as
 where we suppress the dependence on $x_i$ and $u_j$.
 On the individual-level the outcomes $y_i$ are modeled depending on the unit-level features $x_i$ and parameters $\theta_{j[i]}$.
 As in a classical Bayesian model we continue by modeling the parameters $\theta_j$, however, in contrast to section 2 we do not assume a prior distribution but we explicitly model the parameter on the group-level using the group-level features $u_j$.
-From a Bayesian viewpoint this can be seen as a generalization to prior modeling.
+From a Bayesian viewpoint this can be seen as a generalization of prior modeling.
 Despite this Bayesian interpretation, the first two equations define a proper non-Bayesian hierarchical model.
 We will see that in the linear case these models are well known in the frequentist world as \emph{mixed effects models} or \emph{random coefficient models}.
 To produce a Bayesian model we assign a prior distribution on all (hyper)parameters that are not explicitly modeled (here $\phi$).
@@ -144,7 +144,7 @@ We end our segment on theory with the introduction of hierachical linear models,
 
 As in classical statistics, linear models are usually simpler to estimate and easier to interpret, which can explain their widespread use in practice.
 Standard critiques on linear models, e.g. model misspecification issues, also apply here, however, we will see that due to the hiearchical nature we are able to model complex structure, even under a linearity assumption.
-Being more precise, linearity in a hierarchical context means that on each level parameters enter the \emph{level-model} lineary.
+Being more precise, linearity in a hierarchical context means that on each level parameters enter the \emph{level-model} linearly.
 Let us formalize this.
 
 \paragraph{General Definition.}
