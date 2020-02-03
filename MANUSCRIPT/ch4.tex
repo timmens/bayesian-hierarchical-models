@@ -7,12 +7,12 @@ In this section we discuss the applications of the hierarchical modelling approa
 
 Bayesian Hierarchical models or multilevel models are a suitable approach to consider social contexts as well as individual respondents or subjects. It becomes attractive to consider hierarchical models in place of the common (or popularized) frequentist approach as soon as there is a need to relax the independence of residuals assumption as a result of similarities in the characteristics of a group of respondents or when the researcher seeks to disentangle variability at various levels of the data. These models have been used in various applications throughout fields in economic research. In education research, \cite{buric2020teacher} use these models to examine the relationship between teacher self-efficacy (TSE), instructional quality (i.e., classroom management, cognitive activation, and supportive climate) and student motivational beliefs (i.e., self efficacy and intrinsic motivation) by using responses from both teachers and students and implementing a sophisticated doubly latent multilevel structural equation modelling approach. The results reflect the necessity to disentangle variability at various levels of the data as the researchers find that, at class level, TSE was positively related to the three dimensions of instructional quality but not to students' motivational beliefs. They also find, as expected, that instructional quality was positively related to students’ motivational beliefs.
 
-In family economics, \cite{lamnisos2019demographic} project the total fertility rate and life expectancy at birth probabilistically using Bayesian hierarchical models and United Nations population data for Greece from the period of 1950 to 2015. These are then converted to age-specific mortality rates and combined with a cohort component projection model. This yields probabilistic projections of total population by sex and age groups, total fertility rate (TFR), female and male life expectancies at birth and potential support ratio PSR (persons aged 20-64 per person 65+) by the year 2100. If the forecasts prove in future to be accurate, these models can provide a powerful tool for policy formulation. In agricultural research, \cite{ ramsey2019saying} develop two econometric models: a hierarchical Bayesian linear model and a hierarchical Bayesian Poisson model to predict exit rates across the towns and prefectures of Japan resulting from off-farm employment opportunities. Off-farm employment opportunities are thought to have an effect on farm exit rates, though evidence on the sign of this effect has been mixed. Examining this issue in the context of Japanese agriculture, the researchers find that farm exits are related to off-farm income as a share of household income, and more specifically to the nature of off-farm work.  
+In family economics, \cite{lamnisos2019demographic} project the total fertility rate and life expectancy at birth probabilistically using Bayesian hierarchical models and United Nations population data for Greece from the period of 1950 to 2015. These are then converted to age-specific mortality rates and combined with a cohort component projection model. This yields probabilistic projections of total population by sex and age groups, total fertility rate (TFR), female and male life expectancies at birth and potential support ratio PSR (persons aged 20-64 per person 65+) by the year 2100. If the forecasts prove in future to be accurate, these models can provide a powerful tool for policy formulation. In agricultural research, \cite{ ramsey2019saying} develop two econometric models: a hierarchical Bayesian linear model and a hierarchical Bayesian Poisson model to predict exit rates across the towns and prefectures of Japan resulting from off-farm employment opportunities. Off-farm employment opportunities are thought to have an effect on farm exit rates, though evidence on the sign of this effect has been mixed. Examining this issue in the context of Japanese agriculture, the researchers find that farm exits are related to off-farm income as a share of household income, and more specifically to the nature of off-farm work.
 
 In development economics, \cite{ meager2019understanding} jointly estimates the average effect and the heterogeneity in effects across seven studies using Bayesian hierarchical models to answer questions about external validity that impede consensus on the results from randomized evaluations of microcredit. The researcher finds reasonable external validity: true heterogeneity in effects is moderate, and approximately 60 percent of observed heterogeneity is sampling variation. These paper has the potential to revolutionize the field of development economics as the researcher provides a method to establish external validity using multiple studies form different countries. In health research, \cite{ rashid2019socio} uses a more advanced application of Bayesian Hierarchical Models in health research. The authors aim to identify the spatial distribution of the three types of misconception factors of HIV transmission (i.e. transmitted by mosquito bite, supernatural means and sharing food with HIV positive person). This study also provides the core socio-economic factors to stop the misconception about HIV/ Aids transmission and helped in reducing its epidemic in Pakistan. Spatial and Non-Spatial Bayesian Hierarchical model were applied to the data and results from them revealed that the Conditional Autoregressive Bayesian Hierarchical Models (Spatial Model) were more appropriate. The results showed that Conditional Autoregressive Bayesian Hierarchical models at level 2 are best fit to the data.
 
 It is evident that Bayesian Hierarchical Models can be useful in the area of microeconomic research. There also have been applications to the Macroeconomics field. It is evident that Bayesian Hierarchical Models can be useful in the area of microeconomic research. There also have been applications to the Macroeconomic research field. \cite{ koop2010bayesian} notes that bayesian methods have become increasingly popular as a way of overcoming over-parameterization problems. In this paper, the authors discuss vector autoregressive multivariate time
-series models (VARs), factor augmented VARs and time-varying parameter extensions and show how Bayesian inference proceeds. 
+series models (VARs), factor augmented VARs and time-varying parameter extensions and show how Bayesian inference proceeds.
 
 We now demonstrate below, an application to real world data of a comparison between the likelihood (frequentist)  and the bayesian inference approaches. For each of these approaches, we will fit a basic varying intercept and slope multilevel linear model with one predictor. We will use the \textit{lmer} function in the \textit{lme4} package for R to determine maximum likelihood estimates of the parameters in linear mixed-effects models. We then the use \textit{rstanarm} package (also in R) to implement a fully Bayesian approach.
 
@@ -21,7 +21,7 @@ We now demonstrate below, an application to real world data of a comparison betw
 
 \subsection{Frequentist and Bayesian Approaches in Practice: Application to Education Data}
 
-A common feature of data structures in education is that units of analysis (e.g., students) are nested in higher organizational clusters (e.g. schools). This kind of structure induces dependence among the responses observed for units within the same cluster. Students in the same school tend to be more alike in their academic and attitudinal characteristics than students chosen at random from the population at large. Multilevel models are designed to model such within-cluster dependence. As mentioned earlier, one advantage of multilevel models is that it allows us to disentangle variability between levels and in our data example,  multilevel models recognize the existence of data clustering (at two or more levels) by allowing for residual components at each level in the hierarchy. For example, a two-level model that allows for grouping of student outcomes within schools would include residuals at both the student and school level. The residual variance is thus partitioned into a between-school component (the variance of the school-level residuals) and a within-school component (the variance of the student-level residuals). 
+A common feature of data structures in education is that units of analysis (e.g., students) are nested in higher organizational clusters (e.g. schools). This kind of structure induces dependence among the responses observed for units within the same cluster. Students in the same school tend to be more alike in their academic and attitudinal characteristics than students chosen at random from the population at large. Multilevel models are designed to model such within-cluster dependence. As mentioned earlier, one advantage of multilevel models is that it allows us to disentangle variability between levels and in our data example,  multilevel models recognize the existence of data clustering (at two or more levels) by allowing for residual components at each level in the hierarchy. For example, a two-level model that allows for grouping of student outcomes within schools would include residuals at both the student and school level. The residual variance is thus partitioned into a between-school component (the variance of the school-level residuals) and a within-school component (the variance of the student-level residuals).
 
 
 \subsubsection{The data}
@@ -39,38 +39,33 @@ Two components of the exam were recorded as outcome variables: written paper and
 In this sub-section, we fit the a basic varying intercept and slope multilevel linear model with one predictor using the \textit{lmer()} functions. Functions such as lmer() are based on a combination of maximum likelihood (ML) estimation of the model parameters, and empirical Bayes (EB) predictions of the varying intercepts and/or slopes resulting in the Best Linear Unbiased Predictions (BLUPs) of the model parameters. We use these functions so that our parameter estimates from both the ML and the Bayesian framework are comparable.
 
 \subsubsection*{Model 1: Varying intercept and slope model with a single predictor}
-In this model, we allow both the intercept and the slope to vary randomly across schools using the following model: \footnote{Equivalently, the model can be expressed as: $$y_{ij}\sim N(\alpha_{j}+\beta_{j}x_{ij} , \sigma_y ^2 ),$$
-$$
-\left( \begin{matrix} \alpha _{ j } \\ \beta _{ j } \end{matrix} \right) \sim N\left( \left( \begin{matrix} { \mu  }_{ \alpha  } \\ { \mu  }_{ \beta  } \end{matrix} \right) , \left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).$$}:
+In this model, we allow both the intercept and the slope to vary randomly across schools using the following model:\footnote{Equivalently, the model can be expressed as: $y_{ij}\sim N(\alpha_{j}+\beta_{j}x_{ij} , \sigma_y ^2 )$, $\left( \begin{matrix} \alpha _{ j } \\ \beta _{ j } \end{matrix} \right) \sim N\left( \left( \begin{matrix} { \mu  }_{ \alpha  } \\ { \mu  }_{ \beta  } \end{matrix} \right) , \left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).$}
 
-\begin{flalign*}
+\begin{align}
 	y_{ij} &= \alpha_j + \beta_j x_{ij} +\epsilon_{ij} \,, \\
 	\alpha_j &= \mu_\alpha + u_j \,, \\
-
-	\beta_j &= \mu_\beta + v_j \,, \\ \text{or in a reduced form as} &&
-	y_{ij} &= \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij} \,, \\ \text{where} 
-\epsilon_{ij} &\sim N(0, \sigma_{y}^{2}) 
-\end{flalign*}
-
-and 
+	\beta_j &= \mu_\beta + v_j \,,
+\end{align}
+or in reduced form as $y_{ij} = \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij}$, where $\epsilon_{ij} \sim N(0, \sigma_{y}^{2})$ and
 \begin{align}
 \left( \begin{matrix} u_j \\ v_j \end{matrix} \right) \sim N\left( \left( \begin{matrix} 0 \\ 0 \end{matrix} \right) ,\left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).
 \end{align}
+
 \newpage
 
 
 The average regression line across schools is thus estimated as $\hat{\mu}_{ij} = 69.424 + 7.128 x_{ij}$, with the residual within-school standard deviation estimated as $\hat{\sigma}_{y}=13.03$. The estimated standard deviations of the school intercepts and the school slopes are $\hat{\sigma}_{\alpha}= 10.15$ and $\hat{\sigma}_{\beta}=6.92$ respectively. The estimated correlation between varying intercepts and slopes, although not reported in the table is $\hat{\rho} = -0.52$. We do not report the correlation factor here is it has no economic interpretation for our simple model with just one predictor.
 
 \begin{table}[H]
-	\centering 
-	\caption{{\small Comparison of Maximum Likelihood and Bayesian estimates.}} 
+	\centering
+	\caption{{\small Comparison of Maximum Likelihood and Bayesian estimates.}}
 	\label{}
-	
+
 	\smallskip
 	\begin{tabular}{l*{2}{c}}
 		\toprule \\[-1.0em]
 		\multicolumn{3}{c}{Dependent variable: Course test score}\\ \\[-1.0em]
-		&ML &Bayes\\ 
+		&ML &Bayes\\
 		\midrule \\[-1.0em]
 		\emph{A. Random effects} \\
 		Intercept & -- & --\\
@@ -89,8 +84,8 @@ The average regression line across schools is thus estimated as $\hat{\mu}_{ij} 
 		\hspace{3mm}Students&1725&1725\\
 		\hspace{3mm}Schools&73&73\\
 		\bottomrule
-		
-	\end{tabular} 
+
+	\end{tabular}
 \label{tab:results}
 \end{table}
 Treating these estimates of $\mu_\alpha$, $\beta$, $\sigma^2_{y}$, and $\sigma^2_{\alpha}$ as the true parameter values, we can then obtain the Best Linear Unbiased Predictions (BLUPs) for the school-level errors $\hat{u}_j = \hat{\alpha}_{j} - \hat{\mu}_{\alpha}$. The BLUPs are equivalent to the so-called Empirical Bayes (EB) prediction, which is the mean of the posterior distribution of $u_{j}$ given all the estimated parameters, as well as the random variables $y_{ij}$ and $x_{ij}$ for the cluster.  These predictions are called "Bayes" because they make use of the pre-specified prior distribution \footnote{We elaborate more on prior distributions in Section the full Bayesian approach section} $\alpha_j \sim N(\mu_\alpha, \sigma^2_\alpha)$, and by extension $u_j \sim N(0, \sigma^2_\alpha)$, and called "Empirical" because the parameters of this prior, $\mu_\alpha$ and $\sigma^2_{\alpha}$, in addition to $\beta$ and $\sigma^2_{y}$, are estimated from the data.
@@ -101,7 +96,7 @@ By using the \textit{ranef} function, we can retrieve information on how much th
 
 \begin{table}[!htb]
 	\caption{Global caption}
-	
+
 	\begin{minipage}{.5\linewidth}
 		\caption{}
 		\centering
@@ -133,15 +128,15 @@ By using the \textit{ranef} function, we can retrieve information on how much th
 				23208  & 7.7678493 & -4.33166932
 			\end{tabular}
 		}
-		
-	\end{minipage} 
+
+	\end{minipage}
 	\caption{{\small Shrinkage factor for the ML estimates (left) and Bayesian estimates (right): an extract of 6 schools}}
 	\label{tab:shrinkage}
 \end{table}
 
 For example, in the first school in the dataset shown in in Table \ref{tab:shrinkage} (left), the estimated intercept is about $19.25$ lower than average and the estimated slope is about $14.64$, so that the school-specific regression line is $(69.43 - 19.25) + (7.13 - 14.64) x_{ij}$ which turns out to be $ 50.18 - 7.51  x_{ij}$. This suggests that although the fixed effect average is positive, (thus on average and across schools, female students perform better that males), in this particular school, female students do on average perform less than males by about $7.51$ points.
 
-We can also retrieve the information on how much the intercept and slope are shifted up or down for the full bayesian estimation method to compare then to the BLUPs as shown in Table \ref{tab:shrinkage} (right). We indeed find, that they are almost identical for the first 6 groups in the dataset with the exception of a few instances. The BLUPs then allow us to compare results between ML and Bayes estimates. 
+We can also retrieve the information on how much the intercept and slope are shifted up or down for the full bayesian estimation method to compare then to the BLUPs as shown in Table \ref{tab:shrinkage} (right). We indeed find, that they are almost identical for the first 6 groups in the dataset with the exception of a few instances. The BLUPs then allow us to compare results between ML and Bayes estimates.
 
 \subsubsection*{Partial Pooling in multilevel models}
 \cite{gelman2006data} characterize multilevel modeling as partial pooling (also called shrinkage), which is a compromise between two extremes: complete pooling in which the clustering is not considered in the model at all, and no pooling, in which separate intercepts are estimated for each school as coefficients of dummy variables. The estimated school-specific regression lines in the above model (obtained by the getting the BLUPs as shown above) are based on partial pooling estimates. To show this, we first estimate the intercept and slope in each school in three ways, 1) complete pooling represented by the constant blue line, 2) no pooling also using ols represented by the red line, and 3) partial pooling (multilevel) regression line which is from the ML model above and is represented by the purple dotted line. We then plot the data and school-specific regression lines for a selection of eight schools as illustrated in Figure \ref{fig:pooling}. We see that the estimated school-specific regression line from the partial pooling estimates lies between the complete-pooling and no-pooling regression lines. There is more pooling (purple dotted line closer to red dotted line) in schools with larger sample sizes. By using the BLUPs method we ensure that the ML estimates are partial pooling estimates and therefore are compareable to the Bayesian framework.
@@ -151,55 +146,55 @@ As previously mentioned, functions such as \textit{lmer()} are based on a combin
 
 \subsubsection*{Model 1: Varying intercept and slope model with a single predictor}
 
-We can implement a fully Bayesian estimation for multilevel models with only minimal changes to our existing code with \textit{lmer()} from the maximum likelihood application in the previous section. 
+We can implement a fully Bayesian estimation for multilevel models with only minimal changes to our existing code with \textit{lmer()} from the maximum likelihood application in the previous section.
 
 We specify Model 1 with default prior distributions for $\mu_{\alpha}$, $\sigma_{\alpha}$, and $\sigma_{y}$ by prepending \textit{stan\textunderscore} to the \textit{lmer} call. The \textit{stan\textunderscore lmer()} function is similar in syntax to \textit{lmer()} but rather than performing maximum likelihood estimation, Bayesian estimation is performed via MCMC. As each step in the MCMC estimation approach involves random draws from the parameter space, we include a seed option to ensure that each time the code is run, \textit{stan\textunderscore lmer} outputs the same results.
 
 \begin{align}
-	\Sigma &= 
-	\left(\begin{matrix} 
-		\sigma_\alpha^2 & \rho\sigma_\alpha \sigma_\beta \\ 
-		\rho\sigma_\alpha\sigma_\beta&\sigma_\beta^2 
-	\end{matrix} \right)\\ &= 
-	\sigma_y^2\left(\begin{matrix} 
-		\sigma_\alpha^2/\sigma_y^2 & \rho\sigma_\alpha \sigma_\beta/\sigma_y^2 \\ 
-		\rho\sigma_\alpha\sigma_\beta/\sigma_y^2 & \sigma_\beta^2/\sigma_y^2 
-	\end{matrix} \right)\\ &= 
-	\sigma_y^2\left(\begin{matrix} 
-		\sigma_\alpha/\sigma_y & 0 \\ 
+	\Sigma &=
+	\left(\begin{matrix}
+		\sigma_\alpha^2 & \rho\sigma_\alpha \sigma_\beta \\
+		\rho\sigma_\alpha\sigma_\beta&\sigma_\beta^2
+	\end{matrix} \right)\\ &=
+	\sigma_y^2\left(\begin{matrix}
+		\sigma_\alpha^2/\sigma_y^2 & \rho\sigma_\alpha \sigma_\beta/\sigma_y^2 \\
+		\rho\sigma_\alpha\sigma_\beta/\sigma_y^2 & \sigma_\beta^2/\sigma_y^2
+	\end{matrix} \right)\\ &=
+	\sigma_y^2\left(\begin{matrix}
+		\sigma_\alpha/\sigma_y & 0 \\
 		0&\sigma_\beta/\sigma_y
 	\end{matrix} \right)
-	\left(\begin{matrix} 
-		1 & \rho\\ 
-		\rho&1 
+	\left(\begin{matrix}
+		1 & \rho\\
+		\rho&1
 	\end{matrix} \right)
-	\left(\begin{matrix} 
-		\sigma_\alpha/\sigma_y & 0 \\ 
-		0&\sigma_\beta/\sigma_y 
-	\end{matrix} \right)\\ 
+	\left(\begin{matrix}
+		\sigma_\alpha/\sigma_y & 0 \\
+		0&\sigma_\beta/\sigma_y
+	\end{matrix} \right)\\
 	&= \sigma_y^2VRV.
 \end{align}
 
 
-The correlation matrix $R$ is 2 by 2 matrix with 1's on the diagonal and $\rho$'s on the off-diagonal. \textit{stan\_lmer} assigns it an LKJ \footnote{For more details about the LKJ distribution, see \url{http://www.psychstatistics.com/2014/12/27/d-lkj-priors/} and \url{http://mc-stan.org/users/documentation/case-studies/lotka-volterra-predator-prey.html}} prior (\cite{lewandowski2009generating}), with regularization parameter 1.  This is equivalent to assigning a uniform prior for $\rho$.  The more the regularization parameter exceeds one, the more peaked the distribution for $\rho$ to take the value 0.  
+The correlation matrix $R$ is 2 by 2 matrix with 1's on the diagonal and $\rho$'s on the off-diagonal. \textit{stan\_lmer} assigns it an LKJ \footnote{For more details about the LKJ distribution, see \url{http://www.psychstatistics.com/2014/12/27/d-lkj-priors/} and \url{http://mc-stan.org/users/documentation/case-studies/lotka-volterra-predator-prey.html}} prior (\cite{lewandowski2009generating}), with regularization parameter 1.  This is equivalent to assigning a uniform prior for $\rho$.  The more the regularization parameter exceeds one, the more peaked the distribution for $\rho$ to take the value 0.
 
-The matrix of (scaled) variances $V$ can first be collapsed into a vector of (scaled) variances, and then decomposed into three parts, $J$, $\tau^2$ and $\pi$ as shown below. 
+The matrix of (scaled) variances $V$ can first be collapsed into a vector of (scaled) variances, and then decomposed into three parts, $J$, $\tau^2$ and $\pi$ as shown below.
 
 \begin{align}
-	\left(\begin{matrix} 
-		\sigma_\alpha^2/\sigma_y^2 \\ 
-		\sigma_\beta^2/\sigma_y^2 
-	\end{matrix} \right) = 
-	2\left(\frac{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2}{2}\right)\left(\begin{matrix} 
-		\frac{\sigma_\alpha^2/\sigma_y^2}{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2} \\ 
-		\frac{\sigma_\beta^2/\sigma_y^2}{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2} 
+	\left(\begin{matrix}
+		\sigma_\alpha^2/\sigma_y^2 \\
+		\sigma_\beta^2/\sigma_y^2
+	\end{matrix} \right) =
+	2\left(\frac{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2}{2}\right)\left(\begin{matrix}
+		\frac{\sigma_\alpha^2/\sigma_y^2}{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2} \\
+		\frac{\sigma_\beta^2/\sigma_y^2}{\sigma_\alpha^2/\sigma_y^2 + \sigma_\beta^2/\sigma_y^2}
 	\end{matrix} \right)=
 	J\tau^2 \pi.
 \end{align}
- 
 
 
-In this formulation, $J$ is the number of varying effects in the model (here, $J=2$), $\tau^2$ can be viewed as an average (scaled) variance across the varying effects $\alpha_j$ and $\beta_j$, and $\pi$ is a non-negative vector that sums to 1 (called a Simplex/probability vector).  A symmetric Dirichlet \footnote{The Dirichlet distribution is a multivariate generalization of the beta distribution with one concentration parameter, which can be interpreted as prior counts of a multinomial random variable (the simplex vector in our context), for details, see \url{https://cran.r-project.org/web/packages/rstanarm/vignettes/glmer.html\#detail}} distribution with concentration parameter set to 1 is then used as the prior for $\pi$.  By default, this implies a jointly uniform prior over all Simplex vectors of the same size.  A scale-invariant Gamma prior with shape and scale parameters both set to 1 is then assigned for $\tau$.  This is equivalent to assigning as a prior the exponential distribution with rate parameter set to 1 which is consistent with the prior assigned to $\sigma_y$. 
+
+In this formulation, $J$ is the number of varying effects in the model (here, $J=2$), $\tau^2$ can be viewed as an average (scaled) variance across the varying effects $\alpha_j$ and $\beta_j$, and $\pi$ is a non-negative vector that sums to 1 (called a Simplex/probability vector).  A symmetric Dirichlet \footnote{The Dirichlet distribution is a multivariate generalization of the beta distribution with one concentration parameter, which can be interpreted as prior counts of a multinomial random variable (the simplex vector in our context), for details, see \url{https://cran.r-project.org/web/packages/rstanarm/vignettes/glmer.html\#detail}} distribution with concentration parameter set to 1 is then used as the prior for $\pi$.  By default, this implies a jointly uniform prior over all Simplex vectors of the same size.  A scale-invariant Gamma prior with shape and scale parameters both set to 1 is then assigned for $\tau$.  This is equivalent to assigning as a prior the exponential distribution with rate parameter set to 1 which is consistent with the prior assigned to $\sigma_y$.
 This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$.
 
 \subsubsection*{Prior distributions}
@@ -211,22 +206,22 @@ Second, the (unscaled) prior for $\sigma_{y}$ is set to an exponential distribut
 
 Third, in order to specify a prior for the variances and covariances of the varying (or "random") effects, \textit{rstanarm} will decompose this matrix into a correlation matrix of the varying effects and a function of their variances.  Since there is only one varying effect in this example, the default (unscaled) prior for $\sigma_{\alpha}$ that the package uses reduces to an exponential distribution with rate parameter set to 1.
 
-Additionally, we are also required to specify a prior for the covariance matrix $\Sigma$ for $\alpha_j$ and $\beta_j$ in this Model.  \textit{stan\_lmer} decomposes this covariance matrix (up to a factor of $\sigma_y$) into (i) a correlation matrix $R$ and (ii) a matrix of variances $V$, and assigns them separate priors as shown below. 
+Additionally, we are also required to specify a prior for the covariance matrix $\Sigma$ for $\alpha_j$ and $\beta_j$ in this Model.  \textit{stan\_lmer} decomposes this covariance matrix (up to a factor of $\sigma_y$) into (i) a correlation matrix $R$ and (ii) a matrix of variances $V$, and assigns them separate priors as shown below.
 
-\subsubsection*{Model 1 results}  
+\subsubsection*{Model 1 results}
 In Table \ref{tab:results}, we see the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $69.413$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $69.425$.  The point estimate for $\beta$ is slightly different in this Model ($7.132$ compared to the ML estimate -  $7.128$).  Furthermore, as in the previous two models, the Bayesian estimate for $\sigma_{\alpha}$ $10.249$ is larger than the ML estimate $10.146$. Additionally, the Bayesian estimates for $\sigma_{\beta}$ ($7.099$)and $\rho$ ($-0.48$) are larger than the corresponding ML estimates ($6.924$ and $-0.52$ respectively). This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ and $\mu_{\beta}$when estimating $\sigma_{\alpha}$ and $\sigma_{\beta}$.
 
 When using the bayesian estimation function, standard errors are obtained by considering the median absolute deviation (MAD) of each draw from the median of those draws.  It is well known that ML tends to underestimate uncertainties because it relies on point estimates of hyperparameters. Full Bayes, on the other hand, propagates the uncertainty in the hyperparameters throughout all levels of the model and provides more appropriate estimates of uncertainty \cite{browne2006comparison}.
 
 \subsection{Looking Deeper into the Baysian Approach}
 \label{section:Deeper}
-Having samples of all the parameters and varying intercepts from their joint posterior distribution makes it easy to draw inferences about functions of these parameters. 
+Having samples of all the parameters and varying intercepts from their joint posterior distribution makes it easy to draw inferences about functions of these parameters.
 
 In education research and practice, it is often of interest to compare the schools included in the data. Relevant questions include (1) what is the difference between the means of schools A and B, (2) is school A performing better than school B and (3) what are the rankings of these schools within the sample. When non-Bayesian methods are used, we can attempt to make such comparisons based on empirical Bayes (or Best Linear Unbiased) predictions of the varying intercepts, but it will generally be impossible to express the uncertainty for nonlinear function such as rankings. \cite{goldstein1996league} discuss this in greater detail.
 
-Having samples of all the parameters and varying intercepts from their joint posterior distribution makes it easy to draw inferences about functions of these parameters. 
-During estimation, 4 MCMC chains of 2,000 iterations each are generatd. Half of these iterations in each chain are used as warm-up/burn-in (to allow the chain to converge to the posterior distribution), and hence we only use 1,000 samples per chain. These MCMC-generated samples are taken to be drawn from the posterior distributions of the parameters in the model. We can use these samples for predictions, summarizing uncertainty and estimating credible intervals for any function of the parameters. 
-We can then generate a matrix for varying intercepts $\alpha_j$ and slopes $\beta_j$ as well as vectors containing the draws for the within standard deviation and the between variance by manipulating this matrix. 
+Having samples of all the parameters and varying intercepts from their joint posterior distribution makes it easy to draw inferences about functions of these parameters.
+During estimation, 4 MCMC chains of 2,000 iterations each are generatd. Half of these iterations in each chain are used as warm-up/burn-in (to allow the chain to converge to the posterior distribution), and hence we only use 1,000 samples per chain. These MCMC-generated samples are taken to be drawn from the posterior distributions of the parameters in the model. We can use these samples for predictions, summarizing uncertainty and estimating credible intervals for any function of the parameters.
+We can then generate a matrix for varying intercepts $\alpha_j$ and slopes $\beta_j$ as well as vectors containing the draws for the within standard deviation and the between variance by manipulating this matrix.
 
 For the purposes of simplicity and illustration, we will continue our analysis from here onwards using the varying intercept draws. We have saved 4,000 posterior draws (from all 4 chains) for the varying intercepts $\alpha_{j}$ of the 73 schools. For example, the first column of the 4,000 by 73 matrix is a vector of 4,000 posterior simulation draws for the first school's (School 20920) varying intercept $\alpha_{1}$.  One quantitative way to summarize the posterior probability distribution of these 4,000 estimates for $\alpha_{1}$ is to examine their quantiles by computing mean, SD, median, and $95\%$ credible interval of varying intercepts as shown in Table \ref{tab:summary_data}
 
@@ -255,9 +250,9 @@ We can produce a caterpillar plot to show the fully Bayes estimates for the scho
 
 \subsubsection{Making comparisons between individual schools}
 
-We can also compare the schools included in the data.  Here we compare two schools as an example: Schools 60501 (the $21^{st}$ school) and 68271 (the $51^{st}$ school). We already have 4,000 posterior simulation draws for both schools. To make inferences regarding the difference between the average scores of the two schools, we can simply take the difference between the two vectors of draws $\alpha_{51} - \alpha_{21}$. 
+We can also compare the schools included in the data.  Here we compare two schools as an example: Schools 60501 (the $21^{st}$ school) and 68271 (the $51^{st}$ school). We already have 4,000 posterior simulation draws for both schools. To make inferences regarding the difference between the average scores of the two schools, we can simply take the difference between the two vectors of draws $\alpha_{51} - \alpha_{21}$.
 
-We can investigate the posterior distribution of the difference with descriptive statistics and a histogram. From Figure \ref{fig:differences}, we can see that the expected difference comes to 5.747 with a standard deviation of 6.094 and a wide range of uncertainty. The 95\% credible interval is [-6.55, 17.49], so we are 95\% certain that the true value of the difference between the two schools lies within this range, given the data. 
+We can investigate the posterior distribution of the difference with descriptive statistics and a histogram. From Figure \ref{fig:differences}, we can see that the expected difference comes to 5.747 with a standard deviation of 6.094 and a wide range of uncertainty. The 95\% credible interval is [-6.55, 17.49], so we are 95\% certain that the true value of the difference between the two schools lies within this range, given the data.
 
 We also can get the proportion of the time that School 60501 has a higher mean than School 68271 as shown in Table \ref{tab:comparison}
 
@@ -268,12 +263,12 @@ We also can get the proportion of the time that School 60501 has a higher mean t
 		\begin{tabular}{l | c c c c c}
 			FALSE & TRUE \\
 			\hline
-			0.17275 & 0.82725 
+			0.17275 & 0.82725
 		\end{tabular}
 	}
 	\caption{{\small The percentage of how much school 21 is better than school 51.}}
 	\label{tab:comparison}
-\end{table} 
+\end{table}
 
 This means that the posterior probability that School 60501 is better than School 68271 is 82.7\%. Any pair of schools within the sample of schools can be compared in this manner.
 
@@ -286,7 +281,7 @@ The $\hat{R}$ is essentially the ratio of between-chain variance to within-chain
 
 \subsubsection{Robustness checks}
 
-Although we vary the means for both $\mu_{\alpha}$ and $\mu_{\beta}$, we report the comparisons in output for $\mu_{\alpha}$ in keeping with the rest of Section \ref{section:Deeper}. 
+Although we vary the means for both $\mu_{\alpha}$ and $\mu_{\beta}$, we report the comparisons in output for $\mu_{\alpha}$ in keeping with the rest of Section \ref{section:Deeper}.
 
 \begin{table}[!ht]
 	\begin{center}
@@ -295,14 +290,9 @@ Although we vary the means for both $\mu_{\alpha}$ and $\mu_{\beta}$, we report 
 			\hline
 			Super uninformative priors $N(0,100)$ & 69.437685 & 4.370941 & 60.851800 &            69.442499 & 77.976610  \\
  			Weakly informative priors $N(0,10)$ & 69.32136  &   4.37512   & 60.74454 &   69.32730 &   77.87750 \\
-			Strong priors $N(0,2)$ & 69.181321 & 4.601223 &  60.156027 &  69.184115  & 78.193197 
+			Strong priors $N(0,2)$ & 69.181321 & 4.601223 &  60.156027 &  69.184115  & 78.193197
 		\end{tabular}
 	\end{center}
 	\caption{The average posterior mean, sd and credible interval monte carlo draws for $\mu_{\alpha}$.}
 	\label{tab:robustness}
 \end{table}
-
-
-
-
-
