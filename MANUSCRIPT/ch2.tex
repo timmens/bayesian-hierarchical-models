@@ -1,21 +1,25 @@
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
 \section{Hierarchical Models}
-In the following we consider hierarchical models, when they are applicable and how to estimate them.
+\label{sec:hierachical_modeling}
+In the following we consider hierarchical models and when they are applicable.
 We begin by presenting the idea of hiearchical data and modeling.
-Then we show how to solve a simple model analytically, before ending the section with introducing two main ideas.
-One, hierarchical linear models, arguably the most important subclass of hiearchical models.
-And two, a method to sample from the posteriors arising in complex settings.
+We then show the general structure of hierarchical models and end this section by introducing the most widely used subclass, hierarchical linear models.
 
 \subsection{Hierarchical Data and Modeling}
-Here we consider what makes data hierarchical and how we can use this component to model additional structure.
-Hierarchical data is present if the data can be clustered on some level; e.g. children in schools, survey responses on different years in different states or experiments in multiple labs.
-From the examples we see that there must not be a clear \emph{hierarchy} defined on the data.
-This is one of the reasons why some authors nowadays prefer the more general terms \emph{multi-level data} and \emph{multi-level model}, see for instance \citet{GelmanHill2007}.
-We categorize models by the number of levels they incorporate and if they use \emph{nested} or \emph{non-nested} data.
-In this paper we consider two-level models for nested data and refer again to \citet{GelmanHill2007} for a treatment of models with more levels and non-nested data.
+Here we consider what makes data \emph{hierarchical} and how we can use this further component to model additional structure.
 
-In practice we can store hierarchical data very efficiently using normalized relational dataframes. Let us continue the example of children in schools and assume we observe their results on a test, the parental income and the number of teachers per child in the school.
+Hierarchical data is present if the data can be clustered on some level; e.g. children in schools, survey responses in different years in different states, or experiments in multiple labs.
+From the examples we see that there must not be a clear \emph{hierarchy} defined on the data.
+This is why some authors nowadays prefer the more general terms \emph{multi-level data} and \emph{multi-level model}, see for instance \citet{GelmanHill2007}.
+
+We categorize hierarchical models by the number of levels they incorporate and their use of \emph{nested} or \emph{non-nested} data.
+In this paper we consider two-level models for nested data and refer (again) to \citet{GelmanHill2007} and \citet{snijders1999} for a treatment of more general settings.
+
+%In practice we can store hierarchical data very efficiently using normalized relational dataframes.
+Let us continue with the first example of children in schools.
+Assume we observe, say, test results, parental income and number of teachers per child per school.
 Figure \ref{fig:relational_table} portrays how multi-level data in this case could be stored.
-Having gained some intuition let us define our formal notation.
 \begin{figure}[!ht]
 \begin{center}
 \begin{tabular}{l l l l}
@@ -33,31 +37,33 @@ school & teacher\\
 2 & 0.7
 \end{tabular}
 \end{center}
-\caption{Two tables containing fictional hierarchical data. Left: Data on the child-level, that is the test \emph{results}, parental \emph{income} and \emph{school} id. Right: Data on the school-level, in this case the number of \emph{teachers} per child.}
+\caption{Two tables containing fictional hierarchical data. Left: Data on the \emph{child-level} (test results, parental income, school id). Right: Data on the \emph{school-level} (number of teachers per child).}
 \label{fig:relational_table}
 \end{figure}
 
-\noindent
-Assume we observe data on $i=1,\mydots,n$ units which are clustered among $j=1,\mydots,J$ groups.
-Naturally we consider some outcome $y_i$ on the unit-level.
-Following the idea of different tables for different levels from above, we write $x_i$ for the covariates that vary by unit and $u_j$ for the covariates that only vary on the group-level.
-We link the two by writing $j[i]$ for the index of the group to which individual $i$ belongs, i.e. the full set of covariates from individual $i$ is given by $(x_i, u_{j[i]})$. But how can we utilize this hierarchical structure?
+\vspace{-10pt}
+To introduce formal notation, assume we observe data on $i=1,\mydots,n$ individuals which are clustered among $j=1,\mydots,J$ groups.
+Naturally we consider outcomes $y_i$ on the individual-level.
+Following the idea of different relations for different levels, we write $x_i$ for covariates that vary by individual and $u_j$ for covariates that only vary by group.
+We link the two by writing $j[i]$ for the index of the group to which individual $i$ belongs, i.e. the full set of covariates from individual $i$ is given by $(x_i, u_{j[i]})$.
+How can we utilize this hierarchical structure?
 
-The main idea behind hierarchical modeling is that we build (simple) models on each level while using the dependent variables from higher levels as input parameters on lower levels.
-For a general (two-level) case we may write
+The main idea of hierarchical modeling is to build (simple) models on different levels, where the outcomes are modeled on the individual-level and we connect the levels by modeling on all higher levels the parameters used in the previous level.
+Importantly, the level structure is given by the hierarchical structure of the data and we use features from level $\ell$ only in the modeling process of level $\ell$.
+
+For a general two-level case we may write a model as
 \begin{align}
-  y_i \mid \theta_{j[i]} &\sim p(y_i \mid x_i, \theta_{j[i]}) \,,\\
-  \theta_j \mid \phi &\sim p(\theta_j \mid u_j, \phi) \,,\\
-  \phi &\sim p(\phi \mid \zeta) \text{ with } \zeta \text{ fixed } \,,
+  y_i \mid \theta_{j[i]} &\sim p(y_i \mid x_i, \theta_{j[i]}) \,,\tag{Individual Level}\\
+  \theta_j \mid \phi &\sim p(\theta_j \mid u_j, \phi) \,,\tag{Group Level}\\
+  \phi &\sim p(\phi \mid \zeta) \text{ with } \zeta \text{ fixed } \,, \tag{Prior}
 \end{align}
-where we suppress the dependence on $x_i$ and $u_j$ by assuming they are fixed.
-In the first level we model the observations $y_i$ depending on the covariates $x_i$ and parameters $\theta_j$.
-As in a classical Bayesian model we continue by modeling the parameters; However, in contrast to section 2 we do not just assume some prior distribution for the parameters but we \emph{explicitly} model the parameter.
-From a Bayesian viewpoint this can be seen as a generalization to prior modeling.
+where we suppress the dependence on $x_i$ and $u_j$.
+On the individual-level the outcomes $y_i$ are modeled depending on the unit-level features $x_i$ and parameters $\theta_{j[i]}$.
+As in a classical Bayesian model we continue by modeling the parameters $\theta_j$, however, in contrast to section 2 we do not assume a prior distribution but we explicitly model the parameter on the group-level using the group-level features $u_j$.
+From a Bayesian viewpoint this can be seen as a generalization of prior modeling.
 Despite this Bayesian interpretation, the first two equations define a proper non-Bayesian hierarchical model.
 We will see that in the linear case these models are well known in the frequentist world as \emph{mixed effects models} or \emph{random coefficient models}.
-To put the Bayesian in Bayesian hiearchical model we have to assign a prior distributions on the parameters $\phi$.
-As $\phi$ are themselves parameters for the parameter $\theta_j$, one often speaks of priors on $\theta_j$ and \emph{hyperpriors} on the \emph{hyperparameter} $\phi$.
+To produce a Bayesian model we assign a prior distribution on all (hyper)parameters that are not explicitly modeled (here $\phi$).
 
 \begin{figure}[!ht]
 \begin{center}
@@ -70,7 +76,7 @@ As $\phi$ are themselves parameters for the parameter $\theta_j$, one often spea
   \node[vertex,right=of phi] (theta) {$\theta_{j[i]}$};
   \node[vertex,below right= 1cm and 2.5cm of theta] (y) {$y_i$};
   \node[rectangle, draw=black, minimum size=0.9cm,left= of phi] (zeta) {$\zeta$};
-  \node[rectangle, draw=black, minimum size=0.9cm,above=1.5cm of y] (u) {$u_{j[i]}$};
+  \node[rectangle, draw=black, minimum size=0.9cm,above=2cm of y] (u) {$u_{j[i]}$};
   \node[rectangle, draw=black, minimum size=0.9cm, above right=1cm and 2.5cm of y] (x) {$x_i$};
   \draw[->]
     (phi) edge (theta)
@@ -84,11 +90,16 @@ As $\phi$ are themselves parameters for the parameter $\theta_j$, one often spea
 \label{fig:general_sem}
 \end{figure}
 
-
-Figure \ref{fig:general_sem} illustrates the conditional dependence structure of modeling a generic observation $y_i$.
+Figure \ref{fig:general_sem} illustrates the structure of modeling a generic observation $y_i$ using the general model from above.
 In contrast, figure \ref{fig:group_sem} in the appendix illustrates the conditional dependence structure when modeling a generic observation $y(j)$ in group $j$.
 We depict random quantities in circles and fixed quantities in squares.
-Not only do these graphical representations help with understanding the structure of the model but we will see that when solving for the posterior they give an immediate way to check which parameters are conditionally independent.
+
+How do we solve for the posterior in these models?
+Due to the hierarchical nature we can derive the joint posterior as $p(\phi, \theta \mid y) \propto p(y \mid \phi, \theta) p(\phi, \theta) = p(y \mid \theta) p(\theta \mid \phi) p(\phi)$ where we use that $y$ is independent of $\phi$ conditional on $\theta$ ---this can be seen immediatly from figure \ref{fig:general_sem}.
+We note that all factors on the right-hand side are known, hence, we can directly apply the methods discussed in the previous section.
+
+
+%Not only do these graphical representations help with understanding the structure of the model, but we will see that when solving for the posterior they give an immediate way to check which parameters are conditionally independent.
 
 %\subsection{Solving for the Posterior}\label{sec:hierachical_solving}
 %In this section we present the complexities of deriving the (marginal) posterior in hierarchical models by considering the steps necessary to fully solve an example model.
@@ -129,49 +140,52 @@ Not only do these graphical representations help with understanding the structur
 %Unfortunately in more complex models this is not possible in the general case.
 
 \subsection{Hierarchical Linear Models}
-The following subsection presents hierarchical linear models, an important subclass of the general multi-level model.
-As in classical statistics linear models are usually simpler to estimate and easier to interpret.
-The standard critique on linear models from classical statistics, i.e. model misspecification, also applies here; however, we will see that due to the hiearchical nature we are able to model very complex structure even under a linearity assumption.
+We end our segment on theory with the introduction of hierachical linear models, the class of models we will be using exclusively in our Monte Carlo and application part.
 
-Being more precise, linearity here means that on each level that is being modeled, parameters enter the \emph{level-model} lineary.
-We will continue by shortly presenting the general (two-level) hierarchical linear model.
-In the last subsection we consider the \emph{varying slopes model} which will be further analyzed in the monte carlo study.
-We also note here that the varying slopes model is closely related to the \emph{varying intercepts model} which will be used in the application part.
+As in classical statistics, linear models are usually simpler to estimate and easier to interpret, which can explain their widespread use in practice.
+Standard critiques on linear models, e.g. model misspecification issues, also apply here, however, we will see that due to the hiearchical nature we are able to model complex structure, even under a linearity assumption.
+Being more precise, linearity in a hierarchical context means that on each level parameters enter the \emph{level-model} linearly.
+Let us formalize this.
 
 \paragraph{General Definition.}
-As before we consider outcomes $y_i$ for $i=1,\mydots,n$ in groups $j=1,\mydots,J$ with individual-level characteristics $x_i$ and group-level characteristics $u_{j[i]}$.
-When talking about hierarchical linear models, we consider models that can be written as follows
+As before, we consider outcomes $y_i$ for individuals $i=1,\mydots,n$ in groups $j=1,\mydots,J$, with individual-level characteristics $x_i$ and group-level characteristics $u_{j[i]}$.
+A general two-level hierarchical linear model can then be written as
 \begin{align}
-  y_i &= \alpha_{j[i]} + x_i^\prime \beta_{j[i]} + \epsilon_i \,,\\
-  \beta_j &= \gamma_0 + u_j^\prime \gamma + \eta_j \,,
+  y_i &= \alpha_{j[i]} + x_i^{\intercal} \beta_{j[i]} + \epsilon_i \,, \tag{Individual Level}\\
+  \beta_j &= \gamma_0 + u_j^{\intercal} \gamma + \eta_j \, \tag{Group Level},
 \end{align}
-where $\epsilon_i$ and $\eta_j$ denote innovation terms on the respective level with distributional assumptions $\epsilon_i \sim p(\epsilon; \theta_\epsilon)$ and $\eta_j \sim p(\eta; \theta_\eta)$.
+where $\epsilon_i$ and $\eta_j$ denote error terms on the respective level.
+Commonly the group-level errors are modeled as independent and identical, and the individual-level errors are modeled as independent and identical in their respective group.
 Note that this can be extended for the heteroscedastic or autocorrelated case.
-The model becomes Bayesian as we impose prior distributions on all parameters that are not explicitly modeled.
+Just like in the previous section, this model does not define a Bayesian model per se.
+We make the model Bayesian by imposing a prior distribution on all paramters that are not explicitly modeled themself.
+In the above case this would be $\gamma_0, \gamma, \epsilon$ and $\eta$.
 
-\paragraph{Varying Slopes Model with one Predictor in each Level.}
-To finish this section we will showcase the \emph{varying slopes model}, on which we rely heavily in the monte carlo study and which is closely related to the model considered in the application part.
-In particular we consider the case where each level features one regressor.
-Written formally we have
-\begin{align}
-  y_i = \alpha + \beta_{j[i]} x_i + \epsilon_i \,,
-\end{align}
-for the individual level, with $\epsilon_i \overset{\text{iid}}{\sim} \normal{0, \sigma_\epsilon^2}$.
-And for the group-level we get
-\begin{align}
-  \beta_j &= \gamma_0 + \gamma_1 u_j + \eta_j \,,
-\end{align}
-with $\eta_j \overset{\text{iid}}{\sim} \normal{0, \sigma_\eta^2}$.
-In a classicist interpretation we would call $\gamma_0$ and  $\gamma_1$ the \emph{fixed effects} as they do not vary group and the $\eta_j's$ the \emph{random effects} as they do vary by group.
-As \citet{GelmanHill2007} note, in a Bayesian interpretation this nomenclature is unfortunate as everything in a Bayesian setting is assumed to be random.
+We consider the finite sample properties of this model for various types of priors in the next part and apply the model to real data in the last part.
 
-Were we to let $\alpha$ vary by group and instead fix $\beta$ we would get a \emph{varying intercept model} as will be used in the application part.
-A justified question is if these comparably simple models have any sensible application.
-Using the example from \citet{GelmanHill2007}, consider modeling $J$ different experiments where in each experiment the baseline conditions were the same.
-In this setting we would like to measure the effect of some treatment (with treatment status $T_i$) on some outcome $y_i$.
-In this case we could model the outcomes as $y_i \mid \theta_{j[i]} \sim \normal{\alpha + \theta_{j[i]} T_i, \sigma^2}$,
-that is as a varying slopes model.
-Similar examples can be found to justify the use of varying intercept models.
-In a real application we usually combine varying intercept and varying slope models; however,
-this does not mean that every parameter must vary by group.
-Domain level knowledge can be used to guide the probabilistic modeler in choosing which parameters should vary and how many levels should be build.
+%\paragraph{Varying Slopes Model with one Predictor in each Level.}
+%To finish this section we will showcase the \emph{varying slopes model}, on which we rely heavily in the monte carlo study and which is closely related to the model considered in the application part.
+%In particular we consider the case where each level features one regressor.
+%Written formally we have
+%\begin{align}
+%  y_i = \alpha + \beta_{j[i]} x_i + \epsilon_i \,,
+%\end{align}
+%for the individual level, with $\epsilon_i \overset{\text{iid}}{\sim} \normal{0, \sigma_\epsilon^2}$.
+%And for the group-level we get
+%\begin{align}
+%  \beta_j &= \gamma_0 + \gamma_1 u_j + \eta_j \,,
+%\end{align}
+%with $\eta_j \overset{\text{iid}}{\sim} \normal{0, \sigma_\eta^2}$.
+%In a classicist interpretation we would call $\gamma_0$ and  $\gamma_1$ the \emph{fixed effects} as they do not vary group and the $\eta_j's$ the \emph{random effects} as they do vary by group.
+%As \citet{GelmanHill2007} note, in a Bayesian interpretation this nomenclature is unfortunate as everything in a Bayesian setting is assumed to be random.
+%
+%Were we to let $\alpha$ vary by group and instead fix $\beta$ we would get a \emph{varying intercept model} as will be used in the application part.
+%A justified question is if these comparably simple models have any sensible application.
+%Using the example from \citet{GelmanHill2007}, consider modeling $J$ different experiments where in each experiment the baseline conditions were the same.
+%In this setting we would like to measure the effect of some treatment (with treatment status $T_i$) on some outcome $y_i$.
+%In this case we could model the outcomes as $y_i \mid \theta_{j[i]} \sim \normal{\alpha + \theta_{j[i]} T_i, \sigma^2}$,
+%that is as a varying slopes model.
+%Similar examples can be found to justify the use of varying intercept models.
+%In a real application we usually combine varying intercept and varying slope models; however,
+%this does not mean that every parameter must vary by group.
+%Domain level knowledge can be used to guide the probabilistic modeler in choosing which parameters should vary and how many levels should be build.

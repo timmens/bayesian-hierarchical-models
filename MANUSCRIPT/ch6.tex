@@ -52,6 +52,7 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \label{fig:group_sem}
 \end{figure}
 
+<<<<<<< HEAD
 
 \begin{figure}[ht]
 \begin{center}
@@ -109,27 +110,73 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 	\caption{The ratio of between-chain variance to within-chain variance.}
 	\label{fig:rhat}
 \end{figure}
+=======
+%\begin{figure}[ht]
+%\begin{center}
+%\begin{tikzpicture}%
+%  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
+%  node distance=2.5cm,
+%  >=latex,
+%  on grid]
+%  \node[vertex] (phi) {$\mu, \tau^2$};
+%  \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
+%  \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
+%  \node[below=1.5cm of phi] (dots1) {$\dots$};
+%  \node[vertex,below=2cm of theta1] (y1) {$y(1)$};
+%  \node[vertex,below=2cm of thetaJ] (yJ) {$y(J)$};
+%  \node[rectangle, draw=black, minimum size=0.8cm, below=2.5cm of phi] (sigma) {$\sigma^2$};
+%  \node[below=3.5cm of phi] (dots1) {$\dots$};
+%  \draw[->]
+%    (phi) edge (theta1)
+%    (phi) edge (thetaJ)
+%    (theta1) edge (y1)
+%    (thetaJ) edge (yJ)
+%    (sigma) edge (y1)
+%    (sigma) edge (yJ);
+%\end{tikzpicture}
+%\end{center}
+%\label{fig:example_model}
+%\caption{The directed acyclical graph representation of the model structure of the example model in subsection \ref{sec:hierachical_solving}. Random  and fixed quantities are depicted in circles and squares, respectively.}
+%\end{figure}
+>>>>>>> ebcc425e29d80a0c61f20838e55b994abb056eb1
 
 \subsection{Tables}
 
 \begin{proof}[Derivation of Results in Table \ref{tab:comp_uniform_bay_ml}.]
-  We know that for the problem at hand the standard maximum likelihood estimators
-  and their variances are given by
-  \begin{align}
-    \hat{\mu}_{ML} &= \frac{1}{n} \sum_i y_i = \bar{y}\,\\
-    \hat{\sigma}_{ML}^2 &= \frac{1}{n} \sum_i (y_i - \bar{y})^2 = \frac{n-1}{n} s^2\,\\
-    \mathrm{I}(\mu, \sigma)^{-1} &= \sqmat{\sigma^2 / n & 0\\0&\sigma^2/(2n)} \,.
-  \end{align}
-  The Bayesian counterpart to the ML-Estimator is the \emph{maximum a posteriori estimate},
+  For the normal distributed data problem at hand the derivation of the maximum likelihood estimators, $\bar{y}$ for $\mu$ and $(n-1) s^2 / n$ for $\sigma^2$, is well known.
+  We note that the "ML Variance" denotes the theoretical variance of the estimators.
+  Further, the moments of the scaled inverse $\chi^2$ distributions are available in closed form.
+  In particular, if $X \sim \scaledInvChi{\nu, \tau^2}$, then $\Exp{X} = \nu \tau^2 / (\nu - 2)$ and $\var{X} = 2 \nu^2 \tau^4 / ((\nu - 2)^2 (\nu - 4))$.
+
+  Let us first consider the parameter $\mu$.
+  As the t-distribution is parameterized over its mean and variance we can simply read off these values.
+  Further, as the t-distribution is symmetric the MAP is equal to its mean.
+
+  Let us now consider the parameter $\sigma^2$.
+  Plugging in the respective parameters, we get
+  \begin{align*}
+    \Exp{\sigma^2 \mid y} = \frac{n - 1}{n - 3} \sigma^2
+  \end{align*}
+  directly, and
+  \begin{align*}
+    \var{\sigma^2 \mid y} = \frac{2 (n-1)^2}{(n-3)^2(n-5)} \sigma^4 \,.
+  \end{align*}
+  To get the MAP for $\sigma^2$ we need to maximize the posterior of $\sigma^2$.
+  Note that we can drop any integration constants, i.e. we need to solve
+  \begin{align*}
+    \maximize_{x > 0} \left\{x^{-(1 + \frac{n-1}{2})} \EXP{\frac{-(n-1) s^2}{2 x}}\right\} \,,
+  \end{align*}
+  where the term in curly brackets is just the posterior density of $\sigma^2$ evaluated at $x$.
+  Differentiating with respect to $x$ and setting this to zero yields the desired result.
 \end{proof}
 
 \begin{proof}[Derivation of Results in Table \ref{tab:comp_conjugate_bay_ml}.]
-
+  The proof from above applies here by mutatis mutandis.
 \end{proof}
 
-\begin{proof}[Derivation of Results in Table \ref{tab:vol_high_dim}]
-See file \lstinline{volume.py}{} in the online appendix.
-\end{proof}
+%\begin{proof}[Derivation of Results in Table \ref{tab:vol_high_dim}]
+%See file \lstinline{volume.py}{} in the online appendix.
+%\end{proof}
 
 \subsection{Proofs}
 \begin{remark}
