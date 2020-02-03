@@ -39,52 +39,112 @@ Two components of the exam were recorded as outcome variables: written paper and
 In this sub-section, we fit the a basic varying intercept and slope multilevel linear model with one predictor using the \textit{lmer()} functions. Functions such as lmer() are based on a combination of maximum likelihood (ML) estimation of the model parameters, and empirical Bayes (EB) predictions of the varying intercepts and/or slopes resulting in the Best Linear Unbiased Predictions (BLUPs) of the model parameters. We use these functions so that our parameter estimates from both the ML and the Bayesian framework are comparable.
 
 \subsubsection*{Model 1: Varying intercept and slope model with a single predictor}
-In this model, we allow both the intercept and the slope to vary randomly across schools using the following model: expressed\footnote{Equivalently, the model can be expressed as: $$y_{ij}\sim N(\alpha_{j}+\beta_{j}x_{ij} , \sigma_y ^2 ),$$
+In this model, we allow both the intercept and the slope to vary randomly across schools using the following model: \footnote{Equivalently, the model can be expressed as: $$y_{ij}\sim N(\alpha_{j}+\beta_{j}x_{ij} , \sigma_y ^2 ),$$
 $$
 \left( \begin{matrix} \alpha _{ j } \\ \beta _{ j } \end{matrix} \right) \sim N\left( \left( \begin{matrix} { \mu  }_{ \alpha  } \\ { \mu  }_{ \beta  } \end{matrix} \right) , \left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).$$}:
 
-\begin{align}
-	y_{ij} = \alpha_j + \beta_j x_{ij} +\epsilon_{ij},
-\end{align}
+\begin{flalign*}
+	y_{ij} &= \alpha_j + \beta_j x_{ij} +\epsilon_{ij} \,, \\
+	\alpha_j &= \mu_\alpha + u_j \,, \\
 
-\begin{align}
-	\alpha_j = \mu_\alpha + u_j,
-\end{align}
-
-\begin{align}
-	\beta_j = \mu_\beta + v_j,
-\end{align}
-
-or in a reduced form as
- 
-\begin{align}
-	y_{ij} = \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij}
-\end{align}
-
-where 
-\begin{align}
-\epsilon_{ij} \sim N(0, \sigma_{y}^{2}) 
-\end{align}
+	\beta_j &= \mu_\beta + v_j \,, \\ \text{or in a reduced form as} &&
+	y_{ij} &= \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij} \,, \\ \text{where} 
+\epsilon_{ij} &\sim N(0, \sigma_{y}^{2}) 
+\end{flalign*}
 
 and 
 \begin{align}
 \left( \begin{matrix} u_j \\ v_j \end{matrix} \right) \sim N\left( \left( \begin{matrix} 0 \\ 0 \end{matrix} \right) ,\left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).
 \end{align}
-Note that now we have variation in the $\alpha_{j}$'s and the $\beta_{j}$'s, and also a correlation parameter $\rho$ between $\alpha_j$ and $\beta_j$. This model can be fit using \textit{lmer()}:
+\newpage
 
-\textcolor{red}{input results here}
 
-In this model, the residual within-school standard deviation is estimated as $\hat{\sigma}_{y}=13.03$. The estimated standard deviations of the school intercepts and the school slopes are $\hat{\sigma}_{\alpha}= 10.15$ and $\hat{\sigma}_{\beta}=6.92$ respectively. The estimated correlation between varying intercepts and slopes is $\hat{\rho} = -0.52$. 
+The average regression line across schools is thus estimated as $\hat{\mu}_{ij} = 69.424 + 7.128 x_{ij}$, with the residual within-school standard deviation estimated as $\hat{\sigma}_{y}=13.03$. The estimated standard deviations of the school intercepts and the school slopes are $\hat{\sigma}_{\alpha}= 10.15$ and $\hat{\sigma}_{\beta}=6.92$ respectively. The estimated correlation between varying intercepts and slopes, although not reported in the table is $\hat{\rho} = -0.52$. We do not report the correlation factor here is it has no economic interpretation for our simple model with just one predictor.
 
-\textcolor{red}{get facts for results straight here}
-The average regression line across schools is thus estimated as $\hat{\mu}_{ij} = \textbf{69.73} + \textbf{6.74} x_{ij}$, with $\sigma_\alpha$ and $\sigma_y$ estimated as $8.76$ and $\textbf{13.41}$ respectively.  Treating these estimates of $\mu_\alpha$, $\beta$, $\sigma^2_{y}$, and $\sigma^2_{\alpha}$ as the true parameter values, we can then obtain the Best Linear Unbiased Predictions (BLUPs) for the school-level errors $\hat{u}_j = \hat{\alpha}_{j} - \hat{\mu}_{\alpha}$. 
-
-The BLUPs are equivalent to the so-called Empirical Bayes (EB) prediction, which is the mean of the posterior distribution of $u_{j}$ given all the estimated parameters, as well as the random variables $y_{ij}$ and $x_{ij}$ for the cluster.  These predictions are called "Bayes" because they make use of the pre-specified prior distribution \footnote{We elaborate more on prior distributions in Section the full Bayesian approach section} $\alpha_j \sim N(\mu_\alpha, \sigma^2_\alpha)$, and by extension $u_j \sim N(0, \sigma^2_\alpha)$, and called "Empirical" because the parameters of this prior, $\mu_\alpha$ and $\sigma^2_{\alpha}$, in addition to $\beta$ and $\sigma^2_{y}$, are estimated from the data.
+\begin{table}[H]
+	\centering 
+	\caption{{\small Comparison of Maximum Likelihood and Bayesian estimates.}} 
+	\label{}
+	
+	\smallskip
+	\begin{tabular}{l*{2}{c}}
+		\toprule \\[-1.0em]
+		\multicolumn{3}{c}{Dependent variable: Course test score}\\ \\[-1.0em]
+		&ML &Bayes\\ 
+		\midrule \\[-1.0em]
+		\emph{A. Random effects} \\
+		Intercept & -- & --\\
+		& (10.146) & (10.249)\\ \\[-1.0em]
+		Female & -- & --\\
+		& (6.924) & (7.099)\\ \\[-1.0em]
+		Residual & -- & --\\
+		& (13.030) & (13.0)\\ \\[-1.0em]
+		\\ \\[-1.0em]\emph{B. Fixed effects} \\
+		Intercept & 69.425 & 69.413\\
+		& (1.352) & (1.287)\\ \\[-1.0em]
+		Female & 7.128 & 7.132\\
+		& (1.131) & (1.165)\\ \\[-1.0em]
+		\\ \\[-1.0em]\hline \\[-1.0em]
+		\emph{N} \\
+		\hspace{3mm}Students&1725&1725\\
+		\hspace{3mm}Schools&73&73\\
+		\bottomrule
+		
+	\end{tabular} 
+\label{tab:results}
+\end{table}
+Treating these estimates of $\mu_\alpha$, $\beta$, $\sigma^2_{y}$, and $\sigma^2_{\alpha}$ as the true parameter values, we can then obtain the Best Linear Unbiased Predictions (BLUPs) for the school-level errors $\hat{u}_j = \hat{\alpha}_{j} - \hat{\mu}_{\alpha}$. The BLUPs are equivalent to the so-called Empirical Bayes (EB) prediction, which is the mean of the posterior distribution of $u_{j}$ given all the estimated parameters, as well as the random variables $y_{ij}$ and $x_{ij}$ for the cluster.  These predictions are called "Bayes" because they make use of the pre-specified prior distribution \footnote{We elaborate more on prior distributions in Section the full Bayesian approach section} $\alpha_j \sim N(\mu_\alpha, \sigma^2_\alpha)$, and by extension $u_j \sim N(0, \sigma^2_\alpha)$, and called "Empirical" because the parameters of this prior, $\mu_\alpha$ and $\sigma^2_{\alpha}$, in addition to $\beta$ and $\sigma^2_{y}$, are estimated from the data.
 
 Compared to the Maximum Likelihood (ML) approach of predicting values for $u_j$ by using only the estimated parameters and data from cluster $j$, the EB approach additionally consider the prior distribution of $u_{j}$, and produces predicted values closer to $0$ (a phenomenon described as *shrinkage* or *partial pooling*).  To see why this phenomenon is called *shrinkage*, we usually express the estimates for $u_j$ obtained from EB prediction as $\hat{u}_j^{\text{EB}} = \hat{R}_j\hat{u}_j^{\text{ML}}$ where $\hat{u}_j^{\text{ML}}$ are the ML estimates, and $\hat{R}_j = \frac{\sigma_\alpha^2}{\sigma_\alpha^2 + \frac{\sigma_y^2}{n_j}}$ is the so-called Shrinkage factor.
 
-By using the \textit{ranef} function, we can also show how much the intercept is shifted up or down in particular schools. For example, in the first school in the dataset, the estimated intercept is about \textbf{10.17} lower than average, so that the school-specific regression line is $69.73 - 10.17 + 6.74 x_{ij}$.
+By using the \textit{ranef} function, we can retrieve information on how much the intercept and slope are shifted up or down in particular schools.
 
+\begin{table}[!htb]
+	\caption{Global caption}
+	
+	\begin{minipage}{.5\linewidth}
+		\caption{}
+		\centering
+			{
+			\begin{tabular}{l | c c c c c}
+				School ID & Intercept & Slope (FemaleF)\\
+				\hline
+				20920 & -19.252134 & 14.6434779 \\
+				22520 & -20.179376 & 4.7281488 \\
+				22710 & 10.655301 & -4.3047034 \\
+				22738  & 0.628640 & -0.0292755 \\
+				22908 & -3.464095 & -6.1324699 \\
+				23208 & 7.850079 & -4.4059020
+			\end{tabular}
+		}
+	\end{minipage}%
+	\begin{minipage}{.5\linewidth}
+		\centering
+		\caption{}
+		{
+			\begin{tabular}{l | c c c c c}
+				School ID & Intercept & Slope (FemaleF)\\
+				\hline
+				20920 & -18.7934902 & 14.15843136 \\
+				22520 & -20.0738465  & 4.59545742 \\
+				22710  & 10.4629445 & -3.90041741 \\
+				22738  & 0.7283296 & -0.08343345  \\
+				22908 & -3.6222983 & -5.96547650 \\
+				23208  & 7.7678493 & -4.33166932
+			\end{tabular}
+		}
+		
+	\end{minipage} 
+	\caption{{\small Shrinkage factor for the ML estimates (left) and Bayesian estimates (right): an extract of 6 schools}}
+	\label{tab:shrinkage}
+\end{table}
+
+For example, in the first school in the dataset shown in in Table \ref{tab:shrinkage} (left), the estimated intercept is about $19.25$ lower than average and the estimated slope is about $14.64$, so that the school-specific regression line is $(69.43 - 19.25) + (7.13 - 14.64) x_{ij}$ which turns out to be $ 50.18 - 7.51  x_{ij}$. This suggests that although the fixed effect average is positive, (thus on average and across schools, female students perform better that males), in this particular school, female students do on average perform less than males by about $7.51$ points.
+
+We can also retrieve the information on how much the intercept and slope are shifted up or down for the full bayesian estimation method to compare then to the BLUPs as shown in Table \ref{tab:shrinkage} (right). We indeed find, that they are almost identical for the first 6 groups in the dataset with the exception of a few instances. The BLUPs then allow us to compare results between ML and Bayes estimates. 
+
+\subsubsection*{Partial Pooling in multilevel models}
+\cite{gelman2006data} characterize multilevel modeling as partial pooling (also called shrinkage), which is a compromise between two extremes: complete pooling in which the clustering is not considered in the model at all, and no pooling, in which separate intercepts are estimated for each school as coefficients of dummy variables. The estimated school-specific regression lines in the above model (obtained by the getting the BLUPs as shown above) are based on partial pooling estimates. To show this, we first estimate the intercept and slope in each school in three ways, 1) complete pooling represented by the constant blue line, 2) no pooling also using ols represented by the red line, and 3) partial pooling (multilevel) regression line which is from the ML model above and is represented by the purple dotted line. We then plot the data and school-specific regression lines for a selection of eight schools as illustrated in Figure \ref{fig:pooling}. We see that the estimated school-specific regression line from the partial pooling estimates lies between the complete-pooling and no-pooling regression lines. There is more pooling (purple dotted line closer to red dotted line) in schools with larger sample sizes. By using the BLUPs method we ensure that the ML estimates are partial pooling estimates and therefore are compareable to the Bayesian framework.
 
 \subsubsection{Full Bayesian Inference Approach}
 As previously mentioned, functions such as \textit{lmer()} are based on a combination of maximum likelihood (ML) estimation of the model parameters, and empirical Bayes (EB) predictions of the varying intercepts and/or slopes. However, in some instances, when the number of groups is small or when the model contains many varying coefficients or non-nested components, the ML approach may not work as well in part because there may not be enough information to estimate variance parameters precisely. In such cases, a fully Bayesian approach provides reasonable inferences with the added benefit of accounting for all the uncertainty in the parameter estimates when predicting the varying intercepts and slopes, and their associated uncertainty. This is one of the reasons why a fully Bayesian estimation is particularly interesting. Other reasons are discussed in section \ref{section:Deeper}. We now demonstate below, how to fit Models 1 from above in a fully bayesian framework using the \textit{rstammarm} package. \textit{Rstanarm} is a wrapper for the \textit{rstan} package that enables the most common applied regression models to be estimated using Markov Chain Monte Carlo (MCMC) but still be specified using customary R modeling syntax.
@@ -143,9 +203,9 @@ In this formulation, $J$ is the number of varying effects in the model (here, $J
 This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$.
 
 \subsubsection*{Prior distributions}
-Model 1 is a varying intercept and slope model with normally distributed student residuals and school-level intercepts: $y_{ij} \sim N(\alpha_{j}, \sigma_{y}^{2}),$ and $\alpha_{j}\sim N(\mu_{\alpha}, \sigma_{\alpha}^{2})$. The normal distribution for the $\alpha_{j}$'s can be thought of as a prior distribution for these varying intercepts. The parameters of this prior distribution, $\mu_{\alpha}$ and $\sigma_{\alpha}$, are estimated from the data when using maximum likelihood estimation. In full Bayesian inference, all the hyperparameters ($\mu_{\alpha}$ and $\sigma_{\alpha}$), along with the other unmodeled parameters (in this case, $\sigma_{y}$) also need a prior distribution. For this illustration, we use weakly informative priors that provide moderate regularization \footnote{Regularization can be regarded as a technique to ensure that estimates are bounded within an acceptable range of values.} and help stabilize computation.
+Model 1 is a varying intercept and slope model with normally distributed student residuals and school-level intercepts: $y_{ij} \sim N(\alpha_{j}, \sigma_{y}^{2}),$ $\alpha_{j}\sim N(\mu_{\alpha}, \sigma_{\alpha}^{2})$ and $\beta_{j}\sim N(\mu_{\beta}, \sigma_{\beta}^{2})$. The normal distribution for the $\alpha_{j}$'s and $\beta_{j}$'s can be thought of as a prior distributions for these varying intercepts. The parameters of this prior distribution, $\mu_{\alpha}$, $\mu_{\beta}$, $\sigma_{\alpha}$ and $\sigma_{\beta}$, are estimated from the data when using maximum likelihood estimation. In full Bayesian inference, all the hyperparameters ($\mu_{\alpha}$, $\mu_{\beta}$, $\sigma_{\alpha}$ and $\sigma_{\beta}$), along with the other unmodeled parameters (in this case, $\sigma_{y}$) also need a prior distribution. For this illustration, we use weakly informative priors that provide moderate regularization \footnote{Regularization can be regarded as a technique to ensure that estimates are bounded within an acceptable range of values.} and help stabilize computation.
 
-First, before accounting for the scale of the variables, $\mu_{\alpha}$ is given normal prior distribution with mean 0 and standard deviation 10.  That is, $\mu_{\alpha} \sim N(0, 10^2)$. The standard deviation of this prior distribution, 10, is five times as large as the standard deviation of the response if it were standardized. This should be a close approximation to a noninformative prior over the range supported by the likelihood, which should give inferences similar to those obtained by maximum likelihood methods if similarly weak priors are used for the other parameters. \textit{rstanarm} scales the priors in relation to the scale of variables in the estimation proccess.
+First, before accounting for the scale of the variables, $\mu_{\alpha}$ and $\mu_{\beta}$ are given normal prior distributions with mean 0 and standard deviation 10.  That is, for example, $\mu_{\alpha} \sim N(0, 10^2)$. The standard deviation of this prior distribution, 10, is five times as large as the standard deviation of the response if it were standardized. This should be a close approximation to a noninformative prior over the range supported by the likelihood, which should give inferences similar to those obtained by maximum likelihood methods if similarly weak priors are used for the other parameters. \textit{rstanarm} scales the priors in relation to the scale of variables in the estimation proccess.
 
 Second, the (unscaled) prior for $\sigma_{y}$ is set to an exponential distribution with rate parameter set to 1.
 
@@ -154,26 +214,93 @@ Third, in order to specify a prior for the variances and covariances of the vary
 Additionally, we are also required to specify a prior for the covariance matrix $\Sigma$ for $\alpha_j$ and $\beta_j$ in this Model.  \textit{stan\_lmer} decomposes this covariance matrix (up to a factor of $\sigma_y$) into (i) a correlation matrix $R$ and (ii) a matrix of variances $V$, and assigns them separate priors as shown below. 
 
 \subsubsection*{Model 1 results}  
-As we see in the snippet of the summary below, the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $73.75$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $73.72$.  The point estimate for $\sigma_{\alpha}$ from the bayesian estimation is $8.92$, which is larger than the ML estimate ($8.67$). 
-\textcolor{red}{input results here}
+In Table \ref{tab:results}, we see the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $69.413$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $69.425$.  The point estimate for $\beta$ is slightly different in this Model ($7.132$ compared to the ML estimate -  $7.128$).  Furthermore, as in the previous two models, the Bayesian estimate for $\sigma_{\alpha}$ $10.249$ is larger than the ML estimate $10.146$. Additionally, the Bayesian estimates for $\sigma_{\beta}$ ($7.099$)and $\rho$ ($-0.48$) are larger than the corresponding ML estimates ($6.924$ and $-0.52$ respectively). This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ and $\mu_{\beta}$when estimating $\sigma_{\alpha}$ and $\sigma_{\beta}$.
 
-When using the bayesian estimation function, standard errors are obtained by considering the median absolute deviation (MAD) of each draw from the median of those draws.  It is well known that ML tends to underestimate uncertainties because it relies on point estimates of hyperparameters. Full Bayes, on the other hand, propagates the uncertainty in the hyperparameters throughout all levels of the model and provides more appropriate estimates of uncertainty.
-
-\textcolor{red}{check this for wording to use above}
-As we see in the snippet of the summary below, the point estimate of $\mu_{\alpha}$ from the bayesian estimation is $73.75$ and this corresponds to the median of the posterior draws.  This is similar to the ML estimate obtained previously $73.72$.  The point estimate for $\sigma_{\alpha}$ from the bayesian estimation is $8.92$, which is larger than the ML estimate ($8.67$). This discrepancy may be partly because the ML approach does not take into account the uncertainty in $\mu_{\alpha}$ when estimating $\sigma_{\alpha}$.
+When using the bayesian estimation function, standard errors are obtained by considering the median absolute deviation (MAD) of each draw from the median of those draws.  It is well known that ML tends to underestimate uncertainties because it relies on point estimates of hyperparameters. Full Bayes, on the other hand, propagates the uncertainty in the hyperparameters throughout all levels of the model and provides more appropriate estimates of uncertainty \cite{browne2006comparison}.
 
 \subsection{Looking Deeper into the Baysian Approach}
 \label{section:Deeper}
+Having samples of all the parameters and varying intercepts from their joint posterior distribution makes it easy to draw inferences about functions of these parameters. 
+
+In education research and practice, it is often of interest to compare the schools included in the data. Relevant questions include (1) what is the difference between the means of schools A and B, (2) is school A performing better than school B and (3) what are the rankings of these schools within the sample. When non-Bayesian methods are used, we can attempt to make such comparisons based on empirical Bayes (or Best Linear Unbiased) predictions of the varying intercepts, but it will generally be impossible to express the uncertainty for nonlinear function such as rankings. \cite{goldstein1996league} discuss this in greater detail.
+
+Having samples of all the parameters and varying intercepts from their joint posterior distribution makes it easy to draw inferences about functions of these parameters. 
+During estimation, 4 MCMC chains of 2,000 iterations each are generatd. Half of these iterations in each chain are used as warm-up/burn-in (to allow the chain to converge to the posterior distribution), and hence we only use 1,000 samples per chain. These MCMC-generated samples are taken to be drawn from the posterior distributions of the parameters in the model. We can use these samples for predictions, summarizing uncertainty and estimating credible intervals for any function of the parameters. 
+We can then generate a matrix for varying intercepts $\alpha_j$ and slopes $\beta_j$ as well as vectors containing the draws for the within standard deviation and the between variance by manipulating this matrix. 
+
+For the purposes of simplicity and illustration, we will continue our analysis from here onwards using the varying intercept draws. We have saved 4,000 posterior draws (from all 4 chains) for the varying intercepts $\alpha_{j}$ of the 73 schools. For example, the first column of the 4,000 by 73 matrix is a vector of 4,000 posterior simulation draws for the first school's (School 20920) varying intercept $\alpha_{1}$.  One quantitative way to summarize the posterior probability distribution of these 4,000 estimates for $\alpha_{1}$ is to examine their quantiles by computing mean, SD, median, and $95\%$ credible interval of varying intercepts as shown in Table \ref{tab:summary_data}
+
+\begin{table}[ht]
+	\centering
+	\def\arraystretch{1.3}
+	{\small
+		\begin{tabular}{l | c c c c c}
+			School & Posterior mean & Posterior SD & Q2.5 & Q50 & Q97.5\\
+			\hline
+			b[(Intercept) school:20920] & 50.47 & 5.90 & 38.59 & 50.45 & 61.73 \\
+			b[(Intercept) school:22520] & 49.38 & 2.71 & 43.99 & 49.36 & 54.54 \\
+			b[(Intercept) school:22710] & 79.84 & 4.36 &  71.42 & 79.87 & 88.54 \\
+			b[(Intercept) school:22738] & 70.10 & 4.79 & 60.71 & 70.15 & 79.35  \\
+			b[(Intercept) school:22908] & 65.88 & 6.99 & 52.18 & 65.73 & 79.93 \\
+			b[(Intercept) school:23208] &  77.15 & 4.52 & 67.96 & 77.24 & 85.87
+		\end{tabular}
+	}
+	\caption{{\small Summary statistics for posterior mean, SD and $95\%$ credible intervals.}}
+	\label{tab:summary_data}
+\end{table}
 
 \subsubsection{Ranking varying intercepts by school}
-\subsubsection{Pooling in Multilevel Models}
-\subsubsection{School to school comparisons}
-\subsubsection{Robustness checks}
+
+We can produce a caterpillar plot to show the fully Bayes estimates for the school varying intercepts in rank order together with their $95\%$ credible intervals as in Figure \ref{fig:ranking}. We can also use the same approach to generate $95\%$ credible intervales for $\beta_j$ $\sigma_y$, $\sigma_\alpha$ and $\sigma_\beta$.
+
+\subsubsection{Making comparisons between individual schools}
+
+We can also compare the schools included in the data.  Here we compare two schools as an example: Schools 60501 (the $21^{st}$ school) and 68271 (the $51^{st}$ school). We already have 4,000 posterior simulation draws for both schools. To make inferences regarding the difference between the average scores of the two schools, we can simply take the difference between the two vectors of draws $\alpha_{51} - \alpha_{21}$. 
+
+We can investigate the posterior distribution of the difference with descriptive statistics and a histogram. From Figure \ref{fig:differences}, we can see that the expected difference comes to 5.747 with a standard deviation of 6.094 and a wide range of uncertainty. The 95\% credible interval is [-6.55, 17.49], so we are 95\% certain that the true value of the difference between the two schools lies within this range, given the data. 
+
+We also can get the proportion of the time that School 60501 has a higher mean than School 68271 as shown in Table \ref{tab:comparison}
+
+\begin{table}[ht]
+	\centering
+	\def\arraystretch{1.3}
+	{\small
+		\begin{tabular}{l | c c c c c}
+			FALSE & TRUE \\
+			\hline
+			0.17275 & 0.82725 
+		\end{tabular}
+	}
+	\caption{{\small The percentage of how much school 21 is better than school 51.}}
+	\label{tab:comparison}
+\end{table} 
+
+This means that the posterior probability that School 60501 is better than School 68271 is 82.7\%. Any pair of schools within the sample of schools can be compared in this manner.
+
 \subsubsection{Convergence}
+By default, all \textit{rstanarm} modeling functions will run 4 randomly initialized Markov chains, each for 2,000 iterations (including a warmup period of 1,000 iterations). All chains must converge to the target distribution for inferences to be valid. The diagnostic which we use to assess whether the chains have converged to the posterior distribution is the statistic $\hat{R}$ \cite{gelman1992inference}. Each parameter has the $\hat{R}$ statistic associated with it and this statistic is automatically generated during estimation.
 
 
+The $\hat{R}$ is essentially the ratio of between-chain variance to within-chain variance analogous to ANOVA. The $\hat{R}$ statistic should be less than 1.1 if the chains have converged. Figure \ref{fig:rhat} illustrates the $\hat{R}$ statistic and shows that the chains converge.
 
 
+\subsubsection{Robustness checks}
+
+Although we vary the means for both $\mu_{\alpha}$ and $\mu_{\beta}$, we report the comparisons in output for $\mu_{\alpha}$ in keeping with the rest of Section \ref{section:Deeper}. 
+
+\begin{table}[!ht]
+	\begin{center}
+		\begin{tabular}{l | c c c c c}
+			Prior specification & Posterior mean & Posterior SD & Q2.5 & Q50 & Q97.5\\
+			\hline
+			Super uninformative priors $N(0,100)$ & 69.437685 & 4.370941 & 60.851800 &            69.442499 & 77.976610  \\
+ 			Weakly informative priors $N(0,10)$ & 69.32136  &   4.37512   & 60.74454 &   69.32730 &   77.87750 \\
+			Strong priors $N(0,2)$ & 69.181321 & 4.601223 &  60.156027 &  69.184115  & 78.193197 
+		\end{tabular}
+	\end{center}
+	\caption{The average posterior mean, sd and credible interval monte carlo draws for $\mu_{\alpha}$.}
+	\label{tab:robustness}
+\end{table}
 
 
 

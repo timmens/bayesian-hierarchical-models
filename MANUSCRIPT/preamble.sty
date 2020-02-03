@@ -26,6 +26,16 @@
 \usepackage{xfrac}
 \usepackage{titlesec}
 
+
+\usepackage{float}              
+\floatstyle{plaintop}           
+\restylefloat{table}
+
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\newcolumntype{d}[1]{D..{#1}}
+\newcommand{\mc}[1]{\multicolumn{1}{c@{}}{#1}}
+
 \lstset{
     frameround=fttt,
     language=Python,
