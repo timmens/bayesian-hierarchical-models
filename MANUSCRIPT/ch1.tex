@@ -234,7 +234,7 @@ That is why we focus on assumptions which admit a central limit theorem with the
   Let $\{X_n \}$ be a (discrete time) Markov chain and $\pi$ a probability distribution on the same space.
   Consider some measurable function $h$ with $\Expwrt{\pi}{h^2} < \infty$.
   Define $\sigma^2(h) := \varwrt{\pi}{h}\tau := \varwrt{\pi}{h} \sum_{k \in \mathrm{Z}} \text{Corr}\left(h(X_0), h(X_k)\right)$.
-  Assume the Markov chain is $\phi$-irreducible, aperiodic, reversible with respect to $\pi$ and that $\sigma^2(h) < \infty$. Then $\pi$ is stationary for the chain and \footnote{In the original paper by \citet{roberts2004} the statement of this theorem differs in that they write $\tau = \sum_{k \in \mathrm{Z}} \text{Corr}\left(X_0, X_k\right)$.
+  Assume the Markov chain is $\phi$-irreducible, aperiodic, reversible with respect to $\pi$ and that $\sigma^2(h) < \infty$. Then $\pi$ is stationary for the chain and\footnote{In the original paper by \citet{roberts2004} the statement of this theorem differs in that they write $\tau = \sum_{k \in \mathrm{Z}} \text{Corr}\left(X_0, X_k\right)$.
   We believe that this is an error as \citet{haggstrom2007} state in their comparison of different ways of writing the asymptotic variance that $\sigma^2(h) = \sum_{k \in \mathrm{Z}} \Cov{h(X_0), h(X_k)}$.
   Now if we use that $X_0 \sim \pi$ we get $\sigma^2(h) = \sum_{k \in \mathrm{Z}} \Cov{h(X_0), h(X_k)}= \var{h(X_0)} + \sum_{k \neq 0} \Cov{h(X_0), h(X_k)} = \varwrt{\pi}{h}(1 + \sum_{k \neq 0} \Cov{h(X_0), h(X_k)}) / \var{h(X_0)} =\varwrt{\pi}{h}(1 + \sum_{k \neq 0} \text{Corr}{(h(X_0), h(X_k))}) = \varwrt{\pi}{h} \sum_{k\in\mathrm{Z}} \text{Corr}{(h(X_0), h(X_k))}$.}
   \begin{align}
