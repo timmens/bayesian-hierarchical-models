@@ -52,6 +52,65 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \label{fig:group_sem}
 \end{figure}
 
+<<<<<<< HEAD
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}%
+  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
+  node distance=2.5cm,
+  >=latex,
+  on grid]
+  \node[vertex] (phi) {$\mu, \tau^2$};
+  \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
+  \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
+  \node[below=1.5cm of phi] (dots1) {$\dots$};
+  \node[vertex,below=2cm of theta1] (y1) {$y(1)$};
+  \node[vertex,below=2cm of thetaJ] (yJ) {$y(J)$};
+  \node[rectangle, draw=black, minimum size=0.8cm, below=2.5cm of phi] (sigma) {$\sigma^2$};
+  \node[below=3.5cm of phi] (dots1) {$\dots$};
+  \draw[->]
+    (phi) edge (theta1)
+    (phi) edge (thetaJ)
+    (theta1) edge (y1)
+    (thetaJ) edge (yJ)
+    (sigma) edge (y1)
+    (sigma) edge (yJ);
+\end{tikzpicture}
+\end{center}
+\label{fig:example_model}
+\caption{The directed acyclical graph representation of the model structure of the example model in subsection \ref{sec:hierachical_solving}. Random  and fixed quantities are depicted in circles and squares, respectively.}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=10cm,height=10cm,keepaspectratio]{graphics/pooling.png}
+	\caption{We see that the estimated school-specific regression line from the partial pooling estimates lies between the complete-pooling and no-pooling regression lines. There is more pooling (purple dotted line closer to red dotted line) in schools with larger sample sizes.}
+	\label{fig:pooling}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=10cm,height=10cm,keepaspectratio]{./graphics/ranking.png}
+	%\includegraphics[width=\linewidth]{graphics/ranking.png}
+	\caption{Ranking for school varying intercepts. The red line represents the mean of all the posterior means: $69.42577$.}
+	\label{fig:ranking}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=10cm,height=10cm,keepaspectratio]{graphics/differences.png}
+	\caption{}
+	\label{fig:differences}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=15cm,height=15cm,keepaspectratio]{graphics/rhat.png}
+	\caption{The ratio of between-chain variance to within-chain variance.}
+	\label{fig:rhat}
+\end{figure}
+=======
 %\begin{figure}[ht]
 %\begin{center}
 %\begin{tikzpicture}%
@@ -79,6 +138,7 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 %\label{fig:example_model}
 %\caption{The directed acyclical graph representation of the model structure of the example model in subsection \ref{sec:hierachical_solving}. Random  and fixed quantities are depicted in circles and squares, respectively.}
 %\end{figure}
+>>>>>>> ebcc425e29d80a0c61f20838e55b994abb056eb1
 
 \subsection{Tables}
 

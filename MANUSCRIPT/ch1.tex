@@ -8,17 +8,17 @@ We use standard notation wherever possible, nonetheless we make one exception in
 If it is clear from the context we will also write $p(z)$ for the density of $Z$ evaluated at $z$.
 
 \subsection{Probabilistic Modeling}
-We begin by introducing a formal notion of stochastic modeling and continue with a taxonomic description of different schools of thoughts.
+We begin by introducing a formal notion of stochastic modeling and continue with a taxonomic description of different schools of thought.
 
 Say we observe data $\mathcal{D} = \{(y_i, x_i) : i=1,\mydots,n\}$ for which we have some intuition about the relationship between $X$ and $Y$ ---this intuition might come from (economic) theory for example.
-We formalize this by writing the data generating process as a (possibly algorithmic) mathematical model $Y = \mathcal{M}(X; \epsilon, \theta)$, where $\theta$ denotes the model parameters and $\epsilon$ an explicitly modeled error term which corrects for our uncertainty in the model, e.g. in the case of non-observables.
+We formalize this by writing the data generating process as a (possibly algorithmic) mathematical model $Y = \mathcal{M}(X; \epsilon, \theta)$, where $\theta$ denotes the model parameters and $\epsilon$ an explicitly modeled error term which corrects for uncertainty in the model, e.g. in the case of non-observables.
 
 In the rest of this paper we assume that we know the parametric structure of $\mathcal{M}$ and that our goal lies in learning about the parameters after observing the data $\mathcal{D}$.
 An important aspect here is to postulate the existence of a \textit{true data generating process}, which we do by assuming that there is some (fixed) $\theta_0$, in the parameter space $\Theta$, so that $Y = \mathcal{M}(X; \epsilon, \theta_0)$ describes reality sufficiently accurate and better than for any other parameter.
 The subsequent goal is then to learn about $\theta_0$.
 %Note that for everything that follows we need to assume that our \emph{true model} actually describes reality accurately; if not we enter the realm of model misspecification which can render any analysis useless.
 
-Next we compare two different schools of thought present in the statistical domain, which consider the estimation of $\theta_0$ and the quantification of our uncertainty in the estimate.
+Next we compare two different schools of thought present in the statistical domain, which consider the estimation of $\theta_0$ and the quantification of uncertainty in the estimate.
 
 \paragraph{Frequentist.}
 In the literature the so called frequentist methods constitute the most widely used approaches.
@@ -27,7 +27,7 @@ There we use the distributional assumptions on our model to construct the likeli
 We can then find an estimator $\hat{\theta}$ for $\theta_0$ as the maximizer of this function, i.e. $\hat{\theta} \in \argmax{\theta \in \Theta} \mathcal{L}(\theta; \mathcal{D})$.
 There has been published an extensive amount of research on the properties of this estimator, for example on sufficient conditions for the uniqueness of the maximization or large-sample normal approximations.
 In particular, under some regularity conditions we can find a matrix $\widehat{V}$ so that $\sqrt{n}\widehat{V}^{-1/2}(\hat{\theta} - \theta_0) \overset{d}{\longrightarrow} \normal{0, \mathrm{I}}$.
-This result we can use to quantify our uncertainty on $\hat{\theta}$ by computing standard errors and confidence intervals, as well as to formulate tests.
+This result we can use to quantify uncertainty in $\hat{\theta}$ by computing standard errors and confidence intervals, as well as to formulate tests.
 
 One fundamental idea which stretches over all methods in the frequentist world is the interpretation of probability as the limit of an infinite sequence of relative frequencies of events---hence the name.
 Probability then just counts how many times an event happened or not; for example if we toss a coin an infinite number of times, the relative frequency of heads converges to the probability of heads.
@@ -40,7 +40,7 @@ In this sense, it would be absurd to let this object vary for different experime
 
 \paragraph{Bayesian.}
 The main difference of the Bayesian mindset is the understanding of probability as a subjective quantification of uncertainty.
-We may still believe that $\theta_0$ is fixed, however, in the Bayesian paradigm we build our uncertainty about the true location of the parameter into the model by allowing for probability distributions to be defined on $\Theta$ ---which, as we saw above, is nonsensical in a frequentist worldview.
+We may still believe that $\theta_0$ is fixed, however, in the Bayesian paradigm we build uncertainty about the true location of the parameter into the model by allowing for probability distributions to be defined on $\Theta$ ---which, as we saw above, is nonsensical in a frequentist worldview.
 We can see the direct utility of this liberation by considering Bayes theorem applied to densities on our model
 \begin{flalign*}
   && p(\theta \mid \mathcal{D}) &= \frac{p(\mathcal{D} \mid \theta) p(\theta)}{p(\mathcal{D})} \propto p(\mathcal{D} \mid \theta) p(\theta) \,,\tag{Bayes theorem}&\\[0.7em] \text{which reads} &&
@@ -71,7 +71,7 @@ Our interest lies in solving for the marginal posteriors $p(\mu \mid y)$ and $p(
 
 \paragraph{Noninformative Prior.}
 We start our analysis with a common prior choice in settings where we have little prior information and sufficent data.
-In these cases we can use noninformative priors to model complete ignorance of any prior information; in particular, here we use \emph{flat priors}, which assign equal weight to every region in the parameter space.
+In these cases we can use noninformative priors to model complete ignorance of any prior information, in particular, here we use \emph{flat priors}, which assign equal weight to every region in the parameter space.
 Let us go with the common assumption that $\mu$ and $\sigma^2$ are independent a priori.
 Mathematically we can write a flat prior as $p(\mu) \propto 1$.
 We note that this does not define a proper proability distribution, which will not matter in this case but can lead to problems in others; see for example section 4.2 in \citet{kass1996}.
@@ -79,7 +79,7 @@ Since the variance is restricted to be positive we impose a flat prior on the lo
 Using that $x \mapsto \text{exp}^2(x)$ is one-to-one we get the density of the transformed variable $p(\mu, \sigma^2) = p(\mu)p(\sigma^2) \propto p(\sigma^2) \propto (\sigma^2)^{-1}$.
 
 The likelihood is given by $p(y \mid \mu, \sigma^2) \propto (\sigma^2)^{-n/2} \EXP{-\sum_i (y_i - \mu)^2/2\sigma^2}$, where we dropped all proportionality constants.
-Using the above we can apply Bayes theorem to yield $p(\mu, \sigma^2 \mid y) \propto p(y \mid \mu, \sigma^2) p(\mu, \sigma^2) \propto (\sigma^2)^{-(n+2)/2} \EXP{-\sum_i (y_i - \mu)^2/2\sigma^2}$.
+Application of Bayes theorem yields $p(\mu, \sigma^2 \mid y) \propto p(y \mid \mu, \sigma^2) p(\mu, \sigma^2) \propto (\sigma^2)^{-(n+2)/2} \EXP{-\sum_i (y_i - \mu)^2/2\sigma^2}$.
 Integrating over the respective parameter yields the marginal posteriors.
 
 \begin{proposition}\label{prop:posterior_uniform}
@@ -120,8 +120,7 @@ Consider again the likelihood but written dependent on the sufficient statistics
   \label{eq:likelihood2}
 \end{align}
 where $s^2$ again denotes the (unbiased) sample variance.
-
-We want to construct a two dimensional conjugate prior for $(\mu, \sigma^2)$ such that multiplying the prior by the likelihood does not change its structure.
+We want to construct a two dimensional conjugate prior for $(\mu, \sigma^2)$ such that multiplying the prior by the likelihood does not change its structure, as this assures the posterior to be of known form.
 Note that we have $p(\mu, \sigma^2) = p(\mu \mid \sigma^2) p(\sigma^2)$.
 Looking at equation (\ref{eq:likelihood2}) we see that in order to \emph{not} change the inherent structural dependence on the parameters we must have $\mu \mid \sigma^2 \sim \normal{\mu_0, \sigma^2 / \kappa_0}$, with \emph{hyperparameters} $\mu_0$ and $\kappa_0 > 0$.
 Similarly, we observe that we must have $\sigma^2 \sim \scaledInvChi{\nu_0, \sigma_0^2}$, with hyperparameters $\nu_0$ and $\sigma_0^2 > 0$.
@@ -170,7 +169,7 @@ Using the intermediate finding from proposition \ref{prop:posterior_conjugate} w
 Next we consider the results of Proposition \ref{prop:marginal_posterior}, of which some summary statistics are tabulated in table \ref{tab:comp_conjugate_bay_ml}.
 We focus on the analysis of the mean parameter $\mu$.
 
-As the t-distribution is parameterized over its mean and variance (and degrees of freedom) we can directly read off the posterior mean as $\mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y}$ and the posterior variance as $\sigma_n^2 / \kappa_n$.
+As the t-distribution is parameterized over its mean and variance (and degrees of freedom) we can directly deduce the posterior mean as $\mu_n =\frac{\kappa_0}{\kappa_0 + n}\mu_0 + \frac{n}{\kappa_0 + n}\bar{y}$ and the posterior variance as $\sigma_n^2 / \kappa_n$.
 We see that the posterior mean is simply a convex combination of the prior $\mu_0$ and the sample average $\bar{y}$, with weights determined by the sample size and $\kappa_0$.
 For any fixed $n$ this pulls our estimate of the posterior mean away from $\bar{y}$ and closer to $\mu_0$ (and vice versa), which can be helpful if we have insufficient data and believe that the parameter should be around $\mu_0$ ---we can use $\kappa_0$ then to express our degree of believe in the prior.
 As $n$ grows to infinity the information in the data overwhelms all prior information and the posterior mean is dominated by the sample mean.
@@ -199,7 +198,7 @@ This can occur in many settings, for example when using priors that do not mix w
 
 To motivate the following, say we are able to draw independent samples $\theta^{(1)}, \mydots, \theta^{(n)}$ from $p(\theta \mid \mathcal{D})$.
 By the law of large numbers we get $1 / n \sum_i h\left(\theta^{(i)}\right) \overset{a.s.}{\longrightarrow} \Exp{h(\theta) \mid \mathcal{D}}$, under some regularity conditions on $h$ and $p(\theta \mid \mathcal{D})$, with similar results holding for sample quantiles.
-Hence, to learn something about $p(\theta \mid \mathcal{D})$ we can formulate questions using quantiles or general expectations and rely on the statements above.
+Hence, to learn something about $p(\theta \mid \mathcal{D})$ we can formulate questions using quantiles or general expectations and rely on the statement above.
 
 In the subsequent paragraphs we discuss methods to sample from the posterior that work under the general assumption that we can evaluate the posterior at arbitrary points up to an integration constant.
 We will see that these methods do \emph{not} produce independent samples but instead create \emph{Markov chains} whose realizations can be seen as autocorrelated samples.
@@ -234,10 +233,10 @@ That is why we focus on assumptions which admit a central limit theorem with the
 \begin{theorem}{(A Central Limit Theorem for Markov Chains).}\label{thm:mcclt}
   Let $\{X_n \}$ be a (discrete time) Markov chain and $\pi$ a probability distribution on the same space.
   Consider some measurable function $h$ with $\Expwrt{\pi}{h^2} < \infty$.
-  Define $\sigma^2(h) := \varwrt{\pi}{h}\tau := \varwrt{\pi}{h} \sum_{k \in \mathrm{Z}} \text{Corr}\left(h(X_0), h(X_k)\right)$.\footnote{In the original paper by \citet{roberts2004} the statement of this theorem differs in that they write $\tau = \sum_{k \in \mathrm{Z}} \text{Corr}\left(X_0, X_k\right)$.
+  Define $\sigma^2(h) := \varwrt{\pi}{h}\tau := \varwrt{\pi}{h} \sum_{k \in \mathrm{Z}} \text{Corr}\left(h(X_0), h(X_k)\right)$.
+  Assume the Markov chain is $\phi$-irreducible, aperiodic, reversible with respect to $\pi$ and that $\sigma^2(h) < \infty$. Then $\pi$ is stationary for the chain and \footnote{In the original paper by \citet{roberts2004} the statement of this theorem differs in that they write $\tau = \sum_{k \in \mathrm{Z}} \text{Corr}\left(X_0, X_k\right)$.
   We believe that this is an error as \citet{haggstrom2007} state in their comparison of different ways of writing the asymptotic variance that $\sigma^2(h) = \sum_{k \in \mathrm{Z}} \Cov{h(X_0), h(X_k)}$.
   Now if we use that $X_0 \sim \pi$ we get $\sigma^2(h) = \sum_{k \in \mathrm{Z}} \Cov{h(X_0), h(X_k)}= \var{h(X_0)} + \sum_{k \neq 0} \Cov{h(X_0), h(X_k)} = \varwrt{\pi}{h}(1 + \sum_{k \neq 0} \Cov{h(X_0), h(X_k)}) / \var{h(X_0)} =\varwrt{\pi}{h}(1 + \sum_{k \neq 0} \text{Corr}{(h(X_0), h(X_k))}) = \varwrt{\pi}{h} \sum_{k\in\mathrm{Z}} \text{Corr}{(h(X_0), h(X_k))}$.}
-  Assume the Markov chain is $\phi$-irreducible, aperiodic, reversible with respect to $\pi$ and that $\sigma^2(h) < \infty$. Then $\pi$ is stationary for the chain and
   \begin{align}
     \sqrt{n}\left(\frac{1}{n}\sum_{i=1}^n h(X_i) - \Expwrt{\pi}{h} \right) \overset{d}{\longrightarrow} \normal{0, \sigma^2(h)} \,.
   \end{align}
@@ -262,7 +261,7 @@ Again, in the next paragraph we will see that this condition can be satisfied by
 \textbf{Finite variance} ($\sigma^2(h) < \infty$) implies that the integrated correlation time $\tau$ must be finite, as we assumes square integrability of $h$.
 The integrated correlation time is finite if the correlation function decreases fast enough to zero.
 Heuristically speaking, for a CLT to work we need more information as would be available in a sample for which the integrated autocorrelation time is infinite.
-If it is however, we get the usual large sample variance approximation $\sigma^2(h) / n = \varwrt{\pi}{h} / (n/\tau)$.
+If it is finite we get the usual large sample variance approximation $\sigma^2(h) / n = \varwrt{\pi}{h} / (n/\tau)$.
 In this sense we might say that $n/\tau$ denotes the \emph{effective sample size}, which corrects for the fact that we are not drawing independent samples and therefore (in most cases) need more samples to yield the same amount of information as in the independent case.
 
 \paragraph{Metropolis-Hastings Algorithm.}
@@ -288,19 +287,19 @@ Algorithm \ref{alg:metropolis-hastings} displays the Metropolis-Hastings algorit
 The main idea is that we start with an initial value and iteratively propose new values of the chain, however, we do not accept every proposal, but we do so only with a certain probability ---this probability can be thought of as high if the proposal has a high relative density compared to the last chain link.
 Here we also see why we do not care about any integration constant, as the target density only appears as a ratio (line 4).
 
-Cleary the results depend on the choice of the proposal density.
+Clearly the results depend on the choice of the proposal density.
 A common pick are so called \emph{random walk} proposals, which add some random number to the current position of the chain; for example a gaussian random walk proposal is given by $q(\cdot \mid x_t) = \normal{\cdot \mid x_t, \sigma^2}$ or equivalently stated $y = x_t + \normal{0, \sigma^2}$.
 See \citet{sherlock2010} for a recent survey on random walk proposals.
 
 The simplicity of the algorithm is remarkable, but the main question is if the resulting Markov chain inherits favorable properties.
 And indeed this is the case.
 By construction the algorithm creates Markov chains which are reversible with respect to $\pi$ and aperiodic, and if additionally the proposal density is positive and continuous and $\pi$ is finite then the chain is $\pi$-irreducible; see for example \citet{roberts2004}.
-This tells us that under minor regularity conditions a CLT holds for chains created using the Metropolis-Hastings algorithm.
+This tells us that under these regularity conditions a CLT holds for chains created using the Metropolis-Hastings algorithm.
 To avoid using samples that do not come from the stationary distribution, in practice we choose $T$ very large and discard the first few (\emph{burn-in}) samples.
 
 The ability to sample draws in complex settings using the Metropolis-Hastings algorithm (and other Markov chain Monte Carlo methods for that matter) made Bayesian statistics applicable for real problems.
 Still, \citet{Au2001EstimationOS} show that the classical Metropolis-Hastings algorithm is highly dependent on the proposal density and fails in higher dimensions; \citet{zuev08} provide a geometric intution.
-There have been published numerous novel methods which deal with dimensionality problems.
+Numerous novel methods which deal with dimensionality problems have been published.
 A particular promising route seems to be \emph{Hamiltonian Monte Carlo} (\citet{duane87}), which is one of the algorithms used in the probabilistc programming language STAN (\citet{standev2018stancore}) with ongoing research on theoretical properties, see for example \citet{betancourt2014geometric}.
 
 
