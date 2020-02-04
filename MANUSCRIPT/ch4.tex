@@ -102,12 +102,12 @@ By using the \textit{ranef} function, we can retrieve information on how much th
 			\begin{tabular}{l | c c c c c}
 				School ID & Intercept & Slope (FemaleF)\\
 				\hline
-				20920 & -19.252134 & 14.6434779 \\
-				22520 & -20.179376 & 4.7281488 \\
-				22710 & 10.655301 & -4.3047034 \\
-				22738  & 0.628640 & -0.0292755 \\
-				22908 & -3.464095 & -6.1324699 \\
-				23208 & 7.850079 & -4.4059020
+				20920 & -19.25 & 14.64 \\
+				22520 & -20.18 & 4.73 \\
+				22710 & 10.66 & -4.31 \\
+				22738  & 0.63 & -0.029 \\
+				22908 & -3.46 & -6.13 \\
+				23208 & 7.85 & -4.41
 			\end{tabular}
 		}
 	\end{minipage}%
@@ -118,12 +118,12 @@ By using the \textit{ranef} function, we can retrieve information on how much th
 			\begin{tabular}{l | c c c c c}
 				School ID & Intercept & Slope (FemaleF)\\
 				\hline
-				20920 & -18.7934902 & 14.15843136 \\
-				22520 & -20.0738465  & 4.59545742 \\
-				22710  & 10.4629445 & -3.90041741 \\
-				22738  & 0.7283296 & -0.08343345  \\
-				22908 & -3.6222983 & -5.96547650 \\
-				23208  & 7.7678493 & -4.33166932
+				20920 & -18.79 & 14.16 \\
+				22520 & -20.07 & 4.60 \\
+				22710  & 10.46 & -3.90 \\
+				22738  & 0.73 & -0.083  \\
+				22908 & -3.62 & -5.97 \\
+				23208  & 7.77 & -4.33
 			\end{tabular}
 		}
 		
@@ -174,7 +174,7 @@ We specify Model 1 with default prior distributions for $\mu_{\alpha}$, $\sigma_
 \end{align}
 
 
-The correlation matrix $R$ is 2 by 2 matrix with 1's on the diagonal and $\rho$'s on the off-diagonal. \textit{stan\_lmer} assigns it an LKJ \footnote{For more details about the LKJ distribution, see \url{http://www.psychstatistics.com/2014/12/27/d-lkj-priors/} and \url{http://mc-stan.org/users/documentation/case-studies/lotka-volterra-predator-prey.html}} prior (\cite{lewandowski2009generating}), with regularization parameter 1.  This is equivalent to assigning a uniform prior for $\rho$.  The more the regularization parameter exceeds one, the more peaked the distribution for $\rho$ to take the value 0.
+The correlation matrix $R$ is 2 by 2 matrix with 1's on the diagonal and $\rho$'s on the off-diagonal. \textit{stan\_lmer} assigns it an LKJ prior (\cite{lewandowski2009generating}), with regularization parameter 1.  This is equivalent to assigning a uniform prior for $\rho$.  The more the regularization parameter exceeds one, the more peaked the distribution for $\rho$ to take the value 0.
 
 The matrix of (scaled) variances $V$ can first be collapsed into a vector of (scaled) variances, and then decomposed into three parts, $J$, $\tau^2$ and $\pi$ as shown below.
 
