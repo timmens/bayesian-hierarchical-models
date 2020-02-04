@@ -4,7 +4,7 @@
 \label{sec:bayesian_thinking}
 In this section we introduce the core topics of Bayesian statistics and, whenever possible, compare proposed methods and results to their classicist counterpart.
 
-We use standard notation wherever possible, nonetheless we make one exception in that we write $p(Z)$ for the probability density function of the random variable $Z$, where $Z$ might be scalar-valued or vector-valued.
+We use standard notation wherever possible, nonetheless we make one exception in that we write $p(Z)$ for the probability density function of the random variable $Z$, where $Z$ may be scalar-valued or vector-valued.
 If it is clear from the context we will also write $p(z)$ for the density of $Z$ evaluated at $z$.
 
 \subsection{Probabilistic Modeling}
@@ -32,7 +32,7 @@ This result we can use to quantify uncertainty in $\hat{\theta}$ by computing st
 One fundamental idea which stretches over all methods in the frequentist world is the interpretation of probability as the limit of an infinite sequence of relative frequencies of events---hence the name.
 Probability then just counts how many times an event happened or not; for example if we toss a coin an infinite number of times, the relative frequency of heads converges to the probability of heads.
 We do expect the outcome of an experiment (e.g. coin flip) to vary, however, we do not assume the true parameter to vary.
-For instance, we might interpret the probability of a coin landing on heads as the true model parameter.
+For instance, we may interpret the probability of a coin landing on heads as the true model parameter.
 In this sense, it would be absurd to let this object vary for different experiments.
 %Therefore any hypothesis on $\theta_0$ is either true or false.
 %And it is this binarity which makes hypothesis testing (interpretation of confidence intervals) awkward in the frequentist setting.
@@ -40,7 +40,7 @@ In this sense, it would be absurd to let this object vary for different experime
 
 \paragraph{Bayesian.}
 The main difference of the Bayesian mindset is the understanding of probability as a subjective quantification of uncertainty.
-We may still believe that $\theta_0$ is fixed, however, in the Bayesian paradigm we build uncertainty about the true location of the parameter into the model by allowing for probability distributions to be defined on $\Theta$ ---which, as we saw above, is nonsensical in a frequentist worldview.
+We may still believe that $\theta_0$ is fixed, nevertheless, in the Bayesian paradigm we build uncertainty about the true location of the parameter into the model by allowing for probability distributions to be defined on $\Theta$ ---which, as we saw above, is nonsensical in a frequentist worldview.
 We can see the direct utility of this liberation by considering Bayes theorem applied to densities on our model
 \begin{flalign*}
   && p(\theta \mid \mathcal{D}) &= \frac{p(\mathcal{D} \mid \theta) p(\theta)}{p(\mathcal{D})} \propto p(\mathcal{D} \mid \theta) p(\theta) \,,\tag{Bayes theorem}&\\[0.7em] \text{which reads} &&
@@ -50,7 +50,7 @@ The posterior distribution is the object of interest for any subsequent Bayesian
 From a naive standpoint this is too good to be true.
 And in fact it is.
 To give Bayes theorem any meaning we have to define the prior $p(\theta)$, a probability distribution of the model parameter on $\Theta$.
-The prior can be used to incorporate knowledge about the parameter into the analysis which existed prior to observing the data.
+The prior may be used to incorporate knowledge about the parameter into the analysis that existed prior to observing the data.
 But this can be highly subjective and can lead to \emph{two} different researchers having \emph{two} different priors which would result in \emph{two} different posteriors.
 This is where the main criticism of Bayesian statistics is focused on: where does the prior distribution come from?
 With the scientific goal of objectivity in mind, many feel at unease having results dependent on subjective choices of the prior.
@@ -194,7 +194,7 @@ In this section we consider approaches that allow us to characterize the posteri
 For the rest of this section let us assume we observed data $\mathcal{D}$ for which we have a (possibly algorithmic) model in mind, which can be represented by the likelihood $p(\mathcal{D} \mid \theta)$.
 We also assume that a prior distribution $p(\theta)$ has been constructed, so that the posterior is again given by $p(\theta \mid \mathcal{D}) \propto p(\mathcal{D} \mid \theta) p(\theta)$.
 Unlike before however, we now consider more general settings in which we do not restrict $p(\theta \mid \mathcal{D})$ to be available in analytical form.
-This can occur in many settings, for example when using priors that do not mix well with the likelihood or more apparent when using computational models which produce likelihood evaluations based on algorithms.
+This may occur in many settings, for example when using priors that do not mix well with the likelihood or more apparent when using computational models which produce likelihood evaluations based on algorithms.
 
 To motivate the following, say we are able to draw independent samples $\theta^{(1)}, \mydots, \theta^{(n)}$ from $p(\theta \mid \mathcal{D})$.
 By the law of large numbers we get $1 / n \sum_i h\left(\theta^{(i)}\right) \overset{a.s.}{\longrightarrow} \Exp{h(\theta) \mid \mathcal{D}}$, under some regularity conditions on $h$ and $p(\theta \mid \mathcal{D})$, with similar results holding for sample quantiles.
