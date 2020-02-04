@@ -17,7 +17,7 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 
 \subsection{Figures}
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
 \begin{tikzpicture}%
   [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
@@ -53,42 +53,14 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \end{figure}
 
 
-\begin{figure}[ht]
-\begin{center}
-\begin{tikzpicture}%
-  [vertex/.style={circle,draw=black,fill=white, minimum size=1cm},
-  node distance=2.5cm,
-  >=latex,
-  on grid]
-  \node[vertex] (phi) {$\mu, \tau^2$};
-  \node[vertex,below left=1.5cm and 2cm of phi] (theta1) {$\theta_1$};
-  \node[vertex,below right=1.5cm and 2cm of phi] (thetaJ) {$\theta_J$};
-  \node[below=1.5cm of phi] (dots1) {$\dots$};
-  \node[vertex,below=2cm of theta1] (y1) {$y(1)$};
-  \node[vertex,below=2cm of thetaJ] (yJ) {$y(J)$};
-  \node[rectangle, draw=black, minimum size=0.8cm, below=2.5cm of phi] (sigma) {$\sigma^2$};
-  \node[below=3.5cm of phi] (dots1) {$\dots$};
-  \draw[->]
-    (phi) edge (theta1)
-    (phi) edge (thetaJ)
-    (theta1) edge (y1)
-    (thetaJ) edge (yJ)
-    (sigma) edge (y1)
-    (sigma) edge (yJ);
-\end{tikzpicture}
-\end{center}
-\label{fig:example_model}
-\caption{The directed acyclical graph representation of the model structure of the example model in subsection \ref{sec:hierachical_solving}. Random  and fixed quantities are depicted in circles and squares, respectively.}
-\end{figure}
-
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=10cm,height=10cm,keepaspectratio]{graphics/pooling.png}
 	\caption{We see that the estimated school-specific regression line from the partial pooling estimates lies between the complete-pooling and no-pooling regression lines. There is more pooling (purple dotted line closer to red dotted line) in schools with larger sample sizes.}
 	\label{fig:pooling}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=10cm,height=10cm,keepaspectratio]{./graphics/ranking.png}
 	%\includegraphics[width=\linewidth]{graphics/ranking.png}
@@ -96,14 +68,14 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 	\label{fig:ranking}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=10cm,height=10cm,keepaspectratio]{graphics/differences.png}
 	\caption{}
 	\label{fig:differences}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm,height=15cm,keepaspectratio]{graphics/rhat.png}
 	\caption{The ratio of between-chain variance to within-chain variance.}
@@ -112,8 +84,252 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 
 \subsection{Tables}
 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l}
+Hamilton Monte Carlo Parmetrization & our (first) default values\\
+\hline
+Number of iterations &8000  \\
+Number of burn-in & 2000  \\
+Number of parallell chains & 4  \\
+Inital values & UNI[-2,2]  \\
+target acceptance rate & 0.8  \\
+max treedepth & 25 \\
+\end{tabular}
+\end{center}
+\caption{Our default HMC parametrization for the first data generating process. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
+\label{tab:default_1}
+\end{table}
+
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l}
+Hamilton Monte Carlo Parmetrization & our (second) default values\\
+\hline
+Number of iterations &2000  \\
+Number of burn-in & 500 \\
+Number of parallell chains & 4  \\
+Inital values & UNI[-2,2]  \\
+target acceptance rate & 0.8  \\
+max treedepth & 15 \\
+\end{tabular}
+\end{center}
+\caption{Our default HMC parametrization for the second data generating process. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
+\label{tab:default_2}
+\end{table}
+
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.3\linewidth}
+    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma0_wrong}
+    \caption{ N=200, J=10}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\linewidth}
+    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma0_wrong_smallN}
+    \caption{ N=100, J=10}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\linewidth}
+    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma0_wrong_smallJ}
+    \caption{N=200, J=5}
+  \end{subfigure}
+  \caption{Posterior densities of $\gamma_0$ with wrong prior, Blue line: True Value, Dotted line: Average Estimate}
+  \label{fig:posterior_wrong_gamma0}
+\end{figure}
+
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.3\linewidth}
+    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma1_wrong}
+    \caption{ N=200, J=10}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\linewidth}
+    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma1_wrong_smallN}
+    \caption{ N=100, J=10}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\linewidth}
+    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma1_wrong_smallJ}
+    \caption{N=200, J=5}
+  \end{subfigure}
+  \caption{Posterior densities of $\gamma_1$ with wrong prior, Blue line: True Value, Dotted line: Average Estimate}
+  \label{fig:posterior_wrong_gamma1}
+\end{figure}
+
+
+%BIAS analysis
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l  l  l  l  l  l  l  }
+prior & \# classes & \#  students per class & $\gamma_0$ & $\gamma_1$\\
+(def. in table)  & J  & N &  [1] &  [1] \\
+\hline
+%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$\\
+true & 8  &  200  &  1.002  &  0.9985 \\
+true & 10  &  200  &  1.0089  &  0.9835 \\
+weakwrong(just 80 runs) & 10  &  200  &  0.9033  &  1.5117\\
+wrong & 10  &  200  &  0.865  &  1.7222\\
+\end{tabular}
+\end{center}
+\caption{DGP1:Average posterior means of the \emph{random slope model} with different classsizes and number of schools. In square brackets: True parameter values.}
+\label{tab:bias_first}
+\end{table}
+
+%BIAS analysis
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l  l  l  l  l  l  l  }
+prior & \# classes & \#  students per class & $\gamma_0$ & $\gamma_1$  & $\sigma_b$ & $\sigma_y$ \\
+(def. in table)  & J  & N &  [1] &  [1]  & [1] & [1] \\
+\hline
+%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$\\
+true & 10  &  200  &  1.007  &  1.0355  &  1.1424  &  1.0001\\
+wrong & 10  &  200  &  1.0376  &  1.1918  &  1.1587  &  1.0001\\
+weakwrong & 10  &  200  &  1.0117  &  1.0622  &  1.1579  &  1.0001\\
+weakslightlywrong & 10  &  200  &  1.0084  &  1.0448  &  1.1573  &  1.0001\\
+uni &10  &  200  &  1.008  &  1.0415  &  1.1609  &  1.0001\\
+\hline
+true &10  &  100  &  0.9907  &  0.9921  &  1.161  &  1.0008\\
+wrong & 10  &  100  &  1.009  &  1.1154  &  1.1752  &  1.0008\\
+weakwrong & 10  &  100  &  0.9927  &  1.0082  &  1.1767  &  1.0007\\
+weakslightlywrong & 10  &  100  &  0.9905  &  0.9954  &  1.176  &  1.0007\\
+uni & 10  &  100  &  0.9906  &  0.9911  &  1.1791  &  1.0008\\
+\hline
+true & 5  &  200  &  0.9859  &  1.014  &  1.3556  &  1.0006\\
+wrong & 5  &  200  &  1.0216  &  1.2784  &  1.4418  &  1.0006\\
+weakwrong & 5  &  200  &  0.9885  &  1.0768  &  1.4886  &  1.0006\\
+weakslightlywrong& 5  &  200  &  0.9858  &  1.0292  &  1.4832  &  1.0006\\
+uni & 5  &  200  &  0.9851  &  1.0217  &  1.5577  &  1.0006\\
+\end{tabular}
+\end{center}
+\caption{Average  posterior means of the \emph{random slope model}  with different classsizes and number of schools. In square brackets: True parameter values.}
+\label{tab:bias_second}
+\end{table}
+
+
+% MEAN analysis
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l l l  l}
+prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
+\hline
+%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$
+\hline
+%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$
+true & 10  &  200  &  [0.52350012 1.48718419]  &  [0.84684044 1.15146533]\\
+wrong &10  &  200  &  [0.69385994 1.63914985]  &  [0.89002761 1.17728129]\\
+weakwrong & 10  &  200  &  [0.4942632 1.5721827]  &  [0.83996581 1.15165514]\\
+weakslightlywrong & 10  &  200  &  [0.46322949 1.54766233]  &  [0.83877618 1.14408323]\\
+uni & 10  &  200  &  [0.46317824 1.56124735]  &  [0.83470166 1.15248057]\\
+\hline
+true &10  &  100  &  [0.54092855 1.3524135 ]  &  [0.81665204 1.1720142 ]\\
+wrong & 10  &  100  &  [0.6639 1.4909]  &  [0.8269 1.1853]\\
+weakwrong & 10  &  100  &  [0.4913 1.4196]  &  [0.8143 1.1844]\\
+weakslightlywrong & 10  &  100  &  [0.47016138 1.3994245 ]  &  [0.81024912 1.17970086]\\
+uni & 10  &  100  &  [0.45852881 1.40629722]  &  [0.81510324 1.17769335]\\
+\hline
+true & 5  &  200  &  [0.44774977 1.57488554]  &  [0.7584738  1.17924577]\\
+wrong & 5  &  200  &  [0.75601786 1.78479991]  &  [0.77873153 1.21025548]\\
+weakwrong & 5  &  200  &  [0.32753143 1.73564282]  &  [0.74647839 1.19358118]\\
+weakslightlywrong &5  &  200  &  [0.29528862 1.69647704]  &  [0.74279569 1.18609201]\\
+uni & 5  &  200  &  [0.23926888 1.73950513]  &  [0.73225064 1.1940273 ]\\
+\end{tabular}
+\end{center}
+\caption{ [0.05,0.95] percentiles of the (mean) estimates of the  \emph{random slope model}  with different classsizes and number of schools. }
+\label{tab:means}
+\end{table}
+
+% quantiles: add \sigma_b and \sigma_y here!!!
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l l l  l}
+prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
+\hline
+%First DGP & - & -& -& -& \\
+%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$
+%true & 8 & 200 & [-0.6057, 2.6052] &[0.6494, 1.3539] \\
+%true & 10  &  200  &  [-0.5925,2.5579]  &  [0.6642,1.3539]\\
+%wrong&10  &  200  &  [0.1415,3.3019]  &  [0.5202,1.2112]\\
+%weakwrong(just 80 runs) &  10  &  200  &  [-2.6723,5.7302]  &  [0.0334,1.7674]\\
+\hline
+%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$
+true & 10  &  200  &  [0.4427,1.627]  &  [0.8173,1.1965] \\ %0.9633
+wrong & 10  &  200  &  [0.6086,1.8279]  &  [0.8499,1.2383]\\ % 0.91
+weakwrong & 10  &  200  &  [0.4134,1.7218]  &  [0.8163,1.209] \\  %  0.9367
+weakslightlywrong & 10  &  200  &  [0.3929,1.6994]  &  [0.8125,1.2044]\\ % 0.9467
+uni & 10  &  200  &  [0.3756,1.7065]  &  [0.8101,1.2059]\\ % 0.9467
+\hline
+true &10  &  100  &  [0.4275,1.5581]  &  [0.754,1.2283]\\
+wrong&  10  &  100  &  [0.5581,1.7167]  &  [0.7727,1.255]\\
+weakwrong & 10  &  100  &  [0.3912,1.6341]  &  [0.7482,1.2375]\\
+weakslightlywrong &10  &  100  &  [0.3765,1.6175]  &  [0.7463,1.2345]\\
+uni & 10  &  100  &  [0.3618,1.6206]  &  [0.7449,1.2368]\\
+\hline
+true & 5  &  200  &  [0.1868,1.8385]  &  [0.637,1.3362]\\
+wrong & 5  &  200  &  [0.4655,2.242]  &  [0.6689,1.4232]\\
+weakwrong & 5  &  200  &  [-0.0235,2.2405]  &  [0.5829,1.3996]\\
+weaklightlywrong &5  &  200  &  [-0.0935,2.1598]  &  [0.5813,1.3925]\\
+uni &5  &  200  &  [-0.2434,2.2897]  &  [0.5518,1.419]\\
+\end{tabular}
+\end{center}
+\caption{ Average [0.05,0.95] percentiles of the \emph{random slope model}  with different classsizes and number of schools. }
+\label{tab:quantiles}
+\end{table}
+
+% coverage ratio
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l l l  l}
+prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
+\hline
+%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$
+\hline
+%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$
+true & 10  &  200  &  0.9867  &  0.97\\
+wrong & 10  &  200  &  0.97  &  0.98\\
+weakwrong & 10  &  200  &  0.9767  &  0.9767\\
+weakslightlywrong & 10  &  200  &  0.9833  &  0.9733\\
+uni & 10  &  200  &  0.9833  &  0.9733\\
+\hline
+true &10  &  100  &  0.9767  &  0.9733\\
+wrong & 10  &  100  &  0.9767  &  0.98\\
+weakwrong & 10  &  100  &  0.97  &  0.9733 \\
+weakslightlywrong &10  &  100  &  0.97  &  0.97\\
+uni &10  &  100  &  0.9733  &  0.9767\\
+\hline
+true & 5  &  200  &  0.9833  &  0.9833\\
+wrong & 5  &  200  &  0.9633  &  0.9833\\
+weakwrong & 5  &  200  &  0.98  &  0.99\\
+weakslightlywrong &5  &  200  &  0.9767  &  0.99\\
+uni &5  &  200  &  0.98  &  0.9833\\
+\end{tabular}
+\end{center}
+\caption{[0.05,0.95] coverage \emph{random slope model}  with different classsizes and number of schools. }
+\label{tab:coverage}
+\end{table}
+
+
+% MEDIAN
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l l l  l}
+prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
+\hline
+wrong &10  &  100  &  [0.6415 1.4825]  &  [0.8219 1.184 ]\\
+weakwrong & 10  &  100  &  [0.4894 1.4232]  &  [0.8105 1.1806]\\
+\hline
+\end{tabular}
+\end{center}
+\caption{ [0.05,0.95] percentiles of the (median) estimates of the  \emph{random slope model}  with different classsizes and number of schools. }
+\label{tab:median}
+\end{table}
+
+\subsection{Proofs}
+
 \begin{proof}[Derivation of Results in Table \ref{tab:comp_uniform_bay_ml}.]
-  For the normal distributed data problem at hand the derivation of the maximum likelihood estimators, $\bar{y}$ for $\mu$ and $(n-1) s^2 / n$ for $\sigma^2$, is well known.
+  For the normal data problem at hand the derivation of the maximum likelihood estimators, $\bar{y}$ for $\mu$ and $(n-1) s^2 / n$ for $\sigma^2$, is well known.
   We note that the "ML Variance" denotes the theoretical variance of the estimators.
   Further, the moments of the scaled inverse $\chi^2$ distributions are available in closed form.
   In particular, if $X \sim \scaledInvChi{\nu, \tau^2}$, then $\Exp{X} = \nu \tau^2 / (\nu - 2)$ and $\var{X} = 2 \nu^2 \tau^4 / ((\nu - 2)^2 (\nu - 4))$.
@@ -137,20 +353,16 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
     \maximize_{x > 0} \left\{x^{-(1 + \frac{n-1}{2})} \EXP{\frac{-(n-1) s^2}{2 x}}\right\} \,,
   \end{align*}
   where the term in curly brackets is just the posterior density of $\sigma^2$ evaluated at $x$.
-  Differentiating with respect to $x$ and setting this to zero yields the desired result.
+  Using that the constant of integration is positive we can readily see that the posterior is concave.
+  Hence, differentiating with respect to $x$ and setting this to zero yields the desired result.
 \end{proof}
 
 \begin{proof}[Derivation of Results in Table \ref{tab:comp_conjugate_bay_ml}.]
   The proof from above applies here by mutatis mutandis.
 \end{proof}
 
-%\begin{proof}[Derivation of Results in Table \ref{tab:vol_high_dim}]
-%See file \lstinline{volume.py}{} in the online appendix.
-%\end{proof}
-
-\subsection{Proofs}
 \begin{remark}
-The proofs presented here follow \citet{gelmanbda04}; however, we contribute detailed remarks.
+The subsequent proofs presented here follow \citet{gelmanbda04}; however, we contribute detailed remarks.
 \end{remark}
 
 \begin{proof}[Proof of Proposition \ref{prop:posterior_uniform}.]
@@ -287,245 +499,3 @@ Define $a := \left[\nu_n\sigma_n^2 + \kappa_n(\mu_n - \mu)^2 \right]$. We solve 
 \end{align*}
 which concludes the proof by implying that $\mu \mid y \sim t_{\nu_n}(\mu_n, \sigma_n^2 / \kappa_n)$.
 \end{proof}
-
-
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{l l}
-Hamilton Monte Carlo Parmetrization & our (first) default values\\
-\hline
-Number of iterations &8000  \\
-Number of burn-in & 2000  \\
-Number of parallell chains & 4  \\
-Inital values & UNI[-2,2]  \\
-target acceptance rate & 0.8  \\
-max treedepth & 25 \\
-\end{tabular}
-\end{center}
-\caption{Our default HMC parametrization for the first data generating process. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
-\label{tab:default_1}
-\end{table}
-
-
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{l l}
-Hamilton Monte Carlo Parmetrization & our (second) default values\\
-\hline
-Number of iterations &2000  \\
-Number of burn-in & 500 \\
-Number of parallell chains & 4  \\
-Inital values & UNI[-2,2]  \\
-target acceptance rate & 0.8  \\
-max treedepth & 15 \\
-\end{tabular}
-\end{center}
-\caption{Our default HMC parametrization for the second data generating process. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
-\label{tab:default_2}
-\end{table}
-
-
-\begin{figure}[h!]
-  \centering
-  \begin{subfigure}[b]{0.3\linewidth}
-    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma0_wrong}
-    \caption{ N=200, J=10}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\linewidth}
-    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma0_wrong_smallN}
-    \caption{ N=100, J=10}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\linewidth}
-    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma0_wrong_smallJ}
-    \caption{N=200, J=5}
-  \end{subfigure}
-  \caption{Posterior densities of $\gamma_0$ with wrong prior, Blue line: True Value, Dotted line: Average Estimate}
-  \label{fig:posterior_wrong_gamma0}
-\end{figure}
-
-
-\begin{figure}[h!]
-  \centering
-  \begin{subfigure}[b]{0.3\linewidth}
-    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma1_wrong}
-    \caption{ N=200, J=10}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\linewidth}
-    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma1_wrong_smallN}
-    \caption{ N=100, J=10}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.3\linewidth}
-    \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma1_wrong_smallJ}
-    \caption{N=200, J=5}
-  \end{subfigure}
-  \caption{Posterior densities of $\gamma_1$ with wrong prior, Blue line: True Value, Dotted line: Average Estimate}
-  \label{fig:posterior_wrong_gamma1}
-\end{figure}
-
-
-%BIAS analysis
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{l  l  l  l  l  l  l  }
-prior & \# classes & \#  students per class & $\gamma_0$ & $\gamma_1$\\
-(def. in table)  & J  & N &  [1] &  [1] \\
-\hline
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$\\
-true & 8  &  200  &  1.002  &  0.9985 \\
-true & 10  &  200  &  1.0089  &  0.9835 \\
-weakwrong(just 80 runs) & 10  &  200  &  0.9033  &  1.5117\\
-wrong & 10  &  200  &  0.865  &  1.7222\\
-\end{tabular}
-\end{center}
-\caption{DGP1:Average posterior means of the \emph{random slope model} with different classsizes and number of schools. In square brackets: True parameter values.}
-\label{tab:bias_first}
-\end{table}
-
-%BIAS analysis
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{l  l  l  l  l  l  l  }
-prior & \# classes & \#  students per class & $\gamma_0$ & $\gamma_1$  & $\sigma_b$ & $\sigma_y$ \\
-(def. in table)  & J  & N &  [1] &  [1]  & [1] & [1] \\
-\hline
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$\\
-true & 10  &  200  &  1.007  &  1.0355  &  1.1424  &  1.0001\\
-wrong & 10  &  200  &  1.0376  &  1.1918  &  1.1587  &  1.0001\\
-weakwrong & 10  &  200  &  1.0117  &  1.0622  &  1.1579  &  1.0001\\
-weakslightlywrong & 10  &  200  &  1.0084  &  1.0448  &  1.1573  &  1.0001\\
-uni &10  &  200  &  1.008  &  1.0415  &  1.1609  &  1.0001\\
-\hline
-true &10  &  100  &  0.9907  &  0.9921  &  1.161  &  1.0008\\
-wrong & 10  &  100  &  1.009  &  1.1154  &  1.1752  &  1.0008\\
-weakwrong & 10  &  100  &  0.9927  &  1.0082  &  1.1767  &  1.0007\\
-weakslightlywrong & 10  &  100  &  0.9905  &  0.9954  &  1.176  &  1.0007\\
-uni & 10  &  100  &  0.9906  &  0.9911  &  1.1791  &  1.0008\\
-\hline
-true & 5  &  200  &  0.9859  &  1.014  &  1.3556  &  1.0006\\
-wrong & 5  &  200  &  1.0216  &  1.2784  &  1.4418  &  1.0006\\
-weakwrong & 5  &  200  &  0.9885  &  1.0768  &  1.4886  &  1.0006\\
-weakslightlywrong& 5  &  200  &  0.9858  &  1.0292  &  1.4832  &  1.0006\\
-uni & 5  &  200  &  0.9851  &  1.0217  &  1.5577  &  1.0006\\
-\end{tabular}
-\end{center}
-\caption{Average  posterior means of the \emph{random slope model}  with different classsizes and number of schools. In square brackets: True parameter values.}
-\label{tab:bias_second}
-\end{table}
-
-
-% MEAN analysis
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{l l l l  l}
-prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
-\hline
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$
-\hline
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$
-true & 10  &  200  &  [0.52350012 1.48718419]  &  [0.84684044 1.15146533]\\
-wrong &10  &  200  &  [0.69385994 1.63914985]  &  [0.89002761 1.17728129]\\
-weakwrong & 10  &  200  &  [0.4942632 1.5721827]  &  [0.83996581 1.15165514]\\
-weakslightlywrong & 10  &  200  &  [0.46322949 1.54766233]  &  [0.83877618 1.14408323]\\
-uni & 10  &  200  &  [0.46317824 1.56124735]  &  [0.83470166 1.15248057]\\
-\hline
-true &10  &  100  &  [0.54092855 1.3524135 ]  &  [0.81665204 1.1720142 ]\\
-wrong & 10  &  100  &  [0.6639 1.4909]  &  [0.8269 1.1853]\\
-weakwrong & 10  &  100  &  [0.4913 1.4196]  &  [0.8143 1.1844]\\
-weakslightlywrong & 10  &  100  &  [0.47016138 1.3994245 ]  &  [0.81024912 1.17970086]\\
-uni & 10  &  100  &  [0.45852881 1.40629722]  &  [0.81510324 1.17769335]\\
-\hline
-true & 5  &  200  &  [0.44774977 1.57488554]  &  [0.7584738  1.17924577]\\
-wrong & 5  &  200  &  [0.75601786 1.78479991]  &  [0.77873153 1.21025548]\\
-weakwrong & 5  &  200  &  [0.32753143 1.73564282]  &  [0.74647839 1.19358118]\\
-weakslightlywrong &5  &  200  &  [0.29528862 1.69647704]  &  [0.74279569 1.18609201]\\
-uni & 5  &  200  &  [0.23926888 1.73950513]  &  [0.73225064 1.1940273 ]\\
-\end{tabular}
-\end{center}
-\caption{ [0.05,0.95] percentiles of the (mean) estimates of the  \emph{random slope model}  with different classsizes and number of schools. }
-\label{tab:means}
-\end{table}
-
-% quantiles: add \sigma_b and \sigma_y here!!!
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{l l l l  l}
-prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
-\hline
-%First DGP & - & -& -& -& \\
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$
-%true & 8 & 200 & [-0.6057, 2.6052] &[0.6494, 1.3539] \\
-%true & 10  &  200  &  [-0.5925,2.5579]  &  [0.6642,1.3539]\\
-%wrong&10  &  200  &  [0.1415,3.3019]  &  [0.5202,1.2112]\\
-%weakwrong(just 80 runs) &  10  &  200  &  [-2.6723,5.7302]  &  [0.0334,1.7674]\\
-\hline
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$
-true & 10  &  200  &  [0.4427,1.627]  &  [0.8173,1.1965] \\ %0.9633 
-wrong & 10  &  200  &  [0.6086,1.8279]  &  [0.8499,1.2383]\\ % 0.91
-weakwrong & 10  &  200  &  [0.4134,1.7218]  &  [0.8163,1.209] \\  %  0.9367
-weakslightlywrong & 10  &  200  &  [0.3929,1.6994]  &  [0.8125,1.2044]\\ % 0.9467
-uni & 10  &  200  &  [0.3756,1.7065]  &  [0.8101,1.2059]\\ % 0.9467
-\hline
-true &10  &  100  &  [0.4275,1.5581]  &  [0.754,1.2283]\\
-wrong&  10  &  100  &  [0.5581,1.7167]  &  [0.7727,1.255]\\
-weakwrong & 10  &  100  &  [0.3912,1.6341]  &  [0.7482,1.2375]\\
-weakslightlywrong &10  &  100  &  [0.3765,1.6175]  &  [0.7463,1.2345]\\
-uni & 10  &  100  &  [0.3618,1.6206]  &  [0.7449,1.2368]\\
-\hline
-true & 5  &  200  &  [0.1868,1.8385]  &  [0.637,1.3362]\\
-wrong & 5  &  200  &  [0.4655,2.242]  &  [0.6689,1.4232]\\
-weakwrong & 5  &  200  &  [-0.0235,2.2405]  &  [0.5829,1.3996]\\
-weaklightlywrong &5  &  200  &  [-0.0935,2.1598]  &  [0.5813,1.3925]\\
-uni &5  &  200  &  [-0.2434,2.2897]  &  [0.5518,1.419]\\
-\end{tabular}
-\end{center}
-\caption{ Average [0.05,0.95] percentiles of the \emph{random slope model}  with different classsizes and number of schools. }
-\label{tab:quantiles}
-\end{table}
-
-% coverage ratio
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{l l l l  l}
-prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
-\hline
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$
-\hline
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$
-true & 10  &  200  &  0.9867  &  0.97\\
-wrong & 10  &  200  &  0.97  &  0.98\\
-weakwrong & 10  &  200  &  0.9767  &  0.9767\\
-weakslightlywrong & 10  &  200  &  0.9833  &  0.9733\\
-uni & 10  &  200  &  0.9833  &  0.9733\\
-\hline
-true &10  &  100  &  0.9767  &  0.9733\\
-wrong & 10  &  100  &  0.9767  &  0.98\\
-weakwrong & 10  &  100  &  0.97  &  0.9733 \\
-weakslightlywrong &10  &  100  &  0.97  &  0.97\\
-uni &10  &  100  &  0.9733  &  0.9767\\ 
-\hline
-true & 5  &  200  &  0.9833  &  0.9833\\
-wrong & 5  &  200  &  0.9633  &  0.9833\\
-weakwrong & 5  &  200  &  0.98  &  0.99\\
-weakslightlywrong &5  &  200  &  0.9767  &  0.99\\
-uni &5  &  200  &  0.98  &  0.9833\\
-\end{tabular}
-\end{center}
-\caption{[0.05,0.95] coverage \emph{random slope model}  with different classsizes and number of schools. }
-\label{tab:coverage}
-\end{table}
-
-
-% MEDIAN
-\begin{table}[!ht]
-\begin{center}
-\begin{tabular}{l l l l  l}
-prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
-\hline
-wrong &10  &  100  &  [0.6415 1.4825]  &  [0.8219 1.184 ]\\
-weakwrong & 10  &  100  &  [0.4894 1.4232]  &  [0.8105 1.1806]\\
-\hline
-\end{tabular}
-\end{center}
-\caption{ [0.05,0.95] percentiles of the (median) estimates of the  \emph{random slope model}  with different classsizes and number of schools. }
-\label{tab:median}
-\end{table}
