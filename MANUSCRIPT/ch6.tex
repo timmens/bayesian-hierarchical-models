@@ -147,17 +147,17 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{l l}
-Hamilton Monte Carlo Parmetrization & our (second) default values\\
+Hamilton Monte Carlo Parmetrization & our (first) default values\\
 \hline
 Number of iterations &4000  \\
-Number of burn-in & 200 \\
+Number of burn-in & 2000 \\
 Number of parallell chains & 4  \\
 Inital values & UNI[-2,2]  \\
 target acceptance rate & 0.9  \\
 max treedepth & 25 \\
 \end{tabular}
 \end{center}
-\caption{Our default HMC parametrization for the second data generating process. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
+\caption{Our default HMC parametrization for the \emph{first data generating process}. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
 \label{tab:default_1}
 \end{table}
 
@@ -174,7 +174,7 @@ target acceptance rate & 0.8  \\
 max treedepth & 15 \\
 \end{tabular}
 \end{center}
-\caption{Our default HMC parametrization for the second data generating process. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
+\caption{Our default HMC parametrization for the \emph{second data generating process}. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
 \label{tab:default_2}
 \end{table}
 
@@ -185,6 +185,7 @@ max treedepth & 15 \\
 \begin{tabular}{l  l  l  l  l  l  l  }
 prior & \# classes & \#  students per class & $\gamma_0$ & $\gamma_1$\\
 (def. in table)  & J  & N &  [1] &  [1] \\
+\hline
 \hline
 %$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$\\
 true & 8  &  200  &  1.002  &  0.9985 \\
@@ -203,6 +204,7 @@ wrong & 10  &  200  &  0.865  &  1.7222\\
 \begin{tabular}{l  l  l  l  l  l  l  }
 prior & \# classes & \#  students per class & $\gamma_0$ & $\gamma_1$  & $\sigma_b$ & $\sigma_y$ \\
 (def. in table)  & J  & N &  [1] &  [1]  & [1] & [1] \\
+\hline
 \hline
 %$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$\\
 true & 10  &  200  &  1.007  &  1.0355  &  1.1424  &  1.0001\\
@@ -235,7 +237,6 @@ uni & 5  &  200  &  0.9851  &  1.0217  &  1.5577  &  1.0006\\
 \begin{tabular}{l l l l  l}
 prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
 \hline
-%$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=5,\sigma_u=\sigma_x=0.3$
 \hline
 %$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$
 true &10  &  200  &  [0.52,1.49]  &  [0.85,1.15]]\\
@@ -257,7 +258,7 @@ weakslightlywrong &5  &  200  &  [0.30,1.70]  &  [0.74,1.19]\\
 uni & 5  &  200  &  [0.24,1.74]  &  [0.73,1.19]\\
 \end{tabular}
 \end{center}
-\caption{ [0.05,0.95] percentiles of the (mean) estimates of the  \emph{random slope model}  with different classsizes and number of schools. }
+\caption{[0.05,0.95] percentiles of the (mean) estimates of the \emph{random slope model}  with different classsizes and number of schools. }
 \label{tab:means}
 \end{table}
 
@@ -266,6 +267,7 @@ uni & 5  &  200  &  [0.24,1.74]  &  [0.73,1.19]\\
 \begin{center}
 \begin{tabular}{l l l l  l}
 prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
+\hline
 \hline
 true & 10  &  200  &  [0.44,1.63]  &  [0.82,1.20]\\
 wrong &10  &  200  &  [0.61,1.83]  &  [0.85,1.24]\\ % 0.91
@@ -286,7 +288,7 @@ weaklightlywrong &5  &  200  &  [-0.09,2.16]  &  [0.58,1.39]\\
 uni &5  &  200  &  [-0.24,2.29]  &  [0.55,1.42]\\
 \end{tabular}
 \end{center}
-\caption{ Average [0.05,0.95] percentiles of the \emph{random slope model}  with different classsizes and number of schools. }
+\caption{Average [0.05,0.95] percentiles of the \emph{random slope model}  with different classsizes and number of schools. }
 \label{tab:quantiles}
 \end{table}
 
@@ -296,6 +298,7 @@ uni &5  &  200  &  [-0.24,2.29]  &  [0.55,1.42]\\
 \begin{center}
 \begin{tabular}{l l l l  l}
 prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
+\hline
 \hline
 true & 10  &  200  &  [0.52,1.49]  &  [0.85,1.15]\\
 wrong &10  &  200  &  [0.66,1.64]  &  [0.88,1.18]\\
@@ -326,6 +329,7 @@ uni & 5  &  200  &  [0.23,1.73]  &  [0.74,1.18]\\
 \begin{tabular}{l l l l  l}
 prior & \# classes & \#  students per class &  $\gamma_0$ & $ \gamma_1$ \\
 \hline
+\hline
 %$\gamma_0=1, \gamma_1=1, \mu_x=\mu_u=0,\sigma_u=\sigma_x=3$
 true & 10  &  200  &  0.9867  &  0.97\\
 wrong & 10  &  200  &  0.97  &  0.98\\
@@ -346,7 +350,7 @@ weakslightlywrong &5  &  200  &  0.9767  &  0.99\\
 uni &5  &  200  &  0.98  &  0.9833\\
 \end{tabular}
 \end{center}
-\caption{[0.05,0.95] coverage \emph{random slope model}  with different classsizes and number of schools. }
+\caption{Coverage of the [0.05,0.95] percentile of the \emph{random slope model}  with different classsizes and number of schools. }
 \label{tab:coverage}
 \end{table}
 
