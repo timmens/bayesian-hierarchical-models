@@ -83,7 +83,7 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \begin{subfigure}{0.4\linewidth}
     \includegraphics[width=\linewidth]{graphics/convergence_1}
@@ -98,14 +98,14 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
     \includegraphics[width=\linewidth]{graphics/dgp_1_wrong_prior}
     \caption{Our first DGP: Impact of a wrong prior distribution on $\gamma_0$ (blue) and $\gamma_1$ (red). Graph shows densities of mean estimates. Dotted lines show the mean estimates.}
   \label{fig:wrong_prior_dgp1}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.3\linewidth}
     \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma0_wrong}
@@ -124,7 +124,7 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.3\linewidth}
     \includegraphics[width=\linewidth]{graphics/posterior_plot_gamma1_wrong}
@@ -143,6 +143,23 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \end{figure}
 
 \subsection{Tables}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l}
+Hamilton Monte Carlo Parmetrization & our (second) default values\\
+\hline
+Number of iterations &4000  \\
+Number of burn-in & 200 \\
+Number of parallell chains & 4  \\
+Inital values & UNI[-2,2]  \\
+target acceptance rate & 0.9  \\
+max treedepth & 25 \\
+\end{tabular}
+\end{center}
+\caption{Our default HMC parametrization for the second data generating process. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
+\label{tab:default_1}
+\end{table}
 
 \begin{table}[H]
 \begin{center}
