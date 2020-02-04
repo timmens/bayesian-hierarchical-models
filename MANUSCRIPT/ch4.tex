@@ -1,4 +1,5 @@
 \section{Application}
+\label{sec:application}
 
 In this section we discuss the applications of the hierarchical modelling approach in the form of a literature review. We then use real world data to give a practical illustration of the work we have developed in the previous sections of our paper and compare that to the frequentist approach to analyzing multilevel data with the aim of showcasing what differences/similarities there are between the two methods. We then depart form the comparative analysis to look deeper into the Bayesian approach and conduct robustness checks that vary certain aspects (e.g. priors) of it so that we can see how the estimation results change in response to that. The baseline here would be the estimation results from the comparison between Bayesian and frequentist approaches. We close the section off by a discussion of the limitations and challenges encountered in this section.
 
@@ -48,10 +49,8 @@ In this model, we allow both the intercept and the slope to vary randomly across
 \end{align}
 or in reduced form as $y_{ij} = \mu_\alpha + \mu_\beta x_{ij} + u_j + v_j x_{ij} + \epsilon_{ij}$, where $\epsilon_{ij} \sim N(0, \sigma_{y}^{2})$ and
 \begin{align}
-\left( \begin{matrix} u_j \\ v_j \end{matrix} \right) \sim N\left( \left( \begin{matrix} 0 \\ 0 \end{matrix} \right) ,\left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).
+	\left( \begin{matrix} u_j \\ v_j \end{matrix} \right) \sim N\left( \left( \begin{matrix} 0 \\ 0 \end{matrix} \right) ,\left( \begin{matrix} { \sigma  }_{ \alpha  }^{ 2 } & \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } \\ \rho { \sigma  }_{ \alpha  }{ \sigma  }_{ \beta  } & { \sigma  }_{ \beta  }^{ 2 } \end{matrix} \right)  \right).
 \end{align}
-
-\newpage
 
 
 The average regression line across schools is thus estimated as $\hat{\mu}_{ij} = 69.424 + 7.128 x_{ij}$, with the residual within-school standard deviation estimated as $\hat{\sigma}_{y}=13.03$. The estimated standard deviations of the school intercepts and the school slopes are $\hat{\sigma}_{\alpha}= 10.15$ and $\hat{\sigma}_{\beta}=6.92$ respectively. The estimated correlation between varying intercepts and slopes, although not reported in the table is $\hat{\rho} = -0.52$. We do not report the correlation factor here is it has no economic interpretation for our simple model with just one predictor.
@@ -60,7 +59,7 @@ The average regression line across schools is thus estimated as $\hat{\mu}_{ij} 
 	\centering
 	\caption{{\small Comparison of Maximum Likelihood and Bayesian estimates.}}
 	\label{}
-
+	
 	\smallskip
 	\begin{tabular}{l*{2}{c}}
 		\toprule \\[-1.0em]
@@ -83,9 +82,9 @@ The average regression line across schools is thus estimated as $\hat{\mu}_{ij} 
 		Students&1725&1725\\
 		Schools&73&73\\
 		\bottomrule
-
+		
 	\end{tabular}
-\label{tab:results}
+	\label{tab:results}
 \end{table}
 Treating these estimates of $\mu_\alpha$, $\beta$, $\sigma^2_{y}$, and $\sigma^2_{\alpha}$ as the true parameter values, we can then obtain the Best Linear Unbiased Predictions (BLUPs) for the school-level errors $\hat{u}_j = \hat{\alpha}_{j} - \hat{\mu}_{\alpha}$. The BLUPs are equivalent to the so-called Empirical Bayes (EB) prediction, which is the mean of the posterior distribution of $u_{j}$ given all the estimated parameters, as well as the random variables $y_{ij}$ and $x_{ij}$ for the cluster.  These predictions are called "Bayes" because they make use of the pre-specified prior distribution \footnote{We elaborate more on prior distributions in Section the full Bayesian approach section} $\alpha_j \sim N(\mu_\alpha, \sigma^2_\alpha)$, and by extension $u_j \sim N(0, \sigma^2_\alpha)$, and called "Empirical" because the parameters of this prior, $\mu_\alpha$ and $\sigma^2_{\alpha}$, in addition to $\beta$ and $\sigma^2_{y}$, are estimated from the data.
 
@@ -95,11 +94,11 @@ By using the \textit{ranef} function, we can retrieve information on how much th
 
 \begin{table}[!htb]
 	\caption{Global caption}
-
+	
 	\begin{minipage}{.5\linewidth}
 		\caption{}
 		\centering
-			{
+		{
 			\begin{tabular}{l | c c c c c}
 				School ID & Intercept & Slope (FemaleF)\\
 				\hline
@@ -127,7 +126,7 @@ By using the \textit{ranef} function, we can retrieve information on how much th
 				23208  & 7.7678493 & -4.33166932
 			\end{tabular}
 		}
-
+		
 	\end{minipage}
 	\caption{{\small Shrinkage factor for the ML estimates (left) and Bayesian estimates (right): an extract of 6 schools}}
 	\label{tab:shrinkage}
@@ -262,7 +261,7 @@ We also can get the proportion of the time that School 60501 has a higher mean t
 		\begin{tabular}{l | c c c c c}
 			FALSE & TRUE \\
 			\hline
-			0.17275 & 0.82725
+			17.28 & 82.73
 		\end{tabular}
 	}
 	\caption{{\small The percentage of how much school 21 is better than school 51.}}
@@ -272,7 +271,7 @@ We also can get the proportion of the time that School 60501 has a higher mean t
 This means that the posterior probability that School 60501 is better than School 68271 is 82.7\%. Any pair of schools within the sample of schools can be compared in this manner.
 
 \subsubsection{Convergence}
-By default, all \textit{rstanarm} modeling functions will run 4 randomly initialized Markov chains, each for 2,000 iterations (including a warmup period of 1,000 iterations). All chains must converge to the target distribution for inferences to be valid. The diagnostic which we use to assess whether the chains have converged to the posterior distribution is the statistic $\hat{R}$ \cite{gelman1992inference}. Each parameter has the $\hat{R}$ statistic associated with it and this statistic is automatically generated during estimation.
+By default, all \textit{rstanarm} modeling functions will run 4 randomly initialized Markov chains, each for 2,000 iterations (including a warmup period of 1,000 iterations). All chains must converge to the target distribution for inferences to be valid. The diagnostic which we use to assess whether the chains have converged to the posterior distribution is the statistic $\hat{R}$ (\cite{gelman1992inference}). Each parameter has the $\hat{R}$ statistic associated with it and this statistic is automatically generated during estimation.
 
 
 The $\hat{R}$ is essentially the ratio of between-chain variance to within-chain variance analogous to ANOVA. The $\hat{R}$ statistic should be less than 1.1 if the chains have converged. Figure \ref{fig:rhat} illustrates the $\hat{R}$ statistic and shows that the chains converge.
@@ -287,9 +286,9 @@ Although we vary the means for both $\mu_{\alpha}$ and $\mu_{\beta}$, we report 
 		\begin{tabular}{l | c c c c c}
 			Prior specification & Posterior mean & Posterior SD & Q2.5 & Q50 & Q97.5\\
 			\hline
-			Super uninformative priors $N(0,100)$ & 69.437685 & 4.370941 & 60.851800 &            69.442499 & 77.976610  \\
- 			Weakly informative priors $N(0,10)$ & 69.32136  &   4.37512   & 60.74454 &   69.32730 &   77.87750 \\
-			Strong priors $N(0,2)$ & 69.181321 & 4.601223 &  60.156027 &  69.184115  & 78.193197
+			Uninformative prior $\normal{0,100}$ & 69.44 & 4.37 & 60.85 & 69.44 & 77.98 \\
+			Weakly informative prior $\normal{0,10}$ & 69.32 &   4.38  & 60.75 &   69.33 &   77.88 \\
+			Strong prior $\normal{0,2}$ & 69.18 & 4.60 &  60.16 &  69.18  & 78.19
 		\end{tabular}
 	\end{center}
 	\caption{The average posterior mean, sd and credible interval monte carlo draws for $\mu_{\alpha}$.}

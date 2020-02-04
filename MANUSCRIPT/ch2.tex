@@ -19,7 +19,7 @@ In this paper we consider two-level models for nested data and refer (again) to 
 %In practice we can store hierarchical data very efficiently using normalized relational dataframes.
 Let us continue with the first example of children in schools.
 Assume we observe, say, test results, parental income and number of teachers per child per school.
-Figure \ref{fig:relational_table} portrays how multi-level data in this case could be stored.
+Figure \ref{fig:relational_table} portrays how multi-level data in this case may be stored.
 \begin{figure}[!ht]
 \begin{center}
 \begin{tabular}{l l l l}
@@ -49,7 +49,7 @@ We link the two by writing $j[i]$ for the index of the group to which individual
 How can we utilize this hierarchical structure?
 
 The main idea of hierarchical modeling is to build (simple) models on different levels, where the outcomes are modeled on the individual-level and we connect the levels by modeling on all higher levels the parameters used in the previous level.
-Importantly, the level structure is given by the hierarchical structure of the data and we use features from level $\ell$ only in the modeling process of level $\ell$.
+The level structure is given by the hierarchical structure of the data and we use features from level $\ell$ only in the modeling process of level $\ell$.
 
 For a general two-level case we may write a model as
 \begin{align}
@@ -60,7 +60,7 @@ For a general two-level case we may write a model as
 where we suppress the dependence on $x_i$ and $u_j$.
 On the individual-level the outcomes $y_i$ are modeled depending on the unit-level features $x_i$ and parameters $\theta_{j[i]}$.
 As in a classical Bayesian model we continue by modeling the parameters $\theta_j$, however, in contrast to section 2 we do not assume a prior distribution but we explicitly model the parameter on the group-level using the group-level features $u_j$.
-From a Bayesian viewpoint this can be seen as a generalization of prior modeling.
+From a Bayesian point of view this can be seen as a generalization of prior modeling.
 Despite this Bayesian interpretation, the first two equations define a proper non-Bayesian hierarchical model.
 We will see that in the linear case these models are well known in the frequentist world as \emph{mixed effects models} or \emph{random coefficient models}.
 To produce a Bayesian model we assign a prior distribution on all (hyper)parameters that are not explicitly modeled (here $\phi$).
@@ -95,7 +95,7 @@ In contrast, figure \ref{fig:group_sem} in the appendix illustrates the conditio
 We depict random quantities in circles and fixed quantities in squares.
 
 How do we solve for the posterior in these models?
-Due to the hierarchical nature we can derive the joint posterior as $p(\phi, \theta \mid y) \propto p(y \mid \phi, \theta) p(\phi, \theta) = p(y \mid \theta) p(\theta \mid \phi) p(\phi)$ where we use that $y$ is independent of $\phi$ conditional on $\theta$ ---this can be seen immediatly from figure \ref{fig:general_sem}.
+Owing to the hierarchical nature we can derive the joint posterior as $p(\phi, \theta \mid y) \propto p(y \mid \phi, \theta) p(\phi, \theta) = p(y \mid \theta) p(\theta \mid \phi) p(\phi)$ where we use that $y$ is independent of $\phi$ conditional on $\theta$ ---this can be seen immediatly from figure \ref{fig:general_sem}.
 We note that all factors on the right-hand side are known, hence, we can directly apply the methods discussed in the previous section.
 
 
