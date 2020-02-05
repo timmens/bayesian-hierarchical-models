@@ -101,7 +101,7 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \begin{figure}[H]
   \centering
     \includegraphics[width=\linewidth]{graphics/dgp_1_wrong_prior}
-    \caption{Our first DGP: Impact of a wrong prior distribution on $\gamma_0$ (blue) and $\gamma_1$ (red). Graph shows densities of mean estimates. Dotted lines show the mean estimates.}
+    \caption{Our first DGP: Impact of a wrong prior distribution on $\gamma_0$ (blue) and $\gamma_1$ (red). Graph shows densities of mean estimates;  the dotted lines are average estimates}
   \label{fig:wrong_prior_dgp1}
 \end{figure}
 
@@ -122,7 +122,6 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
   \caption{Posterior densities of $\gamma_0$ with wrong prior, Blue line: True Value, Dotted line: Average Estimate}
   \label{fig:posterior_wrong_gamma0}
 \end{figure}
-
 
 \begin{figure}[H]
   \centering
@@ -147,7 +146,7 @@ We say that $p(\theta)$ is a \emph{conjugate prior} if the posterior $p(\theta \
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{l l}
-Hamilton Monte Carlo Parmetrization & our (first) default values\\
+Hamilton Monte Carlo Parameterization & DGP 1: default values\\
 \hline
 Number of iterations &4000  \\
 Number of burn-in & 2000 \\
@@ -164,7 +163,7 @@ max treedepth & 25 \\
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{l l}
-Hamilton Monte Carlo Parmetrization & our (second) default values\\
+Hamilton Monte Carlo Parameterization & DGP 2: default values\\
 \hline
 Number of iterations &2000  \\
 Number of burn-in & 500 \\
@@ -177,6 +176,8 @@ max treedepth & 15 \\
 \caption{Our default HMC parametrization for the \emph{second data generating process}. In reality we adjust values based on stan error warning, convergence tests and performance requirements.}
 \label{tab:default_2}
 \end{table}
+
+
 
 
 %BIAS analysis
@@ -192,9 +193,10 @@ true & 8  &  200  &  1.002  &  0.9985 \\
 true & 10  &  200  &  1.0089  &  0.9835 \\
 weakwrong(just 80 runs) & 10  &  200  &  0.9033  &  1.5117\\
 wrong & 10  &  200  &  0.865  &  1.7222\\
+uni & 15  &  200  &  1.0296  &  0.9924\\
 \end{tabular}
 \end{center}
-\caption{DGP1:Average posterior means of the \emph{random slope model} with different classsizes and number of schools. In square brackets: True parameter values.}
+\caption{DGP1:Average posterior means of the \emph{random slope model} with different class sizes and number of schools. In square brackets: True parameter values.}
 \label{tab:bias_first}
 \end{table}
 
@@ -226,7 +228,7 @@ weakslightlywrong& 5  &  200  &  0.9858  &  1.0292  &  1.4832  &  1.0006\\
 uni & 5  &  200  &  0.9851  &  1.0217  &  1.5577  &  1.0006\\
 \end{tabular}
 \end{center}
-\caption{Average  posterior means of the \emph{random slope model}  with different classsizes and number of schools. In square brackets: True parameter values.}
+\caption{Average  posterior means of the \emph{random slope model} with different class sizes and number of schools. In square brackets: True parameter values.}
 \label{tab:bias_second}
 \end{table}
 
@@ -258,7 +260,7 @@ weakslightlywrong &5  &  200  &  [0.30,1.70]  &  [0.74,1.19]\\
 uni & 5  &  200  &  [0.24,1.74]  &  [0.73,1.19]\\
 \end{tabular}
 \end{center}
-\caption{[0.05,0.95] percentiles of the (mean) estimates of the \emph{random slope model}  with different classsizes and number of schools. }
+\caption{[0.05,0.95] percentiles of the (mean) estimates of the \emph{random slope model} with different class sizes and number of schools. }
 \label{tab:means}
 \end{table}
 
@@ -288,7 +290,7 @@ weaklightlywrong &5  &  200  &  [-0.09,2.16]  &  [0.58,1.39]\\
 uni &5  &  200  &  [-0.24,2.29]  &  [0.55,1.42]\\
 \end{tabular}
 \end{center}
-\caption{Average [0.05,0.95] percentiles of the \emph{random slope model}  with different classsizes and number of schools. }
+\caption{Average [0.05,0.95] percentiles of the \emph{random slope model} with different class sizes and number of schools.}
 \label{tab:quantiles}
 \end{table}
 
@@ -319,7 +321,7 @@ weakslightlywrong & 5  &  200  &  [0.27,1.70]  &  [0.74,1.18]\\
 uni & 5  &  200  &  [0.23,1.73]  &  [0.74,1.18]\\
 \end{tabular}
 \end{center}
-\caption{ [0.05,0.95] percentiles of the (median) estimates of the  \emph{random slope model}  with different classsizes and number of schools. }
+\caption{ [0.05,0.95] percentiles of the (median) estimates of the \emph{random slope model} with different class sizes and number of schools. }
 \label{tab:median}
 \end{table}
 
@@ -350,7 +352,7 @@ weakslightlywrong &5  &  200  &  0.9767  &  0.99\\
 uni &5  &  200  &  0.98  &  0.9833\\
 \end{tabular}
 \end{center}
-\caption{Coverage of the [0.05,0.95] percentile of the \emph{random slope model}  with different classsizes and number of schools. }
+\caption{Coverage of the [0.05,0.95] percentile of the \emph{random slope model} with different class sizes and number of schools. }
 \label{tab:coverage}
 \end{table}
 
