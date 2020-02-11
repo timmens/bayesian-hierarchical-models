@@ -1,8 +1,6 @@
 # Bayesian Hierarchical Models
 
-### Linda Maokomatanda, Tim Mensinger, Markus Schick
-
-### Research Module in Econometrics and Statistics 2019/2020 (Univ. of Bonn)
+## Research Module in Econometrics and Statistics 2019/2020 (Univ. of Bonn)
 
 ## Project Structure
 
