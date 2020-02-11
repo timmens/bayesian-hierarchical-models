@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Bayesian Thinking}{3}{0}{1}
+\beamer@sectionintoc {2}{Hierarchical Models}{51}{0}{2}

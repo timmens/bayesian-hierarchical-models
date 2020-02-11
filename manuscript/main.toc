@@ -1,0 +1,21 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}% 
+\contentsline {section}{\numberline {2}Bayesian Thinking and Estimation}{1}{section.2}% 
+\contentsline {subsection}{\numberline {2.1}Probabilistic Modeling}{1}{subsection.2.1}% 
+\contentsline {paragraph}{Frequentist.}{1}{subsection.2.1}% 
+\contentsline {paragraph}{Bayesian.}{2}{subsection.2.1}% 
+\contentsline {subsection}{\numberline {2.2}Solving for the posterior analytically}{3}{subsection.2.2}% 
+\contentsline {paragraph}{Noninformative Prior.}{3}{subsection.2.2}% 
+\contentsline {paragraph}{Conjugate Prior.}{3}{table.1}% 
+\contentsline {subsection}{\numberline {2.3}Sampling From The Posterior}{5}{subsection.2.3}% 
+\contentsline {paragraph}{Markov Chain Monte Carlo.}{5}{subsection.2.3}% 
+\contentsline {paragraph}{Metropolis-Hastings Algorithm.}{6}{equation.2.3}% 
+\contentsline {paragraph}{Volume in Higher Dimensions.}{7}{algorithm.1}% 
+\contentsline {paragraph}{Hamiltonian Monte Carlo.}{8}{table.3}% 
+\contentsline {section}{\numberline {3}Hierarchical Models}{9}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Hierarchical Data and Modeling}{9}{subsection.3.1}% 
+\contentsline {subsection}{\numberline {3.2}Hierarchical Linear Models}{10}{subsection.3.2}% 
+\contentsline {paragraph}{General Definition.}{10}{subsection.3.2}% 
+\contentsline {section}{\numberline {A}Appendix}{11}{appendix.A}% 
+\contentsline {subsection}{\numberline {A.1}Definitions}{11}{subsection.A.1}% 
+\contentsline {subsection}{\numberline {A.2}Figures}{11}{subsection.A.2}% 
+\contentsline {subsection}{\numberline {A.3}Proofs}{11}{subsection.A.3}% 
